@@ -18,7 +18,7 @@ export const useAccount = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await apiClient.get<Account>(`/api/account/${user.id}`);
+      const response = await apiClient.get<Account>(`/api/account/${user.accountId}`);
       setAccount(response.data);
     } catch (err) {
       if (err instanceof Error) {
@@ -37,19 +37,19 @@ export const useAccount = () => {
   return { account, loading: isLoading, error, refetch };
 };
 
-export const useTransfer = () => {
+export const useTransaction = () => {
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const transfer = async ({ recipient, amount, title, accountId, type }: TransactionInput) => {
+  const transaction = async ({ recipient, amount, title, accountId, type }: TransactionInput) => {
     setLoading(true);
     setError(null);
     try {
       if (!user) {
         return;
       }
-      await apiClient.post(`/api/transfer/${accountId}`, {
+      await apiClient.post(`/api/transaction/${accountId}`, {
         recipient,
         amount,
         title,
@@ -68,5 +68,5 @@ export const useTransfer = () => {
     }
   };
 
-  return { transfer, loading, error };
+  return { transaction, loading, error };
 };

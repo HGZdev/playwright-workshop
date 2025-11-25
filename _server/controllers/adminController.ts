@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { adminService } from '../services/adminService.js';
+import { usersService } from '../services/usersService.js';
 
 export class AdminController {
   async getAllUsers(req: Request, res: Response) {
     try {
-      const users = await adminService.getAllUsers();
+      const users = await usersService.getAllUsers();
       res.json(users);
     } catch {
       res.status(500).json({ error: 'Internal server error' });
@@ -15,7 +15,7 @@ export class AdminController {
     const { id } = req.params;
     const updates = req.body;
     try {
-      const updatedUser = await adminService.updateUser(Number(id), updates);
+      const updatedUser = await usersService.updateUser(Number(id), updates);
       if (updatedUser) {
         res.json(updatedUser);
       } else {
@@ -29,7 +29,7 @@ export class AdminController {
   async deleteUser(req: Request, res: Response) {
     const { id } = req.params;
     try {
-      const success = await adminService.deleteUser(Number(id));
+      const success = await usersService.deleteUser(Number(id));
       if (success) {
         res.status(204).send();
       } else {

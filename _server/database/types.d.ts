@@ -3,11 +3,11 @@ export type User = UserInput & {
 };
 
 export interface UserInput {
-  username: string;
-  password: string;
-  name: string;
-  role: 'admin' | 'client';
   accountId: Account['id'];
+  name: string;
+  password: string;
+  role: 'admin' | 'client';
+  username: string;
 }
 
 export type Account = AccountInput & {

@@ -4,7 +4,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { AdminRoute } from './components/AdminRoute';
 import { LoginPage } from './pages/LoginPage';
 import { DashboardPage } from './pages/DashboardPage';
-import { TransferPage } from './pages/TransferPage';
+import { TransactionPage } from './pages/TransactionPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
 import { EditUserPage } from './pages/EditUserPage';
@@ -27,10 +27,18 @@ function App() {
             }
           />
           <Route
-            path="/transfer"
+            path="/send-money"
             element={
               <ProtectedRoute>
-                <TransferPage />
+                <TransactionPage mode="transfer" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add-money"
+            element={
+              <ProtectedRoute>
+                <TransactionPage mode="add" />
               </ProtectedRoute>
             }
           />

@@ -555,6 +555,8 @@ button.danger::before {
 }
 
 .actions-section {
+  display: flex;
+  gap: var(--spacing-md);
   margin-bottom: var(--spacing-2xl);
 }
 

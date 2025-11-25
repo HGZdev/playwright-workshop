@@ -1,7 +1,6 @@
-import { randomInt } from 'crypto';
 import { db } from '../database/database.js';
 import { randomDelay } from '../utils/delay.js';
-import { User } from '../database/types.js';
+import { Account, User } from '../database/types.js';
 
 export class AuthService {
   async login(username: User['username'], password: User['password']) {
@@ -15,10 +14,10 @@ export class AuthService {
     // Encode user data in base64 for the fake token
     const userData = {
       id: user.id,
-      name: user.name,
-      username: user.username,
-      role: user.role,
       accountId: user.accountId,
+      name: user.name,
+      role: user.role,
+      username: user.username,
     };
     const token = Buffer.from(JSON.stringify(userData)).toString('base64');
 
@@ -35,15 +34,17 @@ export class AuthService {
       throw new Error('Username already exists');
     }
 
-    const newAccount = {
-      id: randomInt(1, 1000),
-      transactions: [],
-    };
+    const newAccount: Account = { id: Date.now(), transactions: [] };
 
+    console.log('Creating account with ID:', newAccount.id);
     const accountId = await db.addAccount(newAccount);
+    console.log('Account ID returned from db.addAccount:', accountId);
+
+    // Small delay to ensure unique ID for user
+    await new Promise((resolve) => setTimeout(resolve, 1));
 
     const newUser = {
-      id: randomInt(1, 1000),
+      id: Date.now(),
       accountId,
       username,
       password,
@@ -56,6 +57,7 @@ export class AuthService {
     // Encode user data in base64 for the fake token
     const userData = {
       id: newUser.id,
+      accountId: newUser.accountId,
       name: newUser.name,
       username: newUser.username,
       role: newUser.role,

@@ -17,9 +17,9 @@ db.init().then(() => {
 });
 
 // Routes
-app.use('/api', authRoutes);
-app.use('/api', accountRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api', authRoutes); // Auth Routes
+app.use('/api', accountRoutes); // Account Routes
+app.use('/api/admin', adminRoutes); // Admin Routes
 
 if (process.env.NODE_ENV === 'test') {
   app.post('/api/reset', async (req, res) => {

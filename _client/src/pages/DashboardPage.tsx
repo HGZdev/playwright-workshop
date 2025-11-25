@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
 import { useAccount } from '../hooks/useAccount';
+import { currencyFormatter } from '../utils/heleprs';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ export const DashboardPage: React.FC = () => {
   };
 
   const balance = account?.transactions.reduce((acc, t) => acc + t.amount, 0) || 0;
+  const formattedBalance = currencyFormatter(balance, 'PLN');
 
   return (
     <div className="container">
@@ -36,11 +38,14 @@ export const DashboardPage: React.FC = () => {
 
       <div className="card balance-card">
         <h2>Available Balance</h2>
-        <div className="balance-amount">{isLoading ? 'Loading...' : `${balance} PLN`}</div>
+        <div className="balance-amount">{isLoading ? 'Loading...' : `${formattedBalance} PLN`}</div>
       </div>
 
       <div className="actions-section">
-        <button onClick={() => navigate('/transfer')}>Make Transfer</button>
+        <button onClick={() => navigate('/add-money')} type="button">
+          Top up the account ⬇
+        </button>
+        <button onClick={() => navigate('/send-money')}>Make Transfer ⬆</button>
       </div>
 
       <div className="card transactions-card">
@@ -58,8 +63,7 @@ export const DashboardPage: React.FC = () => {
                   <div className="transaction-date">{t.date}</div>
                 </div>
                 <div className={t.type === 'incoming' ? 'amount-incoming' : 'amount-outgoing'}>
-                  {t.amount > 0 ? '+' : ''}
-                  {t.amount} PLN
+                  {currencyFormatter(t.amount, 'PLN', true)}
                 </div>
               </div>
             ))}

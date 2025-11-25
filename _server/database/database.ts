@@ -42,28 +42,10 @@ export class Database {
     return this.data.users;
   }
 
-  async getAccounts() {
-    return this.data.accounts;
-  }
-
-  async getTransactions() {
-    return this.data.transactions;
-  }
-
-  async addTransaction(transaction: Transaction) {
-    this.data.transactions.unshift(transaction);
-    await this.save();
-  }
-
   async addUser(user: User) {
     this.data.users.push(user);
     await this.save();
-  }
-
-  async addAccount(account: Account) {
-    this.data.accounts.push(account);
-    await this.save();
-    return account.id;
+    return user.id;
   }
 
   async updateUser(id: User['id'], updates: Partial<User>) {
@@ -89,6 +71,29 @@ export class Database {
 
   async reset() {
     this.data = { ...INITIAL_DB };
+    await this.save();
+  }
+
+  async getAccountById(id: Account['id']) {
+    return this.data.accounts.find((account) => account.id === id);
+  }
+
+  async getAccounts() {
+    return this.data.accounts;
+  }
+
+  async addAccount(account: Account) {
+    this.data.accounts.push(account);
+    await this.save();
+    return account.id;
+  }
+
+  async getTransactions() {
+    return this.data.transactions;
+  }
+
+  async addTransaction(transaction: Transaction) {
+    this.data.transactions.unshift(transaction);
     await this.save();
   }
 }

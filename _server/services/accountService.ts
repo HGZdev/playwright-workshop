@@ -3,16 +3,9 @@ import { Account, Transaction } from '../database/types.js';
 import { randomDelay } from '../utils/delay.js';
 
 export class AccountService {
-  async getBalance(accountId: number) {
-    await randomDelay(300, 1000);
-    const transactions = await this.getTransactions(accountId);
-    return transactions.reduce((acc, transaction) => acc + transaction.amount, 0);
-  }
-
   async getAccount(accountId: number) {
     await randomDelay(300, 1000);
-    const accounts = await db.getAccounts();
-    const account = accounts.find((account) => account.id === accountId);
+    const account = await db.getAccountById(accountId);
     const transactions = await this.getTransactions(accountId);
 
     if (!account) {

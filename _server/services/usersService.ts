@@ -2,7 +2,7 @@ import { db } from '../database/database.js';
 import { User } from '../database/types.js';
 import { randomDelay } from '../utils/delay.js';
 
-export class AdminService {
+export class UsersService {
   async getAllUsers() {
     await randomDelay(200, 1000);
     return db.getUsers();
@@ -19,4 +19,4 @@ export class AdminService {
   }
 }
 
-export const adminService = new AdminService();
+export const usersService = new UsersService();

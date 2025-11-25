@@ -3,24 +3,14 @@ import { AuthRequest } from '../middleware/authMiddleware.js';
 import { accountService } from '../services/accountService.js';
 
 export class AccountController {
-  async getBalance(req: AuthRequest, res: Response) {
-    const { accountId } = req.params;
-
-    try {
-      const balance = await accountService.getBalance(Number(accountId));
-      res.json({ balance });
-    } catch {
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  }
-
-  async getAccount(req: AuthRequest, res: Response) {
+  async getAccountById(req: AuthRequest, res: Response) {
     const { accountId } = req.params;
 
     try {
       const account = await accountService.getAccount(Number(accountId));
       res.json(account);
-    } catch {
+    } catch (error) {
+      console.error('Error in getAccount:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   }

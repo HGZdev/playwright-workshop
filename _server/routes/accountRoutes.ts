@@ -7,7 +7,7 @@ const router = Router();
 // All account routes require authentication
 router.use(authenticateToken);
 
-router.get('/account/:accountId', (req, res) => accountController.getAccount(req, res));
-router.post('/transfer/:accountId', (req, res) => accountController.makeTransaction(req, res));
+router.get('/account/:accountId', (req, res) => accountController.getAccountById(req, res));
+router.post('/transaction/:accountId', (req, res) => accountController.makeTransaction(req, res));
 
 export default router;

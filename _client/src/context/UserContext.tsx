@@ -35,7 +35,8 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
     if (storedUser && storedToken) {
       try {
-        return JSON.parse(storedUser);
+        const parsedUser = JSON.parse(storedUser);
+        return parsedUser;
       } catch {
         // If parsing fails, clear invalid data
         localStorage.removeItem('user');
@@ -59,15 +60,15 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       });
 
       const { user: userData, token } = response.data;
-      setUser(userData);
+
       localStorage.setItem('user', JSON.stringify(userData));
       localStorage.setItem('token', token);
+      setUser(userData);
 
       return true;
     } catch (err) {
       const errorMessage = extractErrorMessage(err, 'Login failed');
       setError(errorMessage);
-      console.error(err);
       return false;
     } finally {
       setLoading(false);

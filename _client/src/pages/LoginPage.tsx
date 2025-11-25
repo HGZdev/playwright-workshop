@@ -12,13 +12,11 @@ export const LoginPage: React.FC = () => {
     e.preventDefault();
 
     const success = await login(username, password);
-    console.log('Login result:', { success, user });
 
     if (success) {
       if (user?.role === 'admin') {
         navigate('/admin');
       } else {
-        console.log('Navigating to dashboard');
         navigate('/dashboard');
       }
     }

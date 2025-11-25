@@ -1,12 +1,16 @@
 import { test, expect } from '@playwright/test';
+import { CLIENT_INPUT_1 } from './mocks/users.mock';
+
+const { username, password } = CLIENT_INPUT_1;
 
 test.describe('Transactions Flow', () => {
   test.beforeEach(async ({ page }) => {
     // Login first
     await page.goto('/login');
-    await page.getByTestId('login-input').fill('client1');
-    await page.getByTestId('password-input').fill('client1');
+    await page.getByTestId('login-input').fill(username);
+    await page.getByTestId('password-input').fill(password);
     await page.getByTestId('login-button').click();
+
     await expect(page).toHaveURL('/dashboard');
   });
 
@@ -21,7 +25,7 @@ test.describe('Transactions Flow', () => {
 
     // Go to transfer page
     await page.getByRole('button', { name: 'Make Transfer' }).click();
-    await expect(page).toHaveURL('/transfer');
+    await expect(page).toHaveURL('/send-money');
 
     await page.getByRole('textbox').first().fill('Janusz');
     await page.getByRole('textbox').nth(1).fill('Zwrot');
@@ -29,9 +33,12 @@ test.describe('Transactions Flow', () => {
 
     await page.getByRole('button', { name: 'Send Transfer' }).click();
 
+    await page.waitForTimeout(2000);
+
     // Should redirect to dashboard
     await expect(page).toHaveURL('/dashboard');
-    await page.getByText('Make TransferRecipient').click();
+
+    await page.getByText('Make Transfer').click();
     await page.getByRole('button', { name: 'Send Transfer' }).click();
 
     await page.getByRole('button', { name: 'Cancel' }).click();
@@ -51,7 +58,7 @@ test.describe('Transactions Flow', () => {
   test('should show error with invalid amount', async ({ page }) => {
     // Go to transfer page
     await page.getByRole('button', { name: 'Make Transfer' }).click();
-    await expect(page).toHaveURL('/transfer');
+    await expect(page).toHaveURL('/send-money');
 
     // Fill transfer form with invalid amount
     await page.getByLabel('Recipient Name').fill('Janusz');
@@ -66,7 +73,7 @@ test.describe('Transactions Flow', () => {
   test('should show error with insufficient funds', async ({ page }) => {
     // Go to transfer page
     await page.getByRole('button', { name: 'Make Transfer' }).click();
-    await expect(page).toHaveURL('/transfer');
+    await expect(page).toHaveURL('/send-money');
 
     // Fill transfer form with insufficient funds
     await page.getByLabel('Recipient Name').fill('Janusz');
