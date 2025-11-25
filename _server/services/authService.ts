@@ -1,8 +1,10 @@
+import { randomInt } from 'crypto';
 import { db } from '../database/database.js';
 import { randomDelay } from '../utils/delay.js';
+import { User } from '../database/types.js';
 
 export class AuthService {
-  async login(username: string, password: string) {
+  async login(username: User['username'], password: User['password']) {
     await randomDelay(500, 1000); // Simulate network delay
     const user = db.users.find((u) => u.username === username && u.password === password);
 
@@ -22,13 +24,13 @@ export class AuthService {
 
   async register(username: string, password: string, name: string) {
     await randomDelay(500, 1000);
-    const existingUser = db.users.find((u) => u.username === username);
-    if (existingUser) {
+    const exists = await this.userExists(username);
+    if (exists) {
       throw new Error('Username already exists');
     }
 
     const newUser = {
-      id: Math.random().toString(36).substr(2, 9),
+      id: randomInt(1, 1000).toString(),
       username,
       password,
       name,
@@ -50,6 +52,13 @@ export class AuthService {
       token,
       user: userData,
     };
+  }
+
+  async userExists(username: string) {
+    await randomDelay(500, 1000);
+    const user = db.users.find((u) => u.username === username);
+
+    return !!user;
   }
 }
 

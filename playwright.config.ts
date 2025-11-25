@@ -38,9 +38,9 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'transfer',
+      name: 'transactions',
       dependencies: ['login'],
-      testMatch: 'transfer.spec.ts',
+      testMatch: 'transactions.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
     {

@@ -1,11 +1,24 @@
 import { db } from '../database/database.js';
-import { Transaction } from '../database/initalData.js';
+import { Account, Transaction } from '../database/types.js';
 import { randomDelay } from '../utils/delay.js';
 
 export class AccountService {
   async getBalance() {
     await randomDelay(300, 1000);
-    return db.balance;
+    const transactions = await this.getTransactions();
+    return transactions.reduce((acc, transaction) => acc + transaction.amount, 0);
+  }
+
+  async createAccount() {
+    await randomDelay(300, 1000);
+    const newAccount: Account = {
+      id: Date.now(),
+      transactionIds: [],
+    };
+    db.accounts.push(newAccount);
+
+    await db.save();
+    return newAccount;
   }
 
   async getTransactions() {
@@ -13,33 +26,35 @@ export class AccountService {
     return db.transactions;
   }
 
-  async makeTransfer(recipient: string, title: string, amount: number) {
+  async makeTransfer(
+    recipient: string,
+    title: string,
+    amount: number,
+    type: 'incoming' | 'outgoing',
+  ) {
     await randomDelay(800, 1000); // Longer delay for transaction processing
 
-    if (amount <= 0) {
+    if (type === 'outgoing' && amount <= 0) {
       throw new Error('Invalid amount');
     }
 
-    if (amount > db.balance) {
-      throw new Error('Insufficient funds');
+    if (type === 'incoming' && amount <= 0) {
+      throw new Error('Invalid amount');
     }
 
-    db.balance -= amount;
-
     const newTransaction: Transaction = {
-      id: Date.now().toString(),
+      id: Date.now(),
       date: new Date().toISOString().split('T')[0],
       title: `Przelew do: ${recipient} - ${title}`,
-      amount: -amount,
-      type: 'outgoing',
+      amount: type === 'outgoing' ? -amount : amount,
+      type: type,
     };
 
-    db.addTransaction(newTransaction);
-    await db.save(); // Persist changes
+    db.transactions.push(newTransaction);
+    await db.save();
 
     return {
       success: true,
-      balance: db.balance,
       transaction: newTransaction,
     };
   }

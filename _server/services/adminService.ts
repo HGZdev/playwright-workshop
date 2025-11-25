@@ -1,5 +1,5 @@
 import { db } from '../database/database.js';
-import { User } from '../database/initalData.js';
+import { User } from '../database/types.js';
 import { randomDelay } from '../utils/delay.js';
 
 export class AdminService {
@@ -8,12 +8,12 @@ export class AdminService {
     return db.users;
   }
 
-  async updateUser(id: string, updates: Partial<User>) {
+  async updateUser(id: User['id'], updates: Partial<User>) {
     await randomDelay(200, 1000);
     return db.updateUser(id, updates);
   }
 
-  async deleteUser(id: string) {
+  async deleteUser(id: User['id']) {
     await randomDelay(200, 1000);
     return db.deleteUser(id);
   }

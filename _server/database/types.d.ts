@@ -1,21 +1,32 @@
-export interface User {
-  id: string;
+export type User = UserInput & {
+  id: number;
+};
+
+export interface UserInput {
   username: string;
-  password: string; // In real app, hash this!
+  password: string;
   name: string;
   role: 'admin' | 'client';
   accountId: Account['id'];
-  account?: Account;
 }
 
-export interface Account {
-  id: string;
+export type Account = AccountInput & {
+  id: number;
+};
+
+export interface AccountInput {
   transactionIds?: Transaction['id'][];
 }
 
-export interface Transaction {
-  id: string;
+export type Transaction = TransactionInput & {
+  id: number;
   date: string;
+  title: string;
+  amount: number;
+  type: 'incoming' | 'outgoing';
+};
+
+export interface TransactionInput {
   title: string;
   amount: number;
   type: 'incoming' | 'outgoing';

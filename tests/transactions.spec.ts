@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Transfer Flow', () => {
+test.describe('Transactions Flow', () => {
   test.beforeEach(async ({ page }) => {
     // Login first
     await page.goto('/login');
-    await page.getByTestId('login-input').fill('user1');
-    await page.getByTestId('password-input').fill('password');
+    await page.getByTestId('login-input').fill('client1');
+    await page.getByTestId('password-input').fill('client1');
     await page.getByTestId('login-button').click();
     await expect(page).toHaveURL('/dashboard');
   });
@@ -22,16 +22,19 @@ test.describe('Transfer Flow', () => {
     // Go to transfer page
     await page.getByRole('button', { name: 'Make Transfer' }).click();
     await expect(page).toHaveURL('/transfer');
-    await page.goto('chrome-error://chromewebdata/');
-    // Fill transfer form
-    await page.getByLabel('Recipient Name').fill('Janusz');
-    await page.getByLabel('Title').fill('Zwrot');
-    await page.getByLabel('Amount').fill('100');
+
+    await page.getByRole('textbox').first().fill('Janusz');
+    await page.getByRole('textbox').nth(1).fill('Zwrot');
+    await page.getByRole('spinbutton').fill('100');
+
     await page.getByRole('button', { name: 'Send Transfer' }).click();
 
     // Should redirect to dashboard
     await expect(page).toHaveURL('/dashboard');
+    await page.getByText('Make TransferRecipient').click();
+    await page.getByRole('button', { name: 'Send Transfer' }).click();
 
+    await page.getByRole('button', { name: 'Cancel' }).click();
     // Check new balance
     const balanceLocator = page
       .locator('.card')

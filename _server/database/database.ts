@@ -33,12 +33,18 @@ export class Database {
   get users() {
     return this.data.users;
   }
+
+  get accounts() {
+    return this.data.accounts;
+  }
+
   get transactions() {
     return this.data.transactions;
   }
 
-  addTransaction(transaction: Transaction) {
+  async addTransaction(transaction: Transaction) {
     this.data.transactions.unshift(transaction);
+    await this.save();
   }
 
   async addUser(user: User) {
@@ -46,7 +52,7 @@ export class Database {
     await this.save();
   }
 
-  async updateUser(id: string, updates: Partial<User>) {
+  async updateUser(id: User['id'], updates: Partial<User>) {
     const userIndex = this.data.users.findIndex((u) => u.id === id);
     if (userIndex !== -1) {
       this.data.users[userIndex] = { ...this.data.users[userIndex], ...updates };
@@ -56,10 +62,11 @@ export class Database {
     return null;
   }
 
-  async deleteUser(id: string) {
-    const initialLength = this.data.users.length;
-    this.data.users = this.data.users.filter((u) => u.id !== id);
-    if (this.data.users.length !== initialLength) {
+  async deleteUser(id: User['id']) {
+    const userIndex = this.data.users.findIndex((u) => u.id === id);
+
+    if (userIndex !== -1) {
+      this.data.users.splice(userIndex, 1);
       await this.save();
       return true;
     }
