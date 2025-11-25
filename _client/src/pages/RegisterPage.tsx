@@ -1,32 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
-import './RegisterPage.css';
+import { useRegister } from '../hooks/useAuth';
 
 export const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { register, error } = useRegister();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
 
-    try {
-      await axios.post('/api/register', {
-        username,
-        password,
-        name,
-      });
+    const response = await register(username, password, name);
+    if (response) {
       navigate('/login');
-    } catch (err: unknown) {
-      if (axios.isAxiosError(err) && err.response?.data?.error) {
-        setError(err.response.data.error);
-      } else {
-        setError('Registration failed');
-      }
     }
   };
 

@@ -1,27 +1,17 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { User, Transaction } from './mockData.js';
+import { User, Transaction, Account } from './types.js';
+import { INITIAL_DB } from './initalData.js';
 
-const DB_PATH = path.join(process.cwd(), 'db.json');
+const isTestEnv = process.env.NODE_ENV === 'test';
+const DB_FILENAME = isTestEnv ? 'testing.db' : 'production.db';
+const DB_PATH = path.join(process.cwd(), 'data', DB_FILENAME);
 
 export interface DatabaseSchema {
   users: User[];
-  balance: number;
   transactions: Transaction[];
+  accounts: Account[];
 }
-
-const INITIAL_DB: DatabaseSchema = {
-  users: [
-    { id: '1', username: 'user1', password: 'user1', name: 'Jan Kowalski', role: 'client' },
-    { id: '2', username: 'user2', password: 'user2', name: 'Irena Nowak', role: 'client' },
-    { id: '3', username: 'admin', password: 'admin', name: 'Admin User', role: 'admin' },
-  ],
-  balance: 1000.0,
-  transactions: [
-    { id: '1', date: '2023-10-26', title: 'Wypłata', amount: 5000, type: 'incoming' },
-    { id: '2', date: '2023-10-27', title: 'Zakupy', amount: -150, type: 'outgoing' },
-  ],
-};
 
 export class Database {
   private data: DatabaseSchema = INITIAL_DB;
@@ -43,15 +33,8 @@ export class Database {
   get users() {
     return this.data.users;
   }
-  get balance() {
-    return this.data.balance;
-  }
   get transactions() {
     return this.data.transactions;
-  }
-
-  set balance(value: number) {
-    this.data.balance = value;
   }
 
   addTransaction(transaction: Transaction) {
@@ -81,6 +64,11 @@ export class Database {
       return true;
     }
     return false;
+  }
+
+  async reset() {
+    this.data = { ...INITIAL_DB };
+    await this.save();
   }
 }
 

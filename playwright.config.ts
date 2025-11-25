@@ -16,34 +16,37 @@ export default defineConfig({
   projects: [
     {
       name: 'setup',
-      testMatch: /.*\.setup\.ts/,
+      testMatch: 'global.setup.ts',
+      use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'smoke',
+      dependencies: ['setup'],
       testMatch: 'smoke.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'login',
-      testMatch: 'login.spec.ts',
-      dependencies: ['smoke'],
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'transfer',
-      testMatch: 'transfer.spec.ts',
-      dependencies: ['login'],
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
       name: 'register',
+      dependencies: ['smoke'],
       testMatch: 'register.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
     {
+      name: 'login',
+      dependencies: ['smoke', 'register'],
+      testMatch: 'login.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'transfer',
+      dependencies: ['login'],
+      testMatch: 'transfer.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
       name: 'admin',
+      dependencies: ['login'],
       testMatch: 'admin.spec.ts',
-      dependencies: ['login'], // Admin tests require login, but we handle it in the test. However, keeping dependencies might be good for order.
       use: { ...devices['Desktop Chrome'] },
     },
   ],
@@ -51,7 +54,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: 'npm run dev:server',
+      command: 'NODE_ENV=test npm run dev:server',
       port: 3001,
       reuseExistingServer: true,
     },

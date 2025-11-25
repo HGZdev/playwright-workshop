@@ -1,5 +1,5 @@
-import { db } from '../data/database.js';
-import { User } from '../data/mockData.js';
+import { db } from '../database/database.js';
+import { User } from '../database/initalData.js';
 import { randomDelay } from '../utils/delay.js';
 
 export class AdminService {

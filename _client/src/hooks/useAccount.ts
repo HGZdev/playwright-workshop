@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import apiClient from '../api/apiClient';
+import { extractErrorMessage } from '../utils/apiErrorHandler';
 
 interface Transaction {
   id: string;
@@ -21,11 +22,7 @@ export const useGetBalance = () => {
       const response = await apiClient.get('/api/account/balance');
       setBalance(response.data.balance);
     } catch (err: unknown) {
-      const errorMessage =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
-          : null;
-      setError(errorMessage || 'Failed to fetch balance');
+      setError(extractErrorMessage(err, 'Failed to fetch balance'));
     } finally {
       setLoading(false);
     }
@@ -50,11 +47,7 @@ export const useGetTransactions = () => {
       const response = await apiClient.get('/api/account/transactions');
       setTransactions(response.data);
     } catch (err: unknown) {
-      const errorMessage =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
-          : null;
-      setError(errorMessage || 'Failed to fetch transactions');
+      setError(extractErrorMessage(err, 'Failed to fetch transactions'));
     } finally {
       setLoading(false);
     }
@@ -82,11 +75,7 @@ export const useTransfer = () => {
       });
       return true;
     } catch (err: unknown) {
-      const errorMessage =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
-          : null;
-      setError(errorMessage || 'Transfer failed');
+      setError(extractErrorMessage(err, 'Transfer failed'));
       return false;
     } finally {
       setLoading(false);

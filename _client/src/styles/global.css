@@ -64,13 +64,13 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
   --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(187, 134, 252, 0.3);
-  --shadow-glow-secondary: 0 0 20px rgba(3, 218, 198, 0.3);
+  --shadow-glow: 0 0 15px rgba(187, 134, 252, 0.15);
+  --shadow-glow-secondary: 0 0 15px rgba(3, 218, 198, 0.15);
   
   /* Transitions */
-  --transition-fast: 150ms ease-in-out;
-  --transition-base: 250ms ease-in-out;
-  --transition-slow: 400ms ease-in-out;
+  --transition-fast: 300ms ease-in-out;
+  --transition-base: 500ms ease-in-out;
+  --transition-slow: 700ms ease-in-out;
   
   /* Z-index */
   --z-dropdown: 1000;
@@ -223,12 +223,7 @@ button::before {
 }
 
 button:hover::before {
-  opacity: 1;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  opacity: 0.5;
 }
 
 button:active {
@@ -255,9 +250,7 @@ button.secondary::before {
 
 button[type="button"]:hover,
 button.secondary:hover {
-  color: #000;
   border-color: var(--primary-hover);
-  box-shadow: var(--shadow-glow);
 }
 
 button:disabled {
@@ -290,12 +283,6 @@ button.danger::before {
   border: 1px solid var(--border);
   box-shadow: var(--shadow-lg);
   transition: all var(--transition-base);
-}
-
-.card:hover {
-  background: var(--card-bg-hover);
-  border-color: var(--border-light);
-  box-shadow: var(--shadow-xl);
 }
 
 /* ===== Layout Utilities ===== */
@@ -377,9 +364,7 @@ button.danger::before {
 }
 
 .transaction-item:hover {
-  padding-left: var(--spacing-sm);
-  background: rgba(187, 134, 252, 0.05);
-  border-radius: var(--radius-sm);
+  background: rgba(187, 134, 252, 0.02);
 }
 
 .amount-incoming {
@@ -419,7 +404,7 @@ button.danger::before {
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(5px);
   }
   to {
     opacity: 1;
@@ -430,7 +415,7 @@ button.danger::before {
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateX(-20px);
+    transform: translateX(-10px);
   }
   to {
     opacity: 1;
@@ -443,7 +428,7 @@ button.danger::before {
     opacity: 1;
   }
   50% {
-    opacity: 0.8;
+    opacity: 0.95;
   }
 }
 
@@ -455,7 +440,285 @@ button.danger::before {
   animation: slideIn var(--transition-base) ease-out;
 }
 
+/* ===== Component-Specific Styles ===== */
+
+/* Login & Register Pages */
+.login-page,
+.register-page,
+.edit-user-page {
+  width: 100%;
+  max-width: 420px;
+}
+
+.login-page h1,
+.register-page h1,
+.edit-user-page h1 {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.login-form,
+.register-form,
+.edit-user-form,
+.transfer-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border);
+}
+
+.form-footer a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: var(--font-size-sm);
+}
+
+.button-group {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}
+
+.button-group button {
+  flex: 1;
+}
+
+.edit-user-form .button-group {
+  flex-direction: column;
+}
+
+/* Dashboard Page */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+}
+
+.dashboard-header h1 {
+  margin: 0;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
+.user-name {
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.balance-card {
+  margin-bottom: var(--spacing-2xl);
+  text-align: center;
+  background: linear-gradient(135deg, rgba(187, 134, 252, 0.1) 0%, rgba(3, 218, 198, 0.1) 100%);
+  border: 1px solid rgba(187, 134, 252, 0.3);
+}
+
+.balance-card h2 {
+  margin-top: 0;
+  margin-bottom: var(--spacing-lg);
+  font-size: var(--font-size-xl);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.balance-amount {
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--secondary);
+  text-shadow: var(--shadow-glow-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.actions-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.transactions-card {
+  animation: fadeIn var(--transition-slow) ease-out;
+}
+
+.transactions-card h2 {
+  margin-top: 0;
+  margin-bottom: var(--spacing-xl);
+}
+
+.transactions-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.transaction-details {
+  flex: 1;
+}
+
+.transaction-title {
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-primary);
+}
+
+.transaction-date {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+.empty-state {
+  color: var(--text-muted);
+  text-align: center;
+  padding: var(--spacing-2xl);
+  font-style: italic;
+}
+
+/* Admin Dashboard Page */
+.admin-container {
+  padding: var(--spacing-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2xl);
+  padding-bottom: var(--spacing-lg);
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-header h1 {
+  margin: 0;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+.admin-table thead {
+  background: linear-gradient(135deg, rgba(187, 134, 252, 0.2) 0%, rgba(3, 218, 198, 0.2) 100%);
+}
+
+.admin-table th {
+  padding: var(--spacing-lg);
+  text-align: left;
+  font-weight: var(--font-weight-semibold);
+  color: var(--primary);
+  border-bottom: 2px solid var(--border-light);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.admin-table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: all var(--transition-fast);
+}
+
+.admin-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.admin-table tbody tr:hover {
+  background: rgba(187, 134, 252, 0.02);
+}
+
+.admin-table td {
+  padding: var(--spacing-lg);
+  color: var(--text-primary);
+}
+
+.admin-table td:first-child {
+  color: var(--text-muted);
+  font-family: 'Courier New', monospace;
+  font-size: var(--font-size-sm);
+}
+
+.table-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.table-actions button {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+}
+
+.role-badge {
+  display: inline-block;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.role-badge.admin {
+  background: rgba(187, 134, 252, 0.2);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.role-badge.client {
+  background: rgba(3, 218, 198, 0.2);
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
+}
+
+/* Transfer Page */
+.transfer-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.transfer-card h1 {
+  margin-top: 0;
+  margin-bottom: var(--spacing-xl);
+}
+
 /* ===== Responsive Design ===== */
+@media (max-width: 1024px) {
+  .admin-table {
+    font-size: var(--font-size-sm);
+  }
+  
+  .admin-table th,
+  .admin-table td {
+    padding: var(--spacing-md);
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     --font-size-3xl: 1.75rem;
@@ -472,6 +735,15 @@ button.danger::before {
   
   h1 {
     font-size: var(--font-size-2xl);
+  }
+
+  .admin-container {
+    padding: var(--spacing-md);
+  }
+  
+  .admin-table {
+    display: block;
+    overflow-x: auto;
   }
 }
 

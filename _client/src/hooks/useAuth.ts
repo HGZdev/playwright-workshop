@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import apiClient from '../api/apiClient';
+import { extractErrorMessage } from '../utils/apiErrorHandler';
 
 interface AuthResponse {
   token: string;
@@ -25,11 +26,7 @@ export const useLogin = () => {
       });
       return response.data;
     } catch (err: unknown) {
-      const errorMessage =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
-          : null;
-      setError(errorMessage || 'Login failed');
+      setError(extractErrorMessage(err, 'Login failed'));
       return null;
     } finally {
       setLoading(false);
@@ -58,11 +55,7 @@ export const useRegister = () => {
       });
       return response.data;
     } catch (err: unknown) {
-      const errorMessage =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
-          : null;
-      setError(errorMessage || 'Registration failed');
+      setError(extractErrorMessage(err, 'Registration failed'));
       return null;
     } finally {
       setLoading(false);

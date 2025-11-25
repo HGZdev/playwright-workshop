@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
+    "test": "concurrently \"NODE_ENV=test npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "tsx watch _server/server.ts",
     "dev:client": "npm run dev --prefix _client",
     "e2e": "playwright test",

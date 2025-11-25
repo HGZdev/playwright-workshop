@@ -1,36 +1,30 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './LoginPage.css';
+import { useLogin } from '../hooks/useAuth';
+import { useUser } from '../hooks/useUser';
 
 export const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { login: loginHook, error } = useLogin();
+  const { login: loginContext } = useUser();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
 
-    try {
-      const response = await axios.post('/api/login', {
-        username,
-        password,
-      });
+    const response = await loginHook(username, password);
 
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+    if (response?.token) {
+      // Use UserContext to manage auth state
+      loginContext(response.user, response.token);
 
-        if (response.data.user.role === 'admin') {
-          navigate('/admin');
-        } else {
-          navigate('/dashboard');
-        }
+      // Navigate based on role
+      if (response.user.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
       }
-    } catch {
-      setError('Invalid credentials');
     }
   };
 

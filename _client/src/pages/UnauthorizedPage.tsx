@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from '../context/UserContext';
+import { useUser } from '../hooks/useUser';
 
 export const UnauthorizedPage: React.FC = () => {
   const navigate = useNavigate();

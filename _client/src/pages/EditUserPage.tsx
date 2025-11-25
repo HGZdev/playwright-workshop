@@ -1,52 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './EditUserPage.css';
+import { useGetUsers, useUpdateUser } from '../hooks/useAdmin';
 
 export const EditUserPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [role, setRole] = useState<'admin' | 'client'>('client');
-  const [error, setError] = useState('');
+  const { users } = useGetUsers();
+  const { updateUser, error } = useUpdateUser();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get('/api/admin/users');
-        const user = response.data.find((u: { id: string }) => u.id === id);
-        if (user) {
-          setUsername(user.username);
-          setPassword(user.password);
-          setName(user.name);
-          setRole(user.role);
-        } else {
-          setError('User not found');
-        }
-      } catch {
-        setError('Failed to fetch user details');
-      }
-    };
-
-    fetchUser();
-  }, [id]);
+  const currentUser = useMemo(() => users.find((u) => u.id === id), [users, id]);
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await axios.put(`/api/admin/users/${id}`, {
-        username,
-        password,
-        name,
-        role,
-      });
+    const formData = new FormData(e.target as HTMLFormElement);
+    const success = await updateUser(id!, {
+      username: formData.get('username') as string,
+      password: formData.get('password') as string,
+      name: formData.get('name') as string,
+      role: formData.get('role') as 'admin' | 'client',
+    });
+    if (success) {
       navigate('/admin');
-    } catch {
-      setError('Failed to update user');
     }
   };
+
+  if (!currentUser) {
+    return (
+      <div className="flex-center">
+        <div className="card edit-user-page">
+          <h1>User Not Found</h1>
+          <button type="button" onClick={() => navigate('/admin')}>
+            Back to Admin
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex-center">
@@ -57,9 +46,9 @@ export const EditUserPage: React.FC = () => {
             <label htmlFor="username">Username</label>
             <input
               id="username"
+              name="username"
               type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              defaultValue={currentUser.username}
               required
             />
           </div>
@@ -67,29 +56,19 @@ export const EditUserPage: React.FC = () => {
             <label htmlFor="password">Password</label>
             <input
               id="password"
+              name="password"
               type="text"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              defaultValue={currentUser.password}
               required
             />
           </div>
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
-            <input
-              id="name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+            <input id="name" name="name" type="text" defaultValue={currentUser.name} required />
           </div>
           <div className="form-group">
             <label htmlFor="role">Role</label>
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value as 'admin' | 'client')}
-            >
+            <select id="role" name="role" defaultValue={currentUser.role}>
               <option value="client">Client</option>
               <option value="admin">Admin</option>
             </select>

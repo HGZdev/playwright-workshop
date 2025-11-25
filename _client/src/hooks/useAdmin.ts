@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import apiClient from '../api/apiClient';
+import { extractErrorMessage } from '../utils/apiErrorHandler';
 
 interface User {
   id: string;
@@ -21,11 +22,7 @@ export const useGetUsers = () => {
       const response = await apiClient.get('/api/admin/users');
       setUsers(response.data);
     } catch (err: unknown) {
-      const errorMessage =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
-          : null;
-      setError(errorMessage || 'Failed to fetch users');
+      setError(extractErrorMessage(err, 'Failed to fetch users'));
     } finally {
       setLoading(false);
     }
@@ -49,11 +46,7 @@ export const useUpdateUser = () => {
       await apiClient.put(`/api/admin/users/${id}`, data);
       return true;
     } catch (err: unknown) {
-      const errorMessage =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
-          : null;
-      setError(errorMessage || 'Failed to update user');
+      setError(extractErrorMessage(err, 'Failed to update user'));
       return false;
     } finally {
       setLoading(false);
@@ -74,11 +67,7 @@ export const useDeleteUser = () => {
       await apiClient.delete(`/api/admin/users/${id}`);
       return true;
     } catch (err: unknown) {
-      const errorMessage =
-        err && typeof err === 'object' && 'response' in err
-          ? (err as { response?: { data?: { message?: string } } }).response?.data?.message
-          : null;
-      setError(errorMessage || 'Failed to delete user');
+      setError(extractErrorMessage(err, 'Failed to delete user'));
       return false;
     } finally {
       setLoading(false);

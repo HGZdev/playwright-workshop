@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useUser } from '../context/UserContext';
+import { useUser } from '../hooks/useUser';
 
 interface AdminRouteProps {
   children: React.ReactElement;

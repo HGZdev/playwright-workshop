@@ -1,28 +1,20 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './TransferPage.css';
+import { useTransfer } from '../hooks/useAccount';
 
 export const TransferPage: React.FC = () => {
   const [recipient, setRecipient] = useState('');
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
+  const { transfer, error } = useTransfer();
 
   const handleTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
 
-    try {
-      await axios.post('/api/transfer', {
-        recipient,
-        title,
-        amount: Number(amount),
-      });
+    const success = await transfer(recipient, Number(amount), title);
+    if (success) {
       navigate('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.error || 'Transfer failed');
     }
   };
 

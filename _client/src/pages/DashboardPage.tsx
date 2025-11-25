@@ -1,41 +1,15 @@
-import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './DashboardPage.css';
-
-interface Transaction {
-  id: string;
-  date: string;
-  title: string;
-  amount: number;
-  type: 'incoming' | 'outgoing';
-}
+import { useGetBalance, useGetTransactions } from '../hooks/useAccount';
+import { useUser } from '../hooks/useUser';
 
 export const DashboardPage: React.FC = () => {
-  const [balance, setBalance] = useState<number | null>(null);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const { balance } = useGetBalance();
+  const { transactions } = useGetTransactions();
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const balanceRes = await axios.get('/api/balance');
-        setBalance(balanceRes.data.balance);
-
-        const transactionsRes = await axios.get('/api/transactions');
-        setTransactions(transactionsRes.data);
-      } catch (err) {
-        console.error('Error fetching data', err);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { user, logout } = useUser();
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    logout();
     navigate('/login');
   };
 

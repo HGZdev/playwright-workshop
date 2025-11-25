@@ -1,47 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './AdminDashboardPage.css';
-
-interface User {
-  id: string;
-  username: string;
-  password: string;
-  name: string;
-  role: 'admin' | 'client';
-}
+import { useGetUsers, useDeleteUser } from '../hooks/useAdmin';
+import { useUser } from '../hooks/useUser';
 
 export const AdminDashboardPage: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const { users, refetch } = useGetUsers();
+  const { deleteUser } = useDeleteUser();
   const navigate = useNavigate();
-
-  const fetchUsers = React.useCallback(async () => {
-    try {
-      const response = await axios.get('/api/admin/users');
-      setUsers(response.data);
-    } catch (error) {
-      console.error('Failed to fetch users', error);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchUsers();
-  }, [fetchUsers]);
+  const { logout } = useUser();
 
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
-      try {
-        await axios.delete(`/api/admin/users/${id}`);
-        fetchUsers();
-      } catch (error) {
-        console.error('Failed to delete user', error);
+      const success = await deleteUser(id);
+      if (success) {
+        refetch();
       }
     }
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    logout();
     navigate('/login');
   };
 

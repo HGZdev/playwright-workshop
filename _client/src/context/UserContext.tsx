@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import type { ReactNode } from 'react';
 
-interface User {
+export interface User {
   id: string;
   username: string;
   name: string;
   role: 'admin' | 'client';
 }
 
-interface UserContextType {
+export interface UserContextType {
   user: User | null;
   login: (userData: User, token: string) => void;
   logout: () => void;
@@ -16,9 +16,9 @@ interface UserContextType {
   isAdmin: boolean;
 }
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType | undefined>(undefined);
 
-interface UserProviderProps {
+export interface UserProviderProps {
   children: ReactNode;
 }
 
@@ -61,12 +61,4 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
       {children}
     </UserContext.Provider>
   );
-};
-
-export const useUser = (): UserContextType => {
-  const context = useContext(UserContext);
-  if (context === undefined) {
-    throw new Error('useUser must be used within a UserProvider');
-  }
-  return context;
 };
