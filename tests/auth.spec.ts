@@ -1,11 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { CLIENT_INPUT_1 } from './mocks/users.mock';
+import { generateUserInput } from './mocks/users.mock';
+import UserAuthPage from './page-objects/UserAuthPage';
 
-const user1 = {
-  ...CLIENT_INPUT_1,
-  email: new Date().getTime() + '_' + CLIENT_INPUT_1.email,
-};
-console.log({ user1 });
+const user1 = generateUserInput('Emma Watson', 'client');
 
 test.describe('Registration Flow', () => {
   test.beforeEach(async ({ page }) => {
@@ -41,6 +38,36 @@ test.describe('Registration Flow', () => {
     await page.getByRole('textbox', { name: 'Full Name' }).fill(user1.name);
     await page.getByRole('button', { name: 'Register' }).click();
 
-    await expect(page.locator('.error-text')).toHaveText('Email already exists');
+    await expect(page.locator('.error-text')).toHaveText(
+      'An account with this email already exists. Please use a different email or try logging in.',
+    );
+  });
+});
+
+const user2 = generateUserInput('Mala Mi', 'client');
+const user3 = generateUserInput('Pamela', 'client');
+
+test.describe('Registration Flow with Page Object', () => {
+  let userAuthPage: UserAuthPage;
+  test.beforeEach(async ({ page }) => {
+    userAuthPage = new UserAuthPage(page);
+    await page.goto('/');
+  });
+
+  test('should register a new user successfully', async ({ page }) => {
+    await userAuthPage.registerUser(user2);
+    await userAuthPage.loginUser(user2);
+  });
+
+  test('should show error if email already exists', async ({ page }) => {
+    await userAuthPage.registerUser(user3);
+    await userAuthPage.loginUser(user3);
+
+    await userAuthPage.goToRegistrationPage();
+    await userAuthPage.fillUserRegistrationForm(user3);
+
+    await userAuthPage.hasError(
+      'An account with this email already exists. Please use a different email or try logging in.',
+    );
   });
 });

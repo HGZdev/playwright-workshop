@@ -1,9 +1,9 @@
 export type User = UserInput & {
   id: number;
+  accountId: Account['id'];
 };
 
 export interface UserInput {
-  accountId: Account['id'];
   name: string;
   password: string;
   role: 'admin' | 'client';
