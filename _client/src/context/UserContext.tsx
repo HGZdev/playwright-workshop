@@ -11,8 +11,8 @@ interface AuthResponse {
 
 export interface UserContextType {
   user: User | null;
-  login: (username: string, password: string) => Promise<boolean>;
-  register: (username: string, password: string, name: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<boolean>;
+  register: (email: string, password: string, name: string) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
   isAdmin: boolean;
@@ -50,12 +50,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const login = async (username: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
     try {
       const response = await apiClient.post<AuthResponse>('/api/login', {
-        username,
+        email,
         password,
       });
 
@@ -75,12 +75,12 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }
   };
 
-  const register = async (username: string, password: string, name: string): Promise<boolean> => {
+  const register = async (email: string, password: string, name: string): Promise<boolean> => {
     setLoading(true);
     setError(null);
     try {
       await apiClient.post<AuthResponse>('/api/register', {
-        username,
+        email,
         password,
         name,
       });

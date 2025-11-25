@@ -39,16 +39,21 @@ export const AdminDashboardPage: React.FC = () => {
     <div className="admin-container">
       <div className="admin-header">
         <h1>Admin Dashboard</h1>
-        <button onClick={handleLogout} aria-label="Logout from admin dashboard">
-          Logout
-        </button>
+        <div className="admin-header-buttons">
+          <button onClick={() => navigate('/dashboard')} aria-label="Go to dashboard">
+            Dashboard
+          </button>
+          <button onClick={handleLogout} type="button" aria-label="Logout from admin dashboard">
+            Logout
+          </button>
+        </div>
       </div>
       <table className="admin-table">
         <caption className="sr-only">User Management Table</caption>
         <thead>
           <tr>
             <th scope="col">ID</th>
-            <th scope="col">Username</th>
+            <th scope="col">Email</th>
             <th scope="col">Name</th>
             <th scope="col">Role</th>
             <th scope="col">Password</th>
@@ -59,7 +64,7 @@ export const AdminDashboardPage: React.FC = () => {
           {users.map((user) => (
             <tr key={user.id}>
               <td>{user.id}</td>
-              <td>{user.username}</td>
+              <td>{user.email}</td>
               <td>{user.name}</td>
               <td>
                 <span className={`role-badge ${user.role}`}>{user.role}</span>
@@ -69,7 +74,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <div className="table-actions">
                   <button
                     onClick={() => navigate(`/admin/user/${user.id}`)}
-                    aria-label={`Edit user ${user.username}`}
+                    aria-label={`Edit user ${user.email}`}
                   >
                     Edit
                   </button>
@@ -80,7 +85,7 @@ export const AdminDashboardPage: React.FC = () => {
                     aria-label={
                       sessionUser?.id === user.id
                         ? 'Cannot delete your own account'
-                        : `Delete user ${user.username}`
+                        : `Delete user ${user.email}`
                     }
                   >
                     Delete
@@ -95,7 +100,7 @@ export const AdminDashboardPage: React.FC = () => {
       <ConfirmModal
         isOpen={!!userToDelete}
         title="Delete User"
-        message={`Are you sure you want to delete user "${userToDelete?.username}"? This action cannot be undone.`}
+        message={`Are you sure you want to delete user "${userToDelete?.email}"? This action cannot be undone.`}
         confirmText="Delete"
         cancelText="Cancel"
         onConfirm={handleConfirmDelete}

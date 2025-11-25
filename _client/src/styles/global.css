@@ -625,6 +625,11 @@ button.danger::before {
   border-bottom: 1px solid var(--border);
 }
 
+.admin-header-buttons {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
 .admin-header h1 {
   margin: 0;
 }

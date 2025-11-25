@@ -39,8 +39,8 @@ export class Database {
     return this.data.users.find((user) => user.id === id);
   }
 
-  async getUserByUsername(username: User['username']) {
-    return this.data.users.find((user) => user.username === username);
+  async getUserByEmail(email: User['email']) {
+    return this.data.users.find((user) => user.email === email);
   }
 
   async getUsers() {

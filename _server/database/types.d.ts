@@ -7,7 +7,7 @@ export interface UserInput {
   name: string;
   password: string;
   role: 'admin' | 'client';
-  username: string;
+  email: string;
 }
 
 export type Account = AccountInput & {

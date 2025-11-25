@@ -1,18 +1,40 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
+import { getEmailError, getPasswordError } from '../utils/validation';
 
 export const RegisterPage: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { register, error } = useUser();
+
+  const handleEmailBlur = () => {
+    setEmailError(getEmailError(email));
+  };
+
+  const handlePasswordBlur = () => {
+    setPasswordError(getPasswordError(password));
+  };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const success = await register(username, password, name);
+    // Validate before submitting
+    const emailErr = getEmailError(email);
+    const passwordErr = getPasswordError(password);
+
+    setEmailError(emailErr);
+    setPasswordError(passwordErr);
+
+    if (emailErr || passwordErr) {
+      return;
+    }
+
+    const success = await register(email, password, name);
     if (success) {
       navigate('/login');
     }
@@ -28,17 +50,28 @@ export const RegisterPage: React.FC = () => {
           aria-label="Register a new account"
         >
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="email">Email</label>
             <input
-              id="username"
-              name="username"
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              autoComplete="username"
+              id="email"
+              name="email"
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (emailError) setEmailError(null);
+              }}
+              onBlur={handleEmailBlur}
+              autoComplete="email"
+              aria-invalid={!!emailError}
+              aria-describedby={emailError ? 'email-error' : undefined}
               required
             />
+            {emailError && (
+              <div id="email-error" className="error-text" role="alert">
+                {emailError}
+              </div>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
@@ -48,10 +81,21 @@ export const RegisterPage: React.FC = () => {
               type="password"
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (passwordError) setPasswordError(null);
+              }}
+              onBlur={handlePasswordBlur}
               autoComplete="new-password"
+              aria-invalid={!!passwordError}
+              aria-describedby={passwordError ? 'password-error' : undefined}
               required
             />
+            {passwordError && (
+              <div id="password-error" className="error-text" role="alert">
+                {passwordError}
+              </div>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
@@ -63,6 +107,7 @@ export const RegisterPage: React.FC = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               autoComplete="name"
+              aria-required="true"
               required
             />
           </div>

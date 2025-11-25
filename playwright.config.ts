@@ -33,7 +33,7 @@ export default defineConfig({
     },
     {
       name: 'login',
-      dependencies: ['smoke'],
+      dependencies: ['smoke', 'register'],
       testMatch: 'login.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },

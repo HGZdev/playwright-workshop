@@ -3,9 +3,9 @@ import { randomDelay } from '../utils/delay.js';
 import { Account, User } from '../database/types.js';
 
 export class AuthService {
-  async login(username: User['username'], password: User['password']) {
+  async login(email: User['email'], password: User['password']) {
     await randomDelay(500, 1000); // Simulate network delay
-    const user = await db.getUserByUsername(username);
+    const user = await db.getUserByEmail(email);
 
     if (!user || user.password !== password) {
       return null;
@@ -17,7 +17,7 @@ export class AuthService {
       accountId: user.accountId,
       name: user.name,
       role: user.role,
-      username: user.username,
+      email: user.email,
     };
     const token = Buffer.from(JSON.stringify(userData)).toString('base64');
 
@@ -27,11 +27,11 @@ export class AuthService {
     };
   }
 
-  async register(username: string, password: string, name: string) {
+  async register(email: string, password: string, name: string) {
     await randomDelay(500, 1000);
-    const exists = await this.userExists(username);
+    const exists = await this.userExists(email);
     if (exists) {
-      throw new Error('Username already exists');
+      throw new Error('Email already exists');
     }
 
     const newAccount: Account = { id: Date.now(), transactions: [] };
@@ -46,7 +46,7 @@ export class AuthService {
     const newUser = {
       id: Date.now(),
       accountId,
-      username,
+      email,
       password,
       name,
       role: 'client' as const,
@@ -59,7 +59,7 @@ export class AuthService {
       id: newUser.id,
       accountId: newUser.accountId,
       name: newUser.name,
-      username: newUser.username,
+      email: newUser.email,
       role: newUser.role,
     };
     const token = Buffer.from(JSON.stringify(userData)).toString('base64');
@@ -70,10 +70,10 @@ export class AuthService {
     };
   }
 
-  async userExists(username: string) {
+  async userExists(email: string) {
     await randomDelay(500, 1000);
     const users = await db.getUsers();
-    const user = users.find((u) => u.username === username);
+    const user = users.find((u) => u.email === email);
 
     return !!user;
   }

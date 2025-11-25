@@ -9,7 +9,7 @@ export const ACCOUNTS: Account[] = [
 export const USERS: User[] = [
   {
     id: 1,
-    username: 'admin',
+    email: 'admin@example.com',
     password: 'admin',
     name: 'Ania Admin',
     role: 'admin',
@@ -17,7 +17,7 @@ export const USERS: User[] = [
   },
   {
     id: 2,
-    username: 'client1',
+    email: 'client1@example.com',
     password: 'client1',
     name: 'Janina Kowalska',
     role: 'client',

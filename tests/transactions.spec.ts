@@ -1,13 +1,13 @@
 import { test, expect } from '@playwright/test';
 import { CLIENT_INPUT_1 } from './mocks/users.mock';
 
-const { username, password } = CLIENT_INPUT_1;
+const { email, password } = CLIENT_INPUT_1;
 
-test.describe('Transactions Flow', () => {
+test.describe('Transaction Flow', () => {
   test.beforeEach(async ({ page }) => {
     // Login first
     await page.goto('/login');
-    await page.getByTestId('login-input').fill(username);
+    await page.getByTestId('login-input').fill(email);
     await page.getByTestId('password-input').fill(password);
     await page.getByTestId('login-button').click();
 

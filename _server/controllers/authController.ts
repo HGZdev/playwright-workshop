@@ -3,10 +3,10 @@ import { authService } from '../services/authService.js';
 
 export class AuthController {
   async login(req: Request, res: Response) {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
     try {
-      const result = await authService.login(username, password);
+      const result = await authService.login(email, password);
       if (result) {
         res.json(result);
       } else {
@@ -18,10 +18,10 @@ export class AuthController {
   }
 
   async register(req: Request, res: Response) {
-    const { username, password, name } = req.body;
+    const { email, password, name } = req.body;
 
     try {
-      const result = await authService.register(username, password, name);
+      const result = await authService.register(email, password, name);
       res.status(201).json(result);
     } catch (error: unknown) {
       if (error instanceof Error && error.message === 'Username already exists') {

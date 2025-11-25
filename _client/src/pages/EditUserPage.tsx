@@ -18,7 +18,7 @@ export const EditUserPage: React.FC = () => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
     const success = await updateUser(Number(id), {
-      username: formData.get('username') as string,
+      email: formData.get('email') as string,
       password: formData.get('password') as string,
       name: formData.get('name') as string,
       role: formData.get('role') as 'admin' | 'client',
@@ -60,13 +60,14 @@ export const EditUserPage: React.FC = () => {
         <h1>Edit User</h1>
         <form onSubmit={handleUpdate} className="edit-user-form" aria-label="Edit user information">
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="email">Email</label>
             <input
-              id="username"
-              name="username"
-              type="text"
-              defaultValue={currentUser.username}
-              autoComplete="username"
+              id="email"
+              name="email"
+              type="email"
+              defaultValue={currentUser.email}
+              autoComplete="email"
+              aria-required="true"
               required
             />
           </div>

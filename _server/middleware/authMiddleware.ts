@@ -1,12 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
+import { User } from '../database/types.js';
 
 export interface AuthRequest extends Request {
-  user?: {
-    id: string;
-    username: string;
-    name: string;
-    role: 'admin' | 'client';
-  };
+  user?: User;
 }
 
 export const authenticateToken = (req: AuthRequest, res: Response, next: NextFunction) => {

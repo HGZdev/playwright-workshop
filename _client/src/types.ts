@@ -3,7 +3,7 @@ export type User = UserInput & {
 };
 
 export interface UserInput {
-  username: string;
+  email: string;
   password: string;
   name: string;
   role: 'admin' | 'client';
