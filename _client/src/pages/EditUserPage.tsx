@@ -1,12 +1,16 @@
 import React, { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUsers, useUpdateUser } from '../hooks/useAdmin';
+import { useUser } from '../hooks/useUser';
 
 export const EditUserPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-  const { users } = useUsers();
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const { user: sessionUser, loading: sessionUserLoading } = useUser();
+  const { users, loading: usersLoading } = useUsers();
   const { updateUser, error } = useUpdateUser();
+
+  const isLoading = sessionUserLoading || usersLoading;
 
   const currentUser = useMemo(() => users.find((u) => u.id === Number(id)), [users, id]);
 
@@ -23,6 +27,16 @@ export const EditUserPage: React.FC = () => {
       navigate('/admin');
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex-center">
+        <div className="card edit-user-page">
+          <h1>Loading...</h1>
+        </div>
+      </div>
+    );
+  }
 
   if (!currentUser) {
     return (
@@ -68,7 +82,12 @@ export const EditUserPage: React.FC = () => {
           </div>
           <div className="form-group">
             <label htmlFor="role">Role</label>
-            <select id="role" name="role" defaultValue={currentUser.role}>
+            <select
+              disabled={sessionUser?.id === currentUser.id}
+              id="role"
+              name="role"
+              defaultValue={currentUser.role}
+            >
               <option value="client">Client</option>
               <option value="admin">Admin</option>
             </select>

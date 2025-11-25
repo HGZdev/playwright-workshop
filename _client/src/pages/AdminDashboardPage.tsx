@@ -8,7 +8,7 @@ export const AdminDashboardPage: React.FC = () => {
   const { users, refetch } = useUsers();
   const { deleteUser } = useDeleteUser();
   const navigate = useNavigate();
-  const { logout } = useUser();
+  const { logout, user: sessionUser } = useUser();
 
   const handleDelete = async (id: User['id']) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
@@ -54,7 +54,11 @@ export const AdminDashboardPage: React.FC = () => {
               <td>
                 <div className="table-actions">
                   <button onClick={() => navigate(`/admin/user/${user.id}`)}>Edit</button>
-                  <button onClick={() => handleDelete(user.id)} className="danger">
+                  <button
+                    disabled={sessionUser?.id === user.id}
+                    onClick={() => handleDelete(user.id)}
+                    className="danger"
+                  >
                     Delete
                   </button>
                 </div>
