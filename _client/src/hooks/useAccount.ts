@@ -1,14 +1,15 @@
 import { useState, useCallback, useEffect } from 'react';
 import apiClient from '../api/apiClient';
-import { extractErrorMessage } from '../utils/apiErrorHandler';
 import { useUser } from './useUser';
 import type { Account, TransactionInput } from '../types';
 
 export const useAccount = () => {
-  const { user } = useUser();
+  const { user, loading: userLoading } = useUser();
   const [account, setAccount] = useState<Account | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const isLoading = userLoading || loading;
 
   const refetch = useCallback(async () => {
     if (!user) {
@@ -19,8 +20,11 @@ export const useAccount = () => {
     try {
       const response = await apiClient.get<Account>(`/api/account/${user.id}`);
       setAccount(response.data);
-    } catch (err: unknown) {
-      setError(extractErrorMessage(err, `Failed to fetch account of user ${user.id}`));
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -30,7 +34,7 @@ export const useAccount = () => {
     refetch();
   }, [refetch]);
 
-  return { account, loading, error, refetch };
+  return { account, loading: isLoading, error, refetch };
 };
 
 export const useTransfer = () => {
@@ -53,9 +57,12 @@ export const useTransfer = () => {
         type,
       });
       return true;
-    } catch (err: unknown) {
-      setError(extractErrorMessage(err, 'Transfer failed'));
-      return false;
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
+      console.error(err);
+      return null;
     } finally {
       setLoading(false);
     }

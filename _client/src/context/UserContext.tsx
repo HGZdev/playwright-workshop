@@ -1,15 +1,26 @@
 import React, { createContext, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { User } from '../types';
+import apiClient from '../api/apiClient';
+import { extractErrorMessage } from '../utils/apiErrorHandler';
+
+interface AuthResponse {
+  token: string;
+  user: User;
+}
 
 export interface UserContextType {
   user: User | null;
-  login: (userData: User, token: string) => void;
+  login: (username: string, password: string) => Promise<boolean>;
+  register: (username: string, password: string, name: string) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  loading: boolean;
+  error: string | null;
 }
 
+// eslint-disable-next-line
 export const UserContext = createContext<UserContextType | null>(null);
 
 export interface UserProviderProps {
@@ -35,10 +46,52 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     return null;
   });
 
-  const login = (userData: User, token: string) => {
-    setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('token', token);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const login = async (username: string, password: string): Promise<boolean> => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await apiClient.post<AuthResponse>('/api/login', {
+        username,
+        password,
+      });
+
+      const { user: userData, token } = response.data;
+      setUser(userData);
+      localStorage.setItem('user', JSON.stringify(userData));
+      localStorage.setItem('token', token);
+
+      return true;
+    } catch (err) {
+      const errorMessage = extractErrorMessage(err, 'Login failed');
+      setError(errorMessage);
+      console.error(err);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const register = async (username: string, password: string, name: string): Promise<boolean> => {
+    setLoading(true);
+    setError(null);
+    try {
+      await apiClient.post<AuthResponse>('/api/register', {
+        username,
+        password,
+        name,
+      });
+      return true;
+    } catch (err) {
+      const errorMessage = extractErrorMessage(err, 'Registration failed');
+      setError(errorMessage);
+      console.error(err);
+      return false;
+    } finally {
+      setLoading(false);
+    }
   };
 
   const logout = () => {
@@ -51,7 +104,9 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const isAdmin = user?.role === 'admin';
 
   return (
-    <UserContext.Provider value={{ user, login, logout, isAuthenticated, isAdmin }}>
+    <UserContext.Provider
+      value={{ user, login, register, logout, isAuthenticated, isAdmin, loading, error }}
+    >
       {children}
     </UserContext.Provider>
   );

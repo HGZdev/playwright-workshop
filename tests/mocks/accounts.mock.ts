@@ -1,17 +1,17 @@
 import { AccountInput } from '../../_server/database/types';
 
 export const ACCOUNT1: AccountInput = {
-  transactionIds: [],
+  transactions: [],
 };
 
 export const ACCOUNT2: AccountInput = {
-  transactionIds: [],
+  transactions: [],
 };
 
 export const ACCOUNT3: AccountInput = {
-  transactionIds: [],
+  transactions: [],
 };
 
 export const ACCOUNT4: AccountInput = {
-  transactionIds: [],
+  transactions: [],
 };

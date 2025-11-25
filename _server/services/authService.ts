@@ -6,20 +6,26 @@ import { User } from '../database/types.js';
 export class AuthService {
   async login(username: User['username'], password: User['password']) {
     await randomDelay(500, 1000); // Simulate network delay
-    const user = db.users.find((u) => u.username === username && u.password === password);
+    const user = await db.getUserByUsername(username);
 
-    if (user) {
-      // Encode user data in base64 for the fake token
-      const userData = { id: user.id, name: user.name, username: user.username, role: user.role };
-      const token = Buffer.from(JSON.stringify(userData)).toString('base64');
-
-      return {
-        token,
-        user: userData,
-      };
+    if (!user || user.password !== password) {
+      return null;
     }
 
-    return null;
+    // Encode user data in base64 for the fake token
+    const userData = {
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      role: user.role,
+      accountId: user.accountId,
+    };
+    const token = Buffer.from(JSON.stringify(userData)).toString('base64');
+
+    return {
+      token,
+      user: userData,
+    };
   }
 
   async register(username: string, password: string, name: string) {
@@ -31,7 +37,7 @@ export class AuthService {
 
     const newAccount = {
       id: randomInt(1, 1000),
-      transactionIds: [],
+      transactions: [],
     };
 
     const accountId = await db.addAccount(newAccount);
@@ -64,7 +70,8 @@ export class AuthService {
 
   async userExists(username: string) {
     await randomDelay(500, 1000);
-    const user = db.users.find((u) => u.username === username);
+    const users = await db.getUsers();
+    const user = users.find((u) => u.username === username);
 
     return !!user;
   }

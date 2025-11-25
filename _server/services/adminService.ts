@@ -5,7 +5,7 @@ import { randomDelay } from '../utils/delay.js';
 export class AdminService {
   async getAllUsers() {
     await randomDelay(200, 1000);
-    return db.users;
+    return db.getUsers();
   }
 
   async updateUser(id: User['id'], updates: Partial<User>) {

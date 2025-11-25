@@ -30,15 +30,23 @@ export class Database {
     await fs.writeFile(DB_PATH, JSON.stringify(this.data, null, 2));
   }
 
-  get users() {
+  async getUserById(id: User['id']) {
+    return this.data.users.find((user) => user.id === id);
+  }
+
+  async getUserByUsername(username: User['username']) {
+    return this.data.users.find((user) => user.username === username);
+  }
+
+  async getUsers() {
     return this.data.users;
   }
 
-  get accounts() {
+  async getAccounts() {
     return this.data.accounts;
   }
 
-  get transactions() {
+  async getTransactions() {
     return this.data.transactions;
   }
 

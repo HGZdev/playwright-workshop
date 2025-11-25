@@ -11,8 +11,13 @@ export class AccountService {
 
   async getAccount(accountId: number) {
     await randomDelay(300, 1000);
-    const account = db.accounts.find((account) => account.id === accountId);
+    const accounts = await db.getAccounts();
+    const account = accounts.find((account) => account.id === accountId);
     const transactions = await this.getTransactions(accountId);
+
+    if (!account) {
+      throw new Error('Account not found');
+    }
 
     account.transactions = transactions;
     return account;
@@ -22,9 +27,9 @@ export class AccountService {
     await randomDelay(300, 1000);
     const newAccount: Account = {
       id: Date.now(),
-      transactionIds: [],
+      transactions: [],
     };
-    db.accounts.push(newAccount);
+    await db.addAccount(newAccount);
 
     await db.save();
     return newAccount;
@@ -32,7 +37,8 @@ export class AccountService {
 
   async getTransactions(accountId: number) {
     await randomDelay(300, 1000);
-    return db.transactions.filter((transaction) => transaction.accountId === accountId);
+    const transactions = await db.getTransactions();
+    return transactions.filter((transaction) => transaction.accountId === accountId);
   }
 
   async makeTransaction({
@@ -68,7 +74,7 @@ export class AccountService {
       type,
     };
 
-    db.transactions.push(newTransaction);
+    await db.addTransaction(newTransaction);
     await db.save();
 
     return {

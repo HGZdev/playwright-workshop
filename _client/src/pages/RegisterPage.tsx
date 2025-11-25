@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useRegister } from '../hooks/useAuth';
+import { useUser } from '../hooks/useUser';
 
 export const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const navigate = useNavigate();
-  const { register, error } = useRegister();
+  const { register, error } = useUser();
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await register(username, password, name);
-    if (response) {
+    const success = await register(username, password, name);
+    if (success) {
       navigate('/login');
     }
   };

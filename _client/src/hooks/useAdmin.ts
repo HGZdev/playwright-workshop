@@ -14,8 +14,11 @@ export const useGetUsers = () => {
     try {
       const response = await apiClient.get('/api/admin/users');
       setUsers(response.data);
-    } catch (err: unknown) {
-      setError(extractErrorMessage(err, 'Failed to fetch users'));
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -38,9 +41,12 @@ export const useUpdateUser = () => {
     try {
       await apiClient.put(`/api/admin/users/${id}`, data);
       return true;
-    } catch (err: unknown) {
-      setError(extractErrorMessage(err, 'Failed to update user'));
-      return false;
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
+      console.error(err);
+      return null;
     } finally {
       setLoading(false);
     }
@@ -59,9 +65,12 @@ export const useDeleteUser = () => {
     try {
       await apiClient.delete(`/api/admin/users/${id}`);
       return true;
-    } catch (err: unknown) {
-      setError(extractErrorMessage(err, 'Failed to delete user'));
-      return false;
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      }
+      console.error(err);
+      return null;
     } finally {
       setLoading(false);
     }

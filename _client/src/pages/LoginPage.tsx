@@ -1,30 +1,24 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLogin } from '../hooks/useAuth';
 import { useUser } from '../hooks/useUser';
 
 export const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login: loginHook, error } = useLogin();
-  const { login: loginContext } = useUser();
+  const { login, error, user } = useUser();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const response = await loginHook(username, password);
+    const success = await login(username, password);
+    console.log('Login result:', { success, user });
 
-    if (response?.token) {
-      const { user, token } = response;
-      if (!user) {
-        return;
-      }
-      loginContext(user, token);
-
-      if (user.role === 'admin') {
+    if (success) {
+      if (user?.role === 'admin') {
         navigate('/admin');
       } else {
+        console.log('Navigating to dashboard');
         navigate('/dashboard');
       }
     }
