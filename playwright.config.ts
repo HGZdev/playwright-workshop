@@ -33,7 +33,7 @@ export default defineConfig({
     },
     {
       name: 'login',
-      dependencies: ['smoke', 'register'],
+      dependencies: ['smoke'],
       testMatch: 'login.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
@@ -54,13 +54,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: 'NODE_ENV=test npm run dev:server',
-      port: 3001,
-      reuseExistingServer: true,
-    },
-    {
-      command: 'npm run dev:client',
-      port: 5173,
+      command: 'npm run dev:test',
       reuseExistingServer: true,
     },
   ],

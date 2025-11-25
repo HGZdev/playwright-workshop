@@ -30,49 +30,77 @@ export const DashboardPage: React.FC = () => {
         <h1>Mini Bank</h1>
         <div className="user-info">
           <span className="user-name">Welcome, {user?.name}</span>
-          <button onClick={handleLogout} type="button">
+          {user?.role === 'admin' && (
+            <button onClick={() => navigate('/admin')} type="button">
+              Admin Panel
+            </button>
+          )}
+          <button onClick={handleLogout} type="button" aria-label="Logout from your account">
             Logout
           </button>
         </div>
       </header>
 
-      <div className="card balance-card">
-        <h2>Available Balance</h2>
-        <div className="balance-amount">{isLoading ? 'Loading...' : `${formattedBalance} PLN`}</div>
-      </div>
-
-      <div className="actions-section">
-        <button onClick={() => navigate('/add-money')} type="button">
-          Top up the account ⬇
-        </button>
-        <button onClick={() => navigate('/send-money')}>Make Transfer ⬆</button>
-      </div>
-
-      <div className="card transactions-card">
-        <h2>Recent Transactions</h2>
-        {isLoading ? (
-          <div className="transactions-list">
-            <div className="loading-state">Loading...</div>
+      <main aria-label="Account overview">
+        <div className="card balance-card">
+          <h2>Available Balance</h2>
+          <div className="balance-amount" role="status" aria-live="polite">
+            {isLoading ? 'Loading...' : `${formattedBalance} PLN`}
           </div>
-        ) : (
-          <div className="transactions-list">
-            {account?.transactions.map((t) => (
-              <div key={t.id} className="transaction-item">
-                <div className="transaction-details">
-                  <div className="transaction-title">{t.title}</div>
-                  <div className="transaction-date">{t.date}</div>
-                </div>
-                <div className={t.type === 'incoming' ? 'amount-incoming' : 'amount-outgoing'}>
-                  {currencyFormatter(t.amount, 'PLN', true)}
-                </div>
+        </div>
+
+        <div className="actions-section">
+          <button
+            onClick={() => navigate('/add-money')}
+            type="button"
+            aria-label="Top up your account balance"
+          >
+            Top up the account ⬇
+          </button>
+          <button
+            onClick={() => navigate('/send-money')}
+            type="button"
+            aria-label="Make a money transfer"
+          >
+            Make Transfer ⬆
+          </button>
+        </div>
+
+        <div className="card transactions-card">
+          <h2>Recent Transactions</h2>
+          {isLoading ? (
+            <div className="transactions-list">
+              <div className="loading-state" role="status" aria-live="polite">
+                Loading...
               </div>
-            ))}
-            {account?.transactions.length === 0 && (
-              <div className="empty-state">No transactions yet</div>
-            )}
-          </div>
-        )}
-      </div>
+            </div>
+          ) : (
+            <div className="transactions-list" role="list">
+              {account?.transactions.map((t) => (
+                <div
+                  key={t.id}
+                  className="transaction-item"
+                  role="listitem"
+                  aria-label={`${t.type === 'incoming' ? 'Incoming' : 'Outgoing'} transaction: ${t.title}, ${currencyFormatter(t.amount, 'PLN', true)}, ${t.date}`}
+                >
+                  <div className="transaction-details">
+                    <div className="transaction-title">{t.title}</div>
+                    <time className="transaction-date" dateTime={t.date}>
+                      {t.date}
+                    </time>
+                  </div>
+                  <div className={t.type === 'incoming' ? 'amount-incoming' : 'amount-outgoing'}>
+                    {currencyFormatter(t.amount, 'PLN', true)}
+                  </div>
+                </div>
+              ))}
+              {account?.transactions.length === 0 && (
+                <div className="empty-state">No transactions yet</div>
+              )}
+            </div>
+          )}
+        </div>
+      </main>
     </div>
   );
 };

@@ -16,13 +16,19 @@ export const UnauthorizedPage: React.FC = () => {
 
   return (
     <div className="flex-center">
-      <div className="card" style={{ width: '100%', maxWidth: '500px', textAlign: 'center' }}>
+      <div
+        className="card"
+        style={{ width: '100%', maxWidth: '500px', textAlign: 'center' }}
+        role="alert"
+      >
         <h1>Access Denied</h1>
         <p style={{ marginBottom: '20px', color: '#666' }}>
           You don't have permission to access this page.
         </p>
         <p style={{ marginBottom: '30px' }}>This page is restricted to administrators only.</p>
-        <button onClick={handleGoBack}>Go to Dashboard</button>
+        <button onClick={handleGoBack} aria-label="Return to your dashboard">
+          Go to Dashboard
+        </button>
       </div>
     </div>
   );

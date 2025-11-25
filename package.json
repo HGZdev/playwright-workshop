@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
-    "test": "concurrently \"NODE_ENV=test npm run dev:server\" \"npm run dev:client\"",
-    "dev:server": "tsx watch _server/server.ts",
-    "dev:server:debug": "NODE_DEBUG=* tsx watch _server/server.ts",
-    "dev:client": "npm run dev --prefix _client",
+    "dev": "concurrently \"npm:server\" \"npm:client\"",
+    "dev:test": "concurrently \"NODE_ENV=test npm run server\" \"npm run client\"",
+    "server": "tsx watch _server/server.ts",
+    "server:debug": "NODE_DEBUG=* tsx watch _server/server.ts",
+    "client": "npm run dev --prefix _client",
     "e2e": "playwright test",
     "start": "node dist/_server.js"
   },

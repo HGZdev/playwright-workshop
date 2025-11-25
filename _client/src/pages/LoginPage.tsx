@@ -26,34 +26,36 @@ export const LoginPage: React.FC = () => {
     <div className="flex-center">
       <div className="card login-page">
         <h1>Mini Bank</h1>
-        <form data-testid="login-form" onSubmit={handleLogin} className="login-form">
+        <form onSubmit={handleLogin} className="login-form" aria-label="Login to your account">
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
               id="username"
+              name="username"
               type="text"
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              data-testid="login-input"
+              autoComplete="username"
+              required
             />
           </div>
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
               id="password"
+              name="password"
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              data-testid="password-input"
+              autoComplete="current-password"
+              required
             />
           </div>
-          <button type="submit" data-testid="login-button">
-            Login
-          </button>
+          <button type="submit">Login</button>
           {error && (
-            <div data-testid="error-message" className="error-text">
+            <div className="error-text" role="alert" aria-live="polite">
               {error}
             </div>
           )}

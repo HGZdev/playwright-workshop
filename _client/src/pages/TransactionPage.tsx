@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTransaction, useAccount } from '../hooks/useAccount';
 
-export const TransactionPage: React.FC<{ mode?: 'transfer' | 'add' }> = ({ mode = 'transfer' }) => {
+export const TransactionPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { account } = useAccount();
@@ -36,33 +36,62 @@ export const TransactionPage: React.FC<{ mode?: 'transfer' | 'add' }> = ({ mode 
   return (
     <div className="container">
       <h2>{isAddMode ? 'Add Money' : 'Make Transfer'}</h2>
-      <form onSubmit={handleSubmit} className="transfer-form">
+      <form
+        onSubmit={handleSubmit}
+        className="transfer-form"
+        aria-label={isAddMode ? 'Add money to your account' : 'Transfer money to another account'}
+      >
         {!isAddMode && (
           <div className="form-group">
-            <label>Recipient</label>
+            <label htmlFor="recipient">Recipient</label>
             <input
+              id="recipient"
+              name="recipient"
               type="text"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
+              autoComplete="off"
               required
             />
           </div>
         )}
         <div className="form-group">
-          <label>Title</label>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label>Amount</label>
+          <label htmlFor="title">Title</label>
           <input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            id="title"
+            name="title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            autoComplete="off"
             required
           />
         </div>
-        {formError && <div className="error-text">{formError}</div>}
-        {error && <div className="error-text">{error}</div>}
+        <div className="form-group">
+          <label htmlFor="amount">Amount</label>
+          <input
+            id="amount"
+            name="amount"
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            min="0.01"
+            step="0.01"
+            inputMode="decimal"
+            autoComplete="transaction-amount"
+            required
+          />
+        </div>
+        {formError && (
+          <div className="error-text" role="alert" aria-live="polite">
+            {formError}
+          </div>
+        )}
+        {error && (
+          <div className="error-text" role="alert" aria-live="polite">
+            {error}
+          </div>
+        )}
         <button type="submit">{isAddMode ? 'Add Money' : 'Send Transfer'}</button>
         <button type="button" onClick={() => navigate('/dashboard')}>
           Cancel

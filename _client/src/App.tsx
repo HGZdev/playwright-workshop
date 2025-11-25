@@ -30,7 +30,7 @@ function App() {
             path="/send-money"
             element={
               <ProtectedRoute>
-                <TransactionPage mode="transfer" />
+                <TransactionPage />
               </ProtectedRoute>
             }
           />
@@ -38,7 +38,7 @@ function App() {
             path="/add-money"
             element={
               <ProtectedRoute>
-                <TransactionPage mode="add" />
+                <TransactionPage />
               </ProtectedRoute>
             }
           />

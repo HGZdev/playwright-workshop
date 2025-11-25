@@ -33,6 +33,9 @@ export const EditUserPage: React.FC = () => {
       <div className="flex-center">
         <div className="card edit-user-page">
           <h1>Loading...</h1>
+          <div role="status" aria-live="polite" className="loading-state">
+            Loading user data...
+          </div>
         </div>
       </div>
     );
@@ -55,7 +58,7 @@ export const EditUserPage: React.FC = () => {
     <div className="flex-center">
       <div className="card edit-user-page">
         <h1>Edit User</h1>
-        <form onSubmit={handleUpdate} className="edit-user-form">
+        <form onSubmit={handleUpdate} className="edit-user-form" aria-label="Edit user information">
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
@@ -63,6 +66,7 @@ export const EditUserPage: React.FC = () => {
               name="username"
               type="text"
               defaultValue={currentUser.username}
+              autoComplete="username"
               required
             />
           </div>
@@ -71,14 +75,22 @@ export const EditUserPage: React.FC = () => {
             <input
               id="password"
               name="password"
-              type="text"
+              type="password"
               defaultValue={currentUser.password}
+              autoComplete="new-password"
               required
             />
           </div>
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
-            <input id="name" name="name" type="text" defaultValue={currentUser.name} required />
+            <input
+              id="name"
+              name="name"
+              type="text"
+              defaultValue={currentUser.name}
+              autoComplete="name"
+              required
+            />
           </div>
           <div className="form-group">
             <label htmlFor="role">Role</label>
@@ -87,10 +99,18 @@ export const EditUserPage: React.FC = () => {
               id="role"
               name="role"
               defaultValue={currentUser.role}
+              aria-describedby={
+                sessionUser?.id === currentUser.id ? 'role-disabled-reason' : undefined
+              }
             >
               <option value="client">Client</option>
               <option value="admin">Admin</option>
             </select>
+            {sessionUser?.id === currentUser.id && (
+              <span id="role-disabled-reason" className="text-sm text-muted">
+                You cannot change your own role
+              </span>
+            )}
           </div>
           <div className="button-group">
             <button type="submit">Update User</button>
@@ -98,7 +118,11 @@ export const EditUserPage: React.FC = () => {
               Cancel
             </button>
           </div>
-          {error && <div className="error-text">{error}</div>}
+          {error && (
+            <div className="error-text" role="alert" aria-live="polite">
+              {error}
+            </div>
+          )}
         </form>
       </div>
     </div>

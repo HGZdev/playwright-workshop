@@ -22,15 +22,21 @@ export const RegisterPage: React.FC = () => {
     <div className="flex-center">
       <div className="card register-page">
         <h1>Register</h1>
-        <form onSubmit={handleRegister} className="register-form">
+        <form
+          onSubmit={handleRegister}
+          className="register-form"
+          aria-label="Register a new account"
+        >
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
               id="username"
+              name="username"
               type="text"
               placeholder="Username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
               required
             />
           </div>
@@ -38,10 +44,12 @@ export const RegisterPage: React.FC = () => {
             <label htmlFor="password">Password</label>
             <input
               id="password"
+              name="password"
               type="password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
               required
             />
           </div>
@@ -49,15 +57,21 @@ export const RegisterPage: React.FC = () => {
             <label htmlFor="name">Full Name</label>
             <input
               id="name"
+              name="name"
               type="text"
               placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              autoComplete="name"
               required
             />
           </div>
           <button type="submit">Register</button>
-          {error && <div className="error-text">{error}</div>}
+          {error && (
+            <div className="error-text" role="alert" aria-live="polite">
+              {error}
+            </div>
+          )}
           <div className="form-footer">
             <Link to="/login">Back to Login</Link>
           </div>

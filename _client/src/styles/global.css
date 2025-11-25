@@ -349,6 +349,19 @@ button.danger::before {
 .text-3xl { font-size: var(--font-size-3xl); }
 .text-4xl { font-size: var(--font-size-4xl); }
 
+/* ===== Accessibility Utilities ===== */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 /* ===== Transaction Item ===== */
 .transaction-item {
   display: flex;
@@ -707,6 +720,66 @@ button.danger::before {
 .transfer-card h1 {
   margin-top: 0;
   margin-bottom: var(--spacing-xl);
+}
+
+/* ===== Modal Component ===== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: var(--z-modal);
+  animation: fadeIn var(--transition-fast) ease-out;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: var(--spacing-2xl);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-xl);
+  max-width: 500px;
+  width: 90%;
+  animation: slideIn var(--transition-base) ease-out;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: var(--spacing-lg);
+  color: var(--primary);
+}
+
+.modal-content p {
+  margin-bottom: var(--spacing-xl);
+  color: var(--text-secondary);
+  line-height: var(--line-height-relaxed);
+}
+
+.modal-actions {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+}
+
+.modal-actions button {
+  flex: 0 1 auto;
+  min-width: 100px;
+}
+
+/* ===== Loading State ===== */
+.loading-state {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: var(--text-muted);
+  animation: pulse 2s ease-in-out infinite;
 }
 
 /* ===== Responsive Design ===== */
