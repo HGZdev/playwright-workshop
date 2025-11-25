@@ -16,17 +16,18 @@ db.init().then(() => {
   console.log('Database initialized');
 });
 
-// Routes
-app.use('/api', authRoutes); // Auth Routes
-app.use('/api', accountRoutes); // Account Routes
-app.use('/api/admin', adminRoutes); // Admin Routes
-
+// Test-only reset endpoint (must be before other routes)
 if (process.env.NODE_ENV === 'test') {
   app.post('/api/reset', async (req, res) => {
     await db.reset();
     res.json({ message: 'Database reset successfully' });
   });
 }
+
+// Routes
+app.use('/api', authRoutes); // Auth Routes
+app.use('/api', accountRoutes); // Account Routes
+app.use('/api/admin', adminRoutes); // Admin Routes
 
 app.listen(port, () => {
   console.log(`Backend server running at http://localhost:${port}`);

@@ -3,7 +3,7 @@ import apiClient from '../api/apiClient';
 import { extractErrorMessage } from '../utils/apiErrorHandler';
 import type { User } from '../types';
 
-export const useGetUsers = () => {
+export const useUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -15,9 +15,8 @@ export const useGetUsers = () => {
       const response = await apiClient.get('/api/admin/users');
       setUsers(response.data);
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      }
+      const errorMessage = extractErrorMessage(err, 'Failed to fetch users');
+      setError(errorMessage);
       console.error(err);
     } finally {
       setLoading(false);

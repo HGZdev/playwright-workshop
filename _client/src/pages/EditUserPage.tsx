@@ -1,10 +1,10 @@
 import React, { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useGetUsers, useUpdateUser } from '../hooks/useAdmin';
+import { useUsers, useUpdateUser } from '../hooks/useAdmin';
 
 export const EditUserPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { users } = useGetUsers();
+  const { users } = useUsers();
   const navigate = useNavigate();
   const { updateUser, error } = useUpdateUser();
 

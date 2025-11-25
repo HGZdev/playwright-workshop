@@ -1,9 +1,6 @@
 import { test as setup } from '@playwright/test';
+import { resetDatabase } from './utils/resetDatabase.js';
 
-setup('reset database', async () => {
-  console.log('resetting database...');
-
-  await fetch('http://localhost:3001/api/reset', {
-    method: 'POST',
-  });
+setup('setup', async () => {
+  await resetDatabase();
 });

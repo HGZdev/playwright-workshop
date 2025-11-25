@@ -10,8 +10,8 @@ export class AccountController {
       const account = await accountService.getAccount(Number(accountId));
       res.json(account);
     } catch (error) {
-      console.error('Error in getAccount:', error);
-      res.status(500).json({ error: 'Internal server error' });
+      console.error('Error in getAccountById:', error);
+      res.status(500).json({ error: 'Something went wrong' });
     }
   }
 
@@ -32,7 +32,7 @@ export class AccountController {
       if (error.message === 'Invalid amount' || error.message === 'Insufficient funds') {
         res.status(400).json({ error: error.message });
       } else {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Something went wrong' });
       }
     }
   }

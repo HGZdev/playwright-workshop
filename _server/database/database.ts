@@ -30,6 +30,11 @@ export class Database {
     await fs.writeFile(DB_PATH, JSON.stringify(this.data, null, 2));
   }
 
+  async reset() {
+    this.data = JSON.parse(JSON.stringify(INITIAL_DB));
+    await this.save();
+  }
+
   async getUserById(id: User['id']) {
     return this.data.users.find((user) => user.id === id);
   }
@@ -67,11 +72,6 @@ export class Database {
       return true;
     }
     return false;
-  }
-
-  async reset() {
-    this.data = { ...INITIAL_DB };
-    await this.save();
   }
 
   async getAccountById(id: Account['id']) {

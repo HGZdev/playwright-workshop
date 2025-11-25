@@ -1,11 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useGetUsers, useDeleteUser } from '../hooks/useAdmin';
+import { useUsers, useDeleteUser } from '../hooks/useAdmin';
 import { useUser } from '../hooks/useUser';
 import type { User } from '../types';
 
 export const AdminDashboardPage: React.FC = () => {
-  const { users, refetch } = useGetUsers();
+  const { users, refetch } = useUsers();
   const { deleteUser } = useDeleteUser();
   const navigate = useNavigate();
   const { logout } = useUser();
