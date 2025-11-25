@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import './RegisterPage.css';
 
 export const RegisterPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -14,7 +15,7 @@ export const RegisterPage: React.FC = () => {
     setError('');
 
     try {
-      await axios.post('http://localhost:3001/api/register', {
+      await axios.post('/api/register', {
         username,
         password,
         name,
@@ -31,16 +32,11 @@ export const RegisterPage: React.FC = () => {
 
   return (
     <div className="flex-center">
-      <div className="card" style={{ width: '100%', maxWidth: '400px' }}>
-        <h1 style={{ textAlign: 'center' }}>Register</h1>
-        <form
-          onSubmit={handleRegister}
-          style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}
-        >
-          <div>
-            <label htmlFor="username" style={{ display: 'block', marginBottom: '5px' }}>
-              Username
-            </label>
+      <div className="card register-page">
+        <h1>Register</h1>
+        <form onSubmit={handleRegister} className="register-form">
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
             <input
               id="username"
               type="text"
@@ -48,13 +44,10 @@ export const RegisterPage: React.FC = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              style={{ width: '100%', boxSizing: 'border-box' }}
             />
           </div>
-          <div>
-            <label htmlFor="password" style={{ display: 'block', marginBottom: '5px' }}>
-              Password
-            </label>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
@@ -62,13 +55,10 @@ export const RegisterPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              style={{ width: '100%', boxSizing: 'border-box' }}
             />
           </div>
-          <div>
-            <label htmlFor="name" style={{ display: 'block', marginBottom: '5px' }}>
-              Full Name
-            </label>
+          <div className="form-group">
+            <label htmlFor="name">Full Name</label>
             <input
               id="name"
               type="text"
@@ -76,16 +66,11 @@ export const RegisterPage: React.FC = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              style={{ width: '100%', boxSizing: 'border-box' }}
             />
           </div>
           <button type="submit">Register</button>
-          {error && (
-            <div className="error-text" style={{ textAlign: 'center' }}>
-              {error}
-            </div>
-          )}
-          <div style={{ textAlign: 'center' }}>
+          {error && <div className="error-text">{error}</div>}
+          <div className="form-footer">
             <Link to="/login">Back to Login</Link>
           </div>
         </form>

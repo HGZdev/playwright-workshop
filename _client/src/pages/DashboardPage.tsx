@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './DashboardPage.css';
 
 interface Transaction {
   id: string;
@@ -19,10 +20,10 @@ export const DashboardPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const balanceRes = await axios.get('http://localhost:3001/api/balance');
+        const balanceRes = await axios.get('/api/balance');
         setBalance(balanceRes.data.balance);
 
-        const transactionsRes = await axios.get('http://localhost:3001/api/transactions');
+        const transactionsRes = await axios.get('/api/transactions');
         setTransactions(transactionsRes.data);
       } catch (err) {
         console.error('Error fetching data', err);
@@ -40,42 +41,33 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="container">
-      <header
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '2rem',
-        }}
-      >
+      <header className="dashboard-header">
         <h1>Mini Bank</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <span>Welcome, {user.name}</span>
+        <div className="user-info">
+          <span className="user-name">Welcome, {user.name}</span>
           <button onClick={handleLogout} type="button">
             Logout
           </button>
         </div>
       </header>
 
-      <div className="card" style={{ marginBottom: '2rem' }}>
-        <h2 style={{ marginTop: 0 }}>Available Balance</h2>
-        <div style={{ fontSize: '3rem', fontWeight: 'bold', color: 'var(--secondary)' }}>
-          {balance !== null ? `${balance} PLN` : 'Loading...'}
-        </div>
+      <div className="card balance-card">
+        <h2>Available Balance</h2>
+        <div className="balance-amount">{balance !== null ? `${balance} PLN` : 'Loading...'}</div>
       </div>
 
-      <div style={{ marginBottom: '2rem' }}>
+      <div className="actions-section">
         <button onClick={() => navigate('/transfer')}>Make Transfer</button>
       </div>
 
-      <div className="card">
-        <h2 style={{ marginTop: 0 }}>Recent Transactions</h2>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div className="card transactions-card">
+        <h2>Recent Transactions</h2>
+        <div className="transactions-list">
           {transactions.map((t) => (
             <div key={t.id} className="transaction-item">
-              <div>
-                <div style={{ fontWeight: 'bold' }}>{t.title}</div>
-                <div style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>{t.date}</div>
+              <div className="transaction-details">
+                <div className="transaction-title">{t.title}</div>
+                <div className="transaction-date">{t.date}</div>
               </div>
               <div className={t.type === 'incoming' ? 'amount-incoming' : 'amount-outgoing'}>
                 {t.amount > 0 ? '+' : ''}
@@ -83,11 +75,7 @@ export const DashboardPage: React.FC = () => {
               </div>
             </div>
           ))}
-          {transactions.length === 0 && (
-            <div style={{ color: 'var(--text-secondary)', textAlign: 'center' }}>
-              No transactions yet
-            </div>
-          )}
+          {transactions.length === 0 && <div className="empty-state">No transactions yet</div>}
         </div>
       </div>
     </div>

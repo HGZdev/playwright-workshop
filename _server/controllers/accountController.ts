@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
+import { AuthRequest } from '../middleware/authMiddleware.js';
 import { accountService } from '../services/accountService.js';
 
 export class AccountController {
-  async getBalance(req: Request, res: Response) {
+  async getBalance(req: AuthRequest, res: Response) {
     try {
       const balance = await accountService.getBalance();
       res.json({ balance });
@@ -11,7 +12,7 @@ export class AccountController {
     }
   }
 
-  async getTransactions(req: Request, res: Response) {
+  async getTransactions(req: AuthRequest, res: Response) {
     try {
       const transactions = await accountService.getTransactions();
       res.json(transactions);
@@ -20,9 +21,9 @@ export class AccountController {
     }
   }
 
-  async makeTransfer(req: Request, res: Response) {
+  async makeTransfer(req: AuthRequest, res: Response) {
     const { recipient, title, amount } = req.body;
-    
+
     try {
       const result = await accountService.makeTransfer(recipient, title, Number(amount));
       res.json(result);

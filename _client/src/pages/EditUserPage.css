@@ -1,0 +1,29 @@
+/* Edit User Page Styles */
+
+.edit-user-page {
+  width: 100%;
+  max-width: 420px;
+}
+
+.edit-user-page h1 {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.edit-user-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}

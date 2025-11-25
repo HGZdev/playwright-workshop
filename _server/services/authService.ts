@@ -7,9 +7,13 @@ export class AuthService {
     const user = db.users.find((u) => u.username === username && u.password === password);
 
     if (user) {
+      // Encode user data in base64 for the fake token
+      const userData = { id: user.id, name: user.name, username: user.username, role: user.role };
+      const token = Buffer.from(JSON.stringify(userData)).toString('base64');
+
       return {
-        token: 'fake-jwt-token',
-        user: { id: user.id, name: user.name, username: user.username, role: user.role },
+        token,
+        user: userData,
       };
     }
 
@@ -32,9 +36,19 @@ export class AuthService {
     };
 
     await db.addUser(newUser);
+
+    // Encode user data in base64 for the fake token
+    const userData = {
+      id: newUser.id,
+      name: newUser.name,
+      username: newUser.username,
+      role: newUser.role,
+    };
+    const token = Buffer.from(JSON.stringify(userData)).toString('base64');
+
     return {
-      token: 'fake-jwt-token',
-      user: { id: newUser.id, name: newUser.name, username: newUser.username, role: newUser.role },
+      token,
+      user: userData,
     };
   }
 }

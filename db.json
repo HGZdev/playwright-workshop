@@ -76,10 +76,31 @@
       "password": "password123",
       "name": "Test User",
       "role": "client"
+    },
+    {
+      "id": "6h4r78sbr",
+      "username": "hej",
+      "password": "hej",
+      "name": "hej",
+      "role": "client"
+    },
+    {
+      "id": "4pkfjek71",
+      "username": "testuser_1764080431935",
+      "password": "password123",
+      "name": "Test User",
+      "role": "client"
     }
   ],
-  "balance": 899,
+  "balance": 889,
   "transactions": [
+    {
+      "id": "1764079182320",
+      "date": "2025-11-25",
+      "title": "Przelew do: a - a",
+      "amount": -10,
+      "type": "outgoing"
+    },
     {
       "id": "1764074205392",
       "date": "2025-11-25",

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './TransferPage.css';
 
 export const TransferPage: React.FC = () => {
   const [recipient, setRecipient] = useState('');
@@ -14,7 +15,7 @@ export const TransferPage: React.FC = () => {
     setError('');
 
     try {
-      await axios.post('http://localhost:3001/api/transfer', {
+      await axios.post('/api/transfer', {
         recipient,
         title,
         amount: Number(amount),
@@ -26,59 +27,36 @@ export const TransferPage: React.FC = () => {
   };
 
   return (
-    <div className="container">
-      <div className="card" style={{ maxWidth: '600px', margin: '0 auto' }}>
-        <h1 style={{ marginTop: 0 }}>Make Transfer</h1>
-        <form
-          onSubmit={handleTransfer}
-          style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
-        >
-          <div>
-            <label
-              style={{ display: 'block', marginBottom: '5px', color: 'var(--text-secondary)' }}
-            >
-              Recipient Name
-            </label>
+    <div className="container transfer-container">
+      <div className="card transfer-card">
+        <h1>Make Transfer</h1>
+        <form onSubmit={handleTransfer} className="transfer-form">
+          <div className="form-group">
+            <label>Recipient Name</label>
             <input
               type="text"
               value={recipient}
               onChange={(e) => setRecipient(e.target.value)}
-              style={{ width: '100%', boxSizing: 'border-box' }}
               required
             />
           </div>
-          <div>
-            <label
-              style={{ display: 'block', marginBottom: '5px', color: 'var(--text-secondary)' }}
-            >
-              Title
-            </label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              style={{ width: '100%', boxSizing: 'border-box' }}
-              required
-            />
+          <div className="form-group">
+            <label>Title</label>
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
           </div>
-          <div>
-            <label
-              style={{ display: 'block', marginBottom: '5px', color: 'var(--text-secondary)' }}
-            >
-              Amount
-            </label>
+          <div className="form-group">
+            <label>Amount</label>
             <input
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
-              style={{ width: '100%', boxSizing: 'border-box' }}
               required
             />
           </div>
 
           {error && <div className="error-text">{error}</div>}
 
-          <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
+          <div className="button-group">
             <button type="submit">Send Transfer</button>
             <button type="button" onClick={() => navigate('/dashboard')}>
               Cancel

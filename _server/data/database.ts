@@ -12,9 +12,9 @@ export interface DatabaseSchema {
 
 const INITIAL_DB: DatabaseSchema = {
   users: [
-    { id: '1', username: 'user1', password: 'password', name: 'Jan Kowalski', role: 'client' },
-    { id: '2', username: 'user2', password: 'password', name: 'Irena Nowak', role: 'client' },
-    { id: '3', username: 'admin', password: 'password', name: 'Admin User', role: 'admin' },
+    { id: '1', username: 'user1', password: 'user1', name: 'Jan Kowalski', role: 'client' },
+    { id: '2', username: 'user2', password: 'user2', name: 'Irena Nowak', role: 'client' },
+    { id: '3', username: 'admin', password: 'admin', name: 'Admin User', role: 'admin' },
   ],
   balance: 1000.0,
   transactions: [

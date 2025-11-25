@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './LoginPage.css';
 
 export const LoginPage: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -13,7 +14,7 @@ export const LoginPage: React.FC = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:3001/api/login', {
+      const response = await axios.post('/api/login', {
         username,
         password,
       });
@@ -35,17 +36,11 @@ export const LoginPage: React.FC = () => {
 
   return (
     <div className="flex-center">
-      <div className="card" style={{ width: '100%', maxWidth: '400px' }}>
-        <h1 style={{ textAlign: 'center' }}>Mini Bank</h1>
-        <form
-          data-testid="login-form"
-          onSubmit={handleLogin}
-          style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}
-        >
-          <div>
-            <label htmlFor="username" style={{ display: 'block', marginBottom: '5px' }}>
-              Username
-            </label>
+      <div className="card login-page">
+        <h1>Mini Bank</h1>
+        <form data-testid="login-form" onSubmit={handleLogin} className="login-form">
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
             <input
               id="username"
               type="text"
@@ -53,13 +48,10 @@ export const LoginPage: React.FC = () => {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               data-testid="login-input"
-              style={{ width: '100%', boxSizing: 'border-box' }}
             />
           </div>
-          <div>
-            <label htmlFor="password" style={{ display: 'block', marginBottom: '5px' }}>
-              Password
-            </label>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               type="password"
@@ -67,18 +59,17 @@ export const LoginPage: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               data-testid="password-input"
-              style={{ width: '100%', boxSizing: 'border-box' }}
             />
           </div>
           <button type="submit" data-testid="login-button">
             Login
           </button>
           {error && (
-            <div data-testid="error-message" className="error-text" style={{ textAlign: 'center' }}>
+            <div data-testid="error-message" className="error-text">
               {error}
             </div>
           )}
-          <div style={{ textAlign: 'center', marginTop: '10px' }}>
+          <div className="form-footer">
             <a
               href="/register"
               onClick={(e) => {

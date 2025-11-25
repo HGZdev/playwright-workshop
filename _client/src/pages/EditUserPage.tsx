@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './EditUserPage.css';
 
 export const EditUserPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -14,7 +15,7 @@ export const EditUserPage: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/admin/users');
+        const response = await axios.get('/api/admin/users');
         const user = response.data.find((u: { id: string }) => u.id === id);
         if (user) {
           setUsername(user.username);
@@ -35,7 +36,7 @@ export const EditUserPage: React.FC = () => {
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:3001/api/admin/users/${id}`, {
+      await axios.put(`/api/admin/users/${id}`, {
         username,
         password,
         name,
@@ -49,78 +50,57 @@ export const EditUserPage: React.FC = () => {
 
   return (
     <div className="flex-center">
-      <div className="card" style={{ width: '100%', maxWidth: '400px' }}>
-        <h1 style={{ textAlign: 'center' }}>Edit User</h1>
-        <form
-          onSubmit={handleUpdate}
-          style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}
-        >
-          <div>
-            <label htmlFor="username" style={{ display: 'block', marginBottom: '5px' }}>
-              Username
-            </label>
+      <div className="card edit-user-page">
+        <h1>Edit User</h1>
+        <form onSubmit={handleUpdate} className="edit-user-form">
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
             <input
               id="username"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              style={{ width: '100%', boxSizing: 'border-box' }}
             />
           </div>
-          <div>
-            <label htmlFor="password" style={{ display: 'block', marginBottom: '5px' }}>
-              Password
-            </label>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
             <input
               id="password"
               type="text"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              style={{ width: '100%', boxSizing: 'border-box' }}
             />
           </div>
-          <div>
-            <label htmlFor="name" style={{ display: 'block', marginBottom: '5px' }}>
-              Full Name
-            </label>
+          <div className="form-group">
+            <label htmlFor="name">Full Name</label>
             <input
               id="name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              style={{ width: '100%', boxSizing: 'border-box' }}
             />
           </div>
-          <div>
-            <label htmlFor="role" style={{ display: 'block', marginBottom: '5px' }}>
-              Role
-            </label>
+          <div className="form-group">
+            <label htmlFor="role">Role</label>
             <select
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value as 'admin' | 'client')}
-              style={{ width: '100%', boxSizing: 'border-box', padding: '8px' }}
             >
               <option value="client">Client</option>
               <option value="admin">Admin</option>
             </select>
           </div>
-          <button type="submit">Update User</button>
-          <button
-            type="button"
-            onClick={() => navigate('/admin')}
-            style={{ backgroundColor: '#666' }}
-          >
-            Cancel
-          </button>
-          {error && (
-            <div className="error-text" style={{ textAlign: 'center' }}>
-              {error}
-            </div>
-          )}
+          <div className="button-group">
+            <button type="submit">Update User</button>
+            <button type="button" onClick={() => navigate('/admin')}>
+              Cancel
+            </button>
+          </div>
+          {error && <div className="error-text">{error}</div>}
         </form>
       </div>
     </div>
