@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import apiClient from '../api/apiClient';
 import { useUser } from './useUser';
+import { extractErrorMessage } from '../utils/apiErrorHandler';
 import type { Account, TransactionInput } from '../types';
 
 export const useAccount = () => {
@@ -21,9 +22,8 @@ export const useAccount = () => {
       const response = await apiClient.get<Account>(`/api/account/${user.accountId}`);
       setAccount(response.data);
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      }
+      const errorMessage = extractErrorMessage(err, 'Failed to load account details');
+      setError(errorMessage);
       console.error(err);
     } finally {
       setLoading(false);
@@ -58,11 +58,10 @@ export const useTransaction = () => {
       });
       return true;
     } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      }
+      const errorMessage = extractErrorMessage(err, 'Transaction failed');
+      setError(errorMessage);
       console.error(err);
-      return null;
+      throw err; // Re-throw to let component handle navigation logic if needed
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { usersService } from '../services/usersService.js';
+import { ErrorMessages } from '../utils/errorMessages.js';
 
 export class AdminController {
   async getAllUsers(req: Request, res: Response) {
@@ -7,7 +8,7 @@ export class AdminController {
       const users = await usersService.getAllUsers();
       res.json(users);
     } catch {
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ message: ErrorMessages.USER.FETCH_FAILED });
     }
   }
 
@@ -19,10 +20,10 @@ export class AdminController {
       if (updatedUser) {
         res.json(updatedUser);
       } else {
-        res.status(404).json({ error: 'User not found' });
+        res.status(404).json({ message: ErrorMessages.USER.NOT_FOUND });
       }
     } catch {
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ message: ErrorMessages.USER.UPDATE_FAILED });
     }
   }
 
@@ -33,10 +34,10 @@ export class AdminController {
       if (success) {
         res.status(204).send();
       } else {
-        res.status(404).json({ error: 'User not found' });
+        res.status(404).json({ message: ErrorMessages.USER.NOT_FOUND });
       }
     } catch {
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ message: ErrorMessages.USER.DELETE_FAILED });
     }
   }
 }

@@ -2,8 +2,11 @@ interface ApiError {
   response?: {
     data?: {
       message?: string;
+      error?: string;
     };
+    status?: number;
   };
+  message?: string;
 }
 
 /**
@@ -15,7 +18,20 @@ interface ApiError {
 export const extractErrorMessage = (error: unknown, defaultMessage: string): string => {
   if (error && typeof error === 'object' && 'response' in error) {
     const apiError = error as ApiError;
-    return apiError.response?.data?.message || defaultMessage;
+    // Try to get message from response.data.message or response.data.error
+    const errorMessage = apiError.response?.data?.message || apiError.response?.data?.error;
+    if (errorMessage) {
+      return errorMessage;
+    }
   }
+
+  // Handle network errors
+  if (error && typeof error === 'object' && 'message' in error) {
+    const err = error as ApiError;
+    if (err.message?.includes('Network Error') || err.message?.includes('timeout')) {
+      return 'Unable to connect to the server. Please check your internet connection and try again.';
+    }
+  }
+
   return defaultMessage;
 };

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { authService } from '../services/authService.js';
+import { ErrorMessages } from '../utils/errorMessages.js';
 
 export class AuthController {
   async login(req: Request, res: Response) {
@@ -10,10 +11,10 @@ export class AuthController {
       if (result) {
         res.json(result);
       } else {
-        res.status(401).json({ error: 'Invalid credentials' });
+        res.status(401).json({ message: ErrorMessages.AUTH.INVALID_CREDENTIALS });
       }
     } catch {
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ message: ErrorMessages.AUTH.LOGIN_FAILED });
     }
   }
 
@@ -24,10 +25,10 @@ export class AuthController {
       const result = await authService.register(email, password, name);
       res.status(201).json(result);
     } catch (error: unknown) {
-      if (error instanceof Error && error.message === 'Username already exists') {
-        res.status(409).json({ error: 'Username already exists' });
+      if (error instanceof Error && error.message === 'Email already exists') {
+        res.status(409).json({ message: ErrorMessages.AUTH.EMAIL_ALREADY_EXISTS });
       } else {
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ message: ErrorMessages.AUTH.REGISTRATION_FAILED });
       }
     }
   }

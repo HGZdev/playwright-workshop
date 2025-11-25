@@ -14,7 +14,6 @@ export const TransactionPage: React.FC = () => {
   const [recipient, setRecipient] = useState('');
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
-  const [formError, setFormError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,7 +28,7 @@ export const TransactionPage: React.FC = () => {
       });
       navigate('/dashboard');
     } catch {
-      setFormError('Operation failed');
+      // Error is handled by useTransaction hook
     }
   };
 
@@ -82,11 +81,7 @@ export const TransactionPage: React.FC = () => {
             required
           />
         </div>
-        {formError && (
-          <div className="error-text" role="alert" aria-live="polite">
-            {formError}
-          </div>
-        )}
+
         {error && (
           <div className="error-text" role="alert" aria-live="polite">
             {error}

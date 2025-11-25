@@ -35,10 +35,7 @@ export class AuthService {
     }
 
     const newAccount: Account = { id: Date.now(), transactions: [] };
-
-    console.log('Creating account with ID:', newAccount.id);
     const accountId = await db.addAccount(newAccount);
-    console.log('Account ID returned from db.addAccount:', accountId);
 
     // Small delay to ensure unique ID for user
     await new Promise((resolve) => setTimeout(resolve, 1));

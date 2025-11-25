@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { User } from '../database/types.js';
+import { ErrorMessages } from '../utils/errorMessages.js';
 
 export interface AuthRequest extends Request {
   user?: User;
@@ -10,7 +11,7 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
   const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
 
   if (!token) {
-    return res.status(401).json({ error: 'Access token required' });
+    return res.status(401).json({ message: ErrorMessages.AUTH.LOGIN_REQUIRED });
   }
 
   try {
@@ -21,6 +22,6 @@ export const authenticateToken = (req: AuthRequest, res: Response, next: NextFun
     req.user = user;
     next();
   } catch {
-    return res.status(401).json({ error: 'Invalid token' });
+    return res.status(401).json({ message: ErrorMessages.AUTH.INVALID_TOKEN });
   }
 };
