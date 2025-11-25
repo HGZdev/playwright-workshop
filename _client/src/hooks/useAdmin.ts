@@ -1,14 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import apiClient from '../api/apiClient';
 import { extractErrorMessage } from '../utils/apiErrorHandler';
-
-interface User {
-  id: string;
-  username: string;
-  password: string;
-  name: string;
-  role: 'admin' | 'client';
-}
+import type { User } from '../types';
 
 export const useGetUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -39,7 +32,7 @@ export const useUpdateUser = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const updateUser = async (id: string, data: Partial<User>) => {
+  const updateUser = async (id: User['id'], data: Partial<User>) => {
     setLoading(true);
     setError(null);
     try {
@@ -60,7 +53,7 @@ export const useDeleteUser = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const deleteUser = async (id: string) => {
+  const deleteUser = async (id: User['id']) => {
     setLoading(true);
     setError(null);
     try {

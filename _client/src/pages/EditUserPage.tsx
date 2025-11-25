@@ -4,16 +4,16 @@ import { useGetUsers, useUpdateUser } from '../hooks/useAdmin';
 
 export const EditUserPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const { users } = useGetUsers();
+  const navigate = useNavigate();
   const { updateUser, error } = useUpdateUser();
 
-  const currentUser = useMemo(() => users.find((u) => u.id === id), [users, id]);
+  const currentUser = useMemo(() => users.find((u) => u.id === Number(id)), [users, id]);
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const success = await updateUser(id!, {
+    const success = await updateUser(Number(id), {
       username: formData.get('username') as string,
       password: formData.get('password') as string,
       name: formData.get('name') as string,

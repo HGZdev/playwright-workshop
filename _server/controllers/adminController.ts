@@ -15,7 +15,7 @@ export class AdminController {
     const { id } = req.params;
     const updates = req.body;
     try {
-      const updatedUser = await adminService.updateUser(id, updates);
+      const updatedUser = await adminService.updateUser(Number(id), updates);
       if (updatedUser) {
         res.json(updatedUser);
       } else {
@@ -29,7 +29,7 @@ export class AdminController {
   async deleteUser(req: Request, res: Response) {
     const { id } = req.params;
     try {
-      const success = await adminService.deleteUser(id);
+      const success = await adminService.deleteUser(Number(id));
       if (success) {
         res.status(204).send();
       } else {

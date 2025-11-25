@@ -1,15 +1,11 @@
 import { useState } from 'react';
 import apiClient from '../api/apiClient';
 import { extractErrorMessage } from '../utils/apiErrorHandler';
+import type { User } from '../types';
 
 interface AuthResponse {
   token: string;
-  user: {
-    id: string;
-    username: string;
-    name: string;
-    role: 'admin' | 'client';
-  };
+  user: User;
 }
 
 export const useLogin = () => {

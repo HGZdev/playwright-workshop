@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useGetUsers, useDeleteUser } from '../hooks/useAdmin';
 import { useUser } from '../hooks/useUser';
+import type { User } from '../types';
 
 export const AdminDashboardPage: React.FC = () => {
   const { users, refetch } = useGetUsers();
@@ -9,7 +10,7 @@ export const AdminDashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { logout } = useUser();
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (id: User['id']) => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       const success = await deleteUser(id);
       if (success) {

@@ -1,12 +1,6 @@
 import React, { createContext, useState } from 'react';
 import type { ReactNode } from 'react';
-
-export interface User {
-  id: string;
-  username: string;
-  name: string;
-  role: 'admin' | 'client';
-}
+import type { User } from '../types';
 
 export interface UserContextType {
   user: User | null;
@@ -16,7 +10,7 @@ export interface UserContextType {
   isAdmin: boolean;
 }
 
-export const UserContext = createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType | null>(null);
 
 export interface UserProviderProps {
   children: ReactNode;

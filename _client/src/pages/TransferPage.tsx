@@ -1,18 +1,28 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTransfer } from '../hooks/useAccount';
+import { useAccount } from '../hooks/useAccount';
 
 export const TransferPage: React.FC = () => {
+  const { account } = useAccount();
   const [recipient, setRecipient] = useState('');
   const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
   const navigate = useNavigate();
   const { transfer, error } = useTransfer();
 
+  if (!account) return;
+
   const handleTransfer = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const success = await transfer(recipient, Number(amount), title);
+    const success = await transfer({
+      accountId: account.id,
+      recipient,
+      title,
+      amount: Number(amount),
+      type: 'outgoing',
+    });
     if (success) {
       navigate('/dashboard');
     }

@@ -14,9 +14,9 @@ export type Account = AccountInput & {
   id: number;
 };
 
-export type AccountInput = {
+export interface AccountInput {
   transactions: Transaction[];
-};
+}
 
 export type Transaction = TransactionInput & {
   id: number;

@@ -1,17 +1,28 @@
-import { useNavigate } from 'react-router-dom';
-import { useGetBalance, useGetTransactions } from '../hooks/useAccount';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
+import { useAccount } from '../hooks/useAccount';
 
 export const DashboardPage: React.FC = () => {
-  const { balance } = useGetBalance();
-  const { transactions } = useGetTransactions();
-  const navigate = useNavigate();
   const { user, logout } = useUser();
+  const { account, loading, error } = useAccount();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  if (!user || !account) return <Navigate to="/login" />;
+
+  const balance = account.transactions.reduce((acc, t) => acc + t.amount, 0) || 0;
 
   return (
     <div className="container">
@@ -27,7 +38,7 @@ export const DashboardPage: React.FC = () => {
 
       <div className="card balance-card">
         <h2>Available Balance</h2>
-        <div className="balance-amount">{balance !== null ? `${balance} PLN` : 'Loading...'}</div>
+        <div className="balance-amount">{balance ? `${balance} PLN` : 'Loading...'}</div>
       </div>
 
       <div className="actions-section">
@@ -37,7 +48,7 @@ export const DashboardPage: React.FC = () => {
       <div className="card transactions-card">
         <h2>Recent Transactions</h2>
         <div className="transactions-list">
-          {transactions.map((t) => (
+          {account.transactions.map((t) => (
             <div key={t.id} className="transaction-item">
               <div className="transaction-details">
                 <div className="transaction-title">{t.title}</div>
@@ -49,7 +60,9 @@ export const DashboardPage: React.FC = () => {
               </div>
             </div>
           ))}
-          {transactions.length === 0 && <div className="empty-state">No transactions yet</div>}
+          {account.transactions.length === 0 && (
+            <div className="empty-state">No transactions yet</div>
+          )}
         </div>
       </div>
     </div>

@@ -52,6 +52,12 @@ export class Database {
     await this.save();
   }
 
+  async addAccount(account: Account) {
+    this.data.accounts.push(account);
+    await this.save();
+    return account.id;
+  }
+
   async updateUser(id: User['id'], updates: Partial<User>) {
     const userIndex = this.data.users.findIndex((u) => u.id === id);
     if (userIndex !== -1) {

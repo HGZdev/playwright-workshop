@@ -4,7 +4,7 @@ import { UserContext } from '../context/UserContext';
 
 export const useUser = (): UserContextType => {
   const context = useContext(UserContext);
-  if (context === undefined) {
+  if (context === null) {
     throw new Error('useUser must be used within a UserProvider');
   }
   return context;

@@ -29,8 +29,16 @@ export class AuthService {
       throw new Error('Username already exists');
     }
 
+    const newAccount = {
+      id: randomInt(1, 1000),
+      transactionIds: [],
+    };
+
+    const accountId = await db.addAccount(newAccount);
+
     const newUser = {
-      id: randomInt(1, 1000).toString(),
+      id: randomInt(1, 1000),
+      accountId,
       username,
       password,
       name,

@@ -16,11 +16,13 @@ export const LoginPage: React.FC = () => {
     const response = await loginHook(username, password);
 
     if (response?.token) {
-      // Use UserContext to manage auth state
-      loginContext(response.user, response.token);
+      const { user, token } = response;
+      if (!user) {
+        return;
+      }
+      loginContext(user, token);
 
-      // Navigate based on role
-      if (response.user.role === 'admin') {
+      if (user.role === 'admin') {
         navigate('/admin');
       } else {
         navigate('/dashboard');
