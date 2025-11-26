@@ -44,8 +44,8 @@ test.describe('Registration Flow', () => {
   });
 });
 
-const user2 = generateUserInput('Mala Mi', 'client');
-const user3 = generateUserInput('Pamela', 'client');
+const user2 = generateUserInput('Sokrates', 'client');
+const user3 = generateUserInput('', 'client');
 
 test.describe('Registration Flow with Page Object', () => {
   let userAuthPage: UserAuthPage;
