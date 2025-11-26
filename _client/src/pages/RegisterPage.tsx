@@ -33,58 +33,58 @@ export const RegisterPage: React.FC = () => {
   return (
     <div className="flex-center">
       <div className="card register-page">
-        <h1>Register</h1>
+        <h1>Rejestracja</h1>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="register-form"
-          aria-label="Register a new account"
+          aria-label="Zarejestruj nowe konto"
         >
           <FormField
             id="email"
-            label="Email"
+            label="E-mail"
             type="email"
-            placeholder="Email"
+            placeholder="E-mail"
             autoComplete="email"
             register={register}
             validation={{
-              required: 'Email is required',
+              required: 'E-mail jest wymagany',
               validate: (value) => getEmailError(value) || undefined,
             }}
             error={errors.email}
           />
           <FormField
             id="password"
-            label="Password"
+            label="Hasło"
             type="password"
-            placeholder="Password"
+            placeholder="Hasło"
             autoComplete="new-password"
             register={register}
             validation={{
-              required: 'Password is required',
+              required: 'Hasło jest wymagane',
               validate: (value) => getPasswordError(value) || undefined,
             }}
             error={errors.password}
           />
           <FormField
             id="name"
-            label="Full Name"
+            label="Imię i nazwisko"
             type="text"
-            placeholder="Full Name"
+            placeholder="Imię i nazwisko"
             autoComplete="name"
             register={register}
             validation={{
-              required: 'Name is required',
+              required: 'Imię i nazwisko jest wymagane',
             }}
             error={errors.name}
           />
-          <button type="submit">Register</button>
+          <button type="submit">Zarejestruj się</button>
           {error && (
             <div className="error-text" role="alert" aria-live="polite">
               {error}
             </div>
           )}
           <div className="form-footer">
-            <Link to="/login">Back to Login</Link>
+            <Link to="/login">Powrót do logowania</Link>
           </div>
         </form>
       </div>

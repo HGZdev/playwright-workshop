@@ -21,13 +21,11 @@ export const UnauthorizedPage: React.FC = () => {
         style={{ width: '100%', maxWidth: '500px', textAlign: 'center' }}
         role="alert"
       >
-        <h1>Access Denied</h1>
-        <p style={{ marginBottom: '20px', color: '#666' }}>
-          You don't have permission to access this page.
-        </p>
-        <p style={{ marginBottom: '30px' }}>This page is restricted to administrators only.</p>
-        <button onClick={handleGoBack} aria-label="Return to your dashboard">
-          Go to Dashboard
+        <h1>Brak dostępu</h1>
+        <p style={{ marginBottom: '20px', color: '#666' }}>Nie masz uprawnień do tej strony.</p>
+        <p style={{ marginBottom: '30px' }}>Ta strona jest dostępna tylko dla administratorów.</p>
+        <button onClick={handleGoBack} aria-label="Powrót do panelu">
+          Przejdź do panelu
         </button>
       </div>
     </div>

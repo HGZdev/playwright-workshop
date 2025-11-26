@@ -47,21 +47,21 @@ export const TransactionPage: React.FC = () => {
 
   return (
     <div className="container">
-      <h2>{isAddMode ? 'Add Money' : 'Make Transfer'}</h2>
+      <h2>{isAddMode ? 'Doładuj konto' : 'Wykonaj przelew'}</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="transfer-form"
-        aria-label={isAddMode ? 'Add money to your account' : 'Transfer money to another account'}
+        aria-label={isAddMode ? 'Doładuj pieniądze na konto' : 'Przelej pieniądze na inne konto'}
       >
         {!isAddMode && (
           <FormField
             id="recipient"
-            label="Recipient"
+            label="Odbiorca"
             type="text"
             autoComplete="off"
             register={register}
             validation={{
-              required: 'Recipient is required',
+              required: 'Odbiorca jest wymagany',
               validate: (value) => getRecipientError(value) || undefined,
             }}
             error={errors.recipient}
@@ -69,19 +69,19 @@ export const TransactionPage: React.FC = () => {
         )}
         <FormField
           id="title"
-          label="Title"
+          label="Tytuł"
           type="text"
           autoComplete="off"
           register={register}
           validation={{
-            required: 'Title is required',
+            required: 'Tytuł jest wymagany',
             validate: (value) => getTitleError(value) || undefined,
           }}
           error={errors.title}
         />
         <FormField
           id="amount"
-          label="Amount"
+          label="Kwota"
           type="number"
           min="0.01"
           step="0.01"
@@ -89,7 +89,7 @@ export const TransactionPage: React.FC = () => {
           autoComplete="transaction-amount"
           register={register}
           validation={{
-            required: 'Amount is required',
+            required: 'Kwota jest wymagana',
             validate: (value) => getAmountError(value) || undefined,
           }}
           error={errors.amount}
@@ -101,10 +101,10 @@ export const TransactionPage: React.FC = () => {
           </div>
         )}
         <button type="submit" disabled={loading}>
-          {isAddMode ? 'Add Money' : 'Send Transfer'}
+          {isAddMode ? 'Doładuj' : 'Wyślij przelew'}
         </button>
         <button type="button" onClick={() => navigate('/dashboard')}>
-          Cancel
+          Anuluj
         </button>
       </form>
     </div>

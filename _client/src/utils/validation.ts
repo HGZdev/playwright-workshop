@@ -10,31 +10,31 @@ export const isValidPassword = (password: string): boolean => {
 };
 
 export const getEmailError = (email: string): string | null => {
-  if (!email) return 'Email is required';
-  if (!isValidEmail(email)) return 'Please enter a valid email address';
+  if (!email) return 'E-mail jest wymagany';
+  if (!isValidEmail(email)) return 'Wprowadź poprawny adres e-mail';
   return null;
 };
 
 export const getPasswordError = (password: string): string | null => {
-  if (!password) return 'Password is required';
-  if (!isValidPassword(password)) return 'Password must be at least 6 characters';
+  if (!password) return 'Hasło jest wymagane';
+  if (!isValidPassword(password)) return 'Hasło musi mieć co najmniej 6 znaków';
   return null;
 };
 
 export const getRecipientError = (recipient: string): string | null => {
-  if (!recipient) return 'Recipient is required';
+  if (!recipient) return 'Odbiorca jest wymagany';
   return null;
 };
 
 export const getTitleError = (title: string): string | null => {
-  if (!title) return 'Title is required';
+  if (!title) return 'Tytuł jest wymagany';
   return null;
 };
 
 export const getAmountError = (amount: string): string | null => {
-  if (!amount) return 'Amount is required';
+  if (!amount) return 'Kwota jest wymagana';
   const numAmount = Number(amount);
-  if (isNaN(numAmount)) return 'Amount must be a number';
-  if (numAmount <= 0) return 'Amount must be positive';
+  if (isNaN(numAmount)) return 'Kwota musi być liczbą';
+  if (numAmount <= 0) return 'Kwota musi być dodatnia';
   return null;
 };

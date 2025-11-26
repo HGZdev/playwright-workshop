@@ -28,28 +28,28 @@ export const DashboardPage: React.FC = () => {
       <header className="dashboard-header">
         <h1>Mini Bank</h1>
         <div className="user-info">
-          <span className="user-name">Welcome, {user?.name}</span>
+          <span className="user-name">Witaj, {user?.name}</span>
           {user?.role === 'admin' && (
             <button onClick={() => navigate('/admin')} type="button">
-              Admin Panel
+              Panel administratora
             </button>
           )}
-          <button onClick={handleLogout} type="button" aria-label="Logout from your account">
-            Logout
+          <button onClick={handleLogout} type="button" aria-label="Wyloguj się z konta">
+            Wyloguj się
           </button>
         </div>
       </header>
 
-      <main aria-label="Account overview">
+      <main aria-label="Przegląd konta">
         <section className="card balance-card">
-          <h2>Available Balance</h2>
+          <h2>Dostępne saldo</h2>
           <div
             data-testid="balance-amount"
             className="balance-amount"
             role="status"
             aria-live="polite"
           >
-            {isLoading ? 'Loading...' : `${currencyFormatter(balance)}`}
+            {isLoading ? 'Ładowanie...' : `${currencyFormatter(balance)}`}
           </div>
         </section>
 
@@ -57,25 +57,25 @@ export const DashboardPage: React.FC = () => {
           <button
             onClick={() => navigate('/add-money')}
             type="button"
-            aria-label="Top up your account balance"
+            aria-label="Doładuj saldo konta"
           >
-            Top up the account ⬇
+            Doładuj konto ⬇
           </button>
           <button
             onClick={() => navigate('/send-money')}
             type="button"
-            aria-label="Make a money transfer"
+            aria-label="Wykonaj przelew"
           >
-            Make Transfer ⬆
+            Wykonaj przelew ⬆
           </button>
         </section>
 
         <section className="card transactions-card">
-          <h2>Recent Transactions</h2>
+          <h2>Ostatnie transakcje</h2>
           {isLoading ? (
             <div className="transactions-list">
               <div className="loading-state" role="status" aria-live="polite">
-                Loading...
+                Ładowanie...
               </div>
             </div>
           ) : (
@@ -85,7 +85,7 @@ export const DashboardPage: React.FC = () => {
                   key={t.id}
                   className="transaction-item"
                   role="listitem"
-                  aria-label={`${t.type === 'incoming' ? 'Incoming' : 'Outgoing'} transaction: ${t.title}, ${currencyFormatter(t.amount, true)}, ${t.date}`}
+                  aria-label={`Transakcja ${t.type === 'incoming' ? 'przychodząca' : 'wychodząca'}: ${t.title}, ${currencyFormatter(t.amount, true)}, ${t.date}`}
                 >
                   <div className="transaction-details">
                     <div className="transaction-title">{t.title}</div>
@@ -99,7 +99,7 @@ export const DashboardPage: React.FC = () => {
                 </div>
               ))}
               {account?.transactions.length === 0 && (
-                <div className="empty-state">No transactions yet</div>
+                <div className="empty-state">Brak transakcji</div>
               )}
             </div>
           )}

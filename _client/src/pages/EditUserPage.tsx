@@ -32,9 +32,9 @@ export const EditUserPage: React.FC = () => {
     return (
       <div className="flex-center">
         <div className="card edit-user-page">
-          <h1>Loading...</h1>
+          <h1>Ładowanie...</h1>
           <div role="status" aria-live="polite" className="loading-state">
-            Loading user data...
+            Ładowanie danych użytkownika...
           </div>
         </div>
       </div>
@@ -45,9 +45,9 @@ export const EditUserPage: React.FC = () => {
     return (
       <div className="flex-center">
         <div className="card edit-user-page">
-          <h1>User Not Found</h1>
+          <h1>Nie znaleziono użytkownika</h1>
           <button type="button" onClick={() => navigate('/admin')}>
-            Back to Admin
+            Powrót do panelu administratora
           </button>
         </div>
       </div>
@@ -57,10 +57,14 @@ export const EditUserPage: React.FC = () => {
   return (
     <div className="flex-center">
       <div className="card edit-user-page">
-        <h1>Edit User</h1>
-        <form onSubmit={handleUpdate} className="edit-user-form" aria-label="Edit user information">
+        <h1>Edytuj użytkownika</h1>
+        <form
+          onSubmit={handleUpdate}
+          className="edit-user-form"
+          aria-label="Edytuj dane użytkownika"
+        >
           <div className="form-group">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">E-mail</label>
             <input
               id="email"
               name="email"
@@ -72,7 +76,7 @@ export const EditUserPage: React.FC = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Hasło</label>
             <input
               id="password"
               name="password"
@@ -83,7 +87,7 @@ export const EditUserPage: React.FC = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="name">Full Name</label>
+            <label htmlFor="name">Imię i nazwisko</label>
             <input
               id="name"
               name="name"
@@ -94,7 +98,7 @@ export const EditUserPage: React.FC = () => {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="role">Role</label>
+            <label htmlFor="role">Rola</label>
             <select
               disabled={sessionUser?.id === currentUser.id}
               id="role"
@@ -104,19 +108,19 @@ export const EditUserPage: React.FC = () => {
                 sessionUser?.id === currentUser.id ? 'role-disabled-reason' : undefined
               }
             >
-              <option value="client">Client</option>
-              <option value="admin">Admin</option>
+              <option value="client">Klient</option>
+              <option value="admin">Administrator</option>
             </select>
             {sessionUser?.id === currentUser.id && (
               <span id="role-disabled-reason" className="text-sm text-muted">
-                You cannot change your own role
+                Nie możesz zmienić własnej roli
               </span>
             )}
           </div>
           <div className="button-group">
-            <button type="submit">Update User</button>
+            <button type="submit">Zaktualizuj użytkownika</button>
             <button type="button" onClick={() => navigate('/admin')}>
-              Cancel
+              Anuluj
             </button>
           </div>
           {error && (

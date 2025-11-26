@@ -41,35 +41,35 @@ export const LoginPage: React.FC = () => {
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="login-form"
-          aria-label="Login to your account"
+          aria-label="Zaloguj się do swojego konta"
         >
           <FormField
             id="email"
-            label="Email"
+            label="E-mail"
             type="email"
-            placeholder="Email"
+            placeholder="E-mail"
             autoComplete="email"
             register={register}
             validation={{
-              required: 'Email is required',
+              required: 'E-mail jest wymagany',
               validate: (value) => getEmailError(value) || undefined,
             }}
             error={errors.email}
           />
           <FormField
             id="password"
-            label="Password"
+            label="Hasło"
             type="password"
-            placeholder="Password"
+            placeholder="Hasło"
             autoComplete="current-password"
             register={register}
             validation={{
-              required: 'Password is required',
+              required: 'Hasło jest wymagane',
               validate: (value) => getPasswordError(value) || undefined,
             }}
             error={errors.password}
           />
-          <button type="submit">Login</button>
+          <button type="submit">Zaloguj się</button>
           {error && (
             <div className="error-text" role="alert" aria-live="polite">
               {error}
@@ -83,7 +83,7 @@ export const LoginPage: React.FC = () => {
                 navigate('/register');
               }}
             >
-              Register new account
+              Zarejestruj nowe konto
             </a>
           </div>
         </form>
