@@ -22,7 +22,6 @@ export const DashboardPage: React.FC = () => {
   };
 
   const balance = account?.transactions.reduce((acc, t) => acc + t.amount, 0) || 0;
-  const formattedBalance = currencyFormatter(balance, 'PLN');
 
   return (
     <div className="container">
@@ -42,14 +41,19 @@ export const DashboardPage: React.FC = () => {
       </header>
 
       <main aria-label="Account overview">
-        <div className="card balance-card">
+        <section className="card balance-card">
           <h2>Available Balance</h2>
-          <div className="balance-amount" role="status" aria-live="polite">
-            {isLoading ? 'Loading...' : `${formattedBalance} PLN`}
+          <div
+            data-testid="balance-amount"
+            className="balance-amount"
+            role="status"
+            aria-live="polite"
+          >
+            {isLoading ? 'Loading...' : `${currencyFormatter(balance)}`}
           </div>
-        </div>
+        </section>
 
-        <div className="actions-section">
+        <section className="actions-section">
           <button
             onClick={() => navigate('/add-money')}
             type="button"
@@ -64,9 +68,9 @@ export const DashboardPage: React.FC = () => {
           >
             Make Transfer ⬆
           </button>
-        </div>
+        </section>
 
-        <div className="card transactions-card">
+        <section className="card transactions-card">
           <h2>Recent Transactions</h2>
           {isLoading ? (
             <div className="transactions-list">
@@ -81,7 +85,7 @@ export const DashboardPage: React.FC = () => {
                   key={t.id}
                   className="transaction-item"
                   role="listitem"
-                  aria-label={`${t.type === 'incoming' ? 'Incoming' : 'Outgoing'} transaction: ${t.title}, ${currencyFormatter(t.amount, 'PLN', true)}, ${t.date}`}
+                  aria-label={`${t.type === 'incoming' ? 'Incoming' : 'Outgoing'} transaction: ${t.title}, ${currencyFormatter(t.amount, true)}, ${t.date}`}
                 >
                   <div className="transaction-details">
                     <div className="transaction-title">{t.title}</div>
@@ -90,7 +94,7 @@ export const DashboardPage: React.FC = () => {
                     </time>
                   </div>
                   <div className={t.type === 'incoming' ? 'amount-incoming' : 'amount-outgoing'}>
-                    {currencyFormatter(t.amount, 'PLN', true)}
+                    {currencyFormatter(t.amount, true)}
                   </div>
                 </div>
               ))}
@@ -99,7 +103,7 @@ export const DashboardPage: React.FC = () => {
               )}
             </div>
           )}
-        </div>
+        </section>
       </main>
     </div>
   );

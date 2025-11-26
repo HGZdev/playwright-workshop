@@ -6,7 +6,7 @@ export const TransactionPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { account } = useAccount();
-  const { transaction, error } = useTransaction();
+  const { transaction, error, loading } = useTransaction();
 
   const isAddMode = location.pathname === '/add-money';
   const isTransferMode = location.pathname === '/send-money';
@@ -21,7 +21,7 @@ export const TransactionPage: React.FC = () => {
     try {
       await transaction({
         accountId: account.id,
-        recipient: isTransferMode ? 'myself' : recipient,
+        recipient: isAddMode ? 'myself' : recipient,
         title,
         amount: Number(amount),
         type: isTransferMode ? 'outgoing' : 'incoming',
@@ -80,6 +80,11 @@ export const TransactionPage: React.FC = () => {
             autoComplete="transaction-amount"
             required
           />
+          {Number(amount) < 0 && (
+            <div className="error-text" role="alert">
+              Amount cannot be negative
+            </div>
+          )}
         </div>
 
         {error && (
@@ -87,7 +92,9 @@ export const TransactionPage: React.FC = () => {
             {error}
           </div>
         )}
-        <button type="submit">{isAddMode ? 'Add Money' : 'Send Transfer'}</button>
+        <button type="submit" disabled={loading}>
+          {isAddMode ? 'Add Money' : 'Send Transfer'}
+        </button>
         <button type="button" onClick={() => navigate('/dashboard')}>
           Cancel
         </button>
