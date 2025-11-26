@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useUser } from '../hooks/useUser';
 import { getEmailError, getPasswordError } from '../utils/validation';
 import { FormField } from '../components/FormField';
+import { SubmitButton } from '../components/SubmitButton';
 
 interface LoginFormData {
   email: string;
@@ -12,7 +13,7 @@ interface LoginFormData {
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
-  const { login, error, user } = useUser();
+  const { login, error, user, loading } = useUser();
 
   const {
     register,
@@ -22,16 +23,12 @@ export const LoginPage: React.FC = () => {
     mode: 'onBlur',
   });
 
+  if (user) navigate('/dashboard');
+
   const onSubmit = async (data: LoginFormData) => {
     const success = await login(data.email, data.password);
 
-    if (success) {
-      if (user?.role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/dashboard');
-      }
-    }
+    if (success) navigate('/dashboard');
   };
 
   return (
@@ -69,7 +66,7 @@ export const LoginPage: React.FC = () => {
             }}
             error={errors.password}
           />
-          <button type="submit">Zaloguj się</button>
+          <SubmitButton isLoading={loading}>Zaloguj się</SubmitButton>
           {error && (
             <div className="error-text" role="alert" aria-live="polite">
               {error}

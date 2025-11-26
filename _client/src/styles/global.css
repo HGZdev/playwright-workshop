@@ -445,12 +445,48 @@ button.danger::before {
   }
 }
 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .fade-in {
   animation: fadeIn var(--transition-slow) ease-out;
 }
 
 .slide-in {
   animation: slideIn var(--transition-base) ease-out;
+}
+
+/* ===== Submit Button with Spinner ===== */
+.submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.submit-button .button-text {
+  position: relative;
+  z-index: 1;
+}
+
+.submit-button .spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-top-color: #000;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.submit-button.loading {
+  pointer-events: none;
 }
 
 /* ===== Component-Specific Styles ===== */

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useTransaction, useAccount } from '../hooks/useAccount';
 import { getRecipientError, getTitleError, getAmountError } from '../utils/validation';
 import { FormField } from '../components/FormField';
+import { SubmitButton } from '../components/SubmitButton';
 
 interface TransactionFormData {
   recipient: string;
@@ -100,9 +101,7 @@ export const TransactionPage: React.FC = () => {
             {error}
           </div>
         )}
-        <button type="submit" disabled={loading}>
-          {isAddMode ? 'Doładuj' : 'Wyślij przelew'}
-        </button>
+        <SubmitButton isLoading={loading}>{isAddMode ? 'Doładuj' : 'Wyślij przelew'}</SubmitButton>
         <button type="button" onClick={() => navigate('/dashboard')}>
           Anuluj
         </button>

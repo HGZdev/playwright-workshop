@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useUser } from '../hooks/useUser';
 import { getEmailError, getPasswordError } from '../utils/validation';
 import { FormField } from '../components/FormField';
+import { SubmitButton } from '../components/SubmitButton';
 
 interface RegisterFormData {
   email: string;
@@ -13,7 +14,7 @@ interface RegisterFormData {
 
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
-  const { register: registerUser, error } = useUser();
+  const { register: registerUser, error, loading } = useUser();
 
   const {
     register,
@@ -77,7 +78,7 @@ export const RegisterPage: React.FC = () => {
             }}
             error={errors.name}
           />
-          <button type="submit">Zarejestruj się</button>
+          <SubmitButton isLoading={loading}>Zarejestruj się</SubmitButton>
           {error && (
             <div className="error-text" role="alert" aria-live="polite">
               {error}

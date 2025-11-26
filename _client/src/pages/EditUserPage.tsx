@@ -2,13 +2,14 @@ import React, { useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUsers, useUpdateUser } from '../hooks/useAdmin';
 import { useUser } from '../hooks/useUser';
+import { SubmitButton } from '../components/SubmitButton';
 
 export const EditUserPage: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { user: sessionUser, loading: sessionUserLoading } = useUser();
   const { users, loading: usersLoading } = useUsers();
-  const { updateUser, error } = useUpdateUser();
+  const { updateUser, error, loading: updateLoading } = useUpdateUser();
 
   const isLoading = sessionUserLoading || usersLoading;
 
@@ -118,7 +119,7 @@ export const EditUserPage: React.FC = () => {
             )}
           </div>
           <div className="button-group">
-            <button type="submit">Zaktualizuj użytkownika</button>
+            <SubmitButton isLoading={updateLoading}>Zaktualizuj użytkownika</SubmitButton>
             <button type="button" onClick={() => navigate('/admin')}>
               Anuluj
             </button>
