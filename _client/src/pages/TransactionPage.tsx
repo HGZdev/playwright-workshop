@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { useTransaction, useAccount } from '../hooks/useAccount';
 import { getRecipientError, getTitleError, getAmountError } from '../utils/validation';
+import { FormField } from '../components/FormField';
+
+interface TransactionFormData {
+  recipient: string;
+  title: string;
+  amount: string;
+}
 
 export const TransactionPage: React.FC = () => {
   const navigate = useNavigate();
@@ -12,49 +20,23 @@ export const TransactionPage: React.FC = () => {
   const isAddMode = location.pathname === '/add-money';
   const isTransferMode = location.pathname === '/send-money';
 
-  const [recipient, setRecipient] = useState('');
-  const [title, setTitle] = useState('');
-  const [amount, setAmount] = useState('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TransactionFormData>({
+    mode: 'onBlur',
+  });
 
-  const [recipientError, setRecipientError] = useState<string | null>(null);
-  const [titleError, setTitleError] = useState<string | null>(null);
-  const [amountError, setAmountError] = useState<string | null>(null);
-
-  const handleRecipientBlur = () => {
-    setRecipientError(getRecipientError(recipient));
-  };
-
-  const handleTitleBlur = () => {
-    setTitleError(getTitleError(title));
-  };
-
-  const handleAmountBlur = () => {
-    setAmountError(getAmountError(amount));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: TransactionFormData) => {
     if (!account) return;
-
-    // Validate before submitting
-    const recipientErr = isAddMode ? null : getRecipientError(recipient);
-    const titleErr = getTitleError(title);
-    const amountErr = getAmountError(amount);
-
-    if (!isAddMode) setRecipientError(recipientErr);
-    setTitleError(titleErr);
-    setAmountError(amountErr);
-
-    if (recipientErr || titleErr || amountErr) {
-      return;
-    }
 
     try {
       await transaction({
         accountId: account.id,
-        recipient: isAddMode ? 'myself' : recipient,
-        title,
-        amount: Number(amount),
+        recipient: isAddMode ? 'myself' : data.recipient,
+        title: data.title,
+        amount: Number(data.amount),
         type: isTransferMode ? 'outgoing' : 'incoming',
       });
       navigate('/dashboard');
@@ -67,84 +49,51 @@ export const TransactionPage: React.FC = () => {
     <div className="container">
       <h2>{isAddMode ? 'Add Money' : 'Make Transfer'}</h2>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={handleSubmit(onSubmit)}
         className="transfer-form"
         aria-label={isAddMode ? 'Add money to your account' : 'Transfer money to another account'}
       >
         {!isAddMode && (
-          <div className="form-group">
-            <label htmlFor="recipient">Recipient</label>
-            <input
-              id="recipient"
-              name="recipient"
-              type="text"
-              value={recipient}
-              onChange={(e) => {
-                setRecipient(e.target.value);
-                if (recipientError) setRecipientError(null);
-              }}
-              onBlur={handleRecipientBlur}
-              autoComplete="off"
-              aria-invalid={!!recipientError}
-              aria-describedby={recipientError ? 'recipient-error' : undefined}
-              required
-            />
-            {recipientError && (
-              <div id="recipient-error" className="error-text" role="alert">
-                {recipientError}
-              </div>
-            )}
-          </div>
-        )}
-        <div className="form-group">
-          <label htmlFor="title">Title</label>
-          <input
-            id="title"
-            name="title"
+          <FormField
+            id="recipient"
+            label="Recipient"
             type="text"
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              if (titleError) setTitleError(null);
-            }}
-            onBlur={handleTitleBlur}
             autoComplete="off"
-            aria-invalid={!!titleError}
-            aria-describedby={titleError ? 'title-error' : undefined}
-            required
-          />
-          {titleError && (
-            <div id="title-error" className="error-text" role="alert">
-              {titleError}
-            </div>
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="amount">Amount</label>
-          <input
-            id="amount"
-            name="amount"
-            type="number"
-            value={amount}
-            onChange={(e) => {
-              setAmount(e.target.value);
-              if (amountError) setAmountError(null);
+            register={register}
+            validation={{
+              required: 'Recipient is required',
+              validate: (value) => getRecipientError(value) || undefined,
             }}
-            onBlur={handleAmountBlur}
-            min="0.01"
-            step="0.01"
-            inputMode="decimal"
-            autoComplete="transaction-amount"
-            aria-invalid={!!amountError}
-            aria-describedby={amountError ? 'amount-error' : undefined}
-            required
+            error={errors.recipient}
           />
-          {amountError && (
-            <div id="amount-error" className="error-text" role="alert">
-              {amountError}
-            </div>
-          )}
-        </div>
+        )}
+        <FormField
+          id="title"
+          label="Title"
+          type="text"
+          autoComplete="off"
+          register={register}
+          validation={{
+            required: 'Title is required',
+            validate: (value) => getTitleError(value) || undefined,
+          }}
+          error={errors.title}
+        />
+        <FormField
+          id="amount"
+          label="Amount"
+          type="number"
+          min="0.01"
+          step="0.01"
+          inputMode="decimal"
+          autoComplete="transaction-amount"
+          register={register}
+          validation={{
+            required: 'Amount is required',
+            validate: (value) => getAmountError(value) || undefined,
+          }}
+          error={errors.amount}
+        />
 
         {error && (
           <div className="error-text" role="alert" aria-live="polite">

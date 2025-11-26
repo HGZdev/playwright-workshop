@@ -5,7 +5,7 @@ export const generateUserInput = (
   role: UserInput['role'] = 'client',
 ): UserInput => {
   return {
-    email: `${name.replace(' ', '_').toLowerCase()}_${new Date().getTime()}@example.com`,
+    email: `${name.replace(' ', '_').toLowerCase()}_${new Date().getTime()}@gmail.com`,
     password: 'secret123',
     name,
     role,

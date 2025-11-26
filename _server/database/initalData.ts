@@ -9,16 +9,16 @@ export const ACCOUNTS: Account[] = [
 export const USERS: User[] = [
   {
     id: 1,
-    email: 'admin@example.com',
-    password: 'admin',
+    email: 'admin@gmail.com',
+    password: 'admin@gmail.com',
     name: 'Ania Admin',
     role: 'admin',
     accountId: ACCOUNTS[0].id,
   },
   {
     id: 2,
-    email: 'client1@example.com',
-    password: 'client1',
+    email: 'client1@gmail.com',
+    password: 'client1@gmail.com',
     name: 'Janina Kowalska',
     role: 'client',
     accountId: ACCOUNTS[1].id,
