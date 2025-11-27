@@ -1,22 +1,22 @@
 export type User = UserInput & {
   id: number;
+  accountId: Account['id'];
 };
 
 export interface UserInput {
-  email: string;
-  password: string;
   name: string;
+  password: string;
   role: 'admin' | 'client';
-  accountId: Account['id'];
+  email: string;
 }
 
 export type Account = AccountInput & {
   id: number;
 };
 
-export interface AccountInput {
+export type AccountInput = {
   transactions: Transaction[];
-}
+};
 
 export type Transaction = TransactionInput & {
   id: number;

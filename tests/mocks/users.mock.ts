@@ -4,9 +4,11 @@ export const generateUserInput = (
   name: string = 'Anna',
   role: UserInput['role'] = 'client',
 ): UserInput => {
+  const timestamp = new Date().getTime();
+  const email = `${name.replace(' ', '_').toLowerCase()}_${timestamp}@gmail.com`;
   return {
-    email: `${name.replace(' ', '_').toLowerCase()}_${new Date().getTime()}@gmail.com`,
-    password: 'secret123',
+    email,
+    password: email,
     name,
     role,
   };

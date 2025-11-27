@@ -8,7 +8,7 @@ test.describe('Admin Flow', () => {
     await page.getByTestId('login-button').click();
 
     await expect(page).toHaveURL('/admin');
-    await expect(page.getByRole('heading', { name: 'Admin Dashboard' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Panel Administratora' })).toBeVisible();
     await expect(page.getByText('client1@gmail.com')).toBeVisible();
   });
 
@@ -20,16 +20,16 @@ test.describe('Admin Flow', () => {
 
     // Find client1 row and click Edit
     const userRow = page.getByRole('row', { name: 'client1@gmail.com' });
-    await userRow.getByRole('button', { name: 'Edit' }).click();
+    await userRow.getByRole('button', { name: 'Edytuj' }).click();
 
     await expect(page).toHaveURL(/\/admin\/user\//);
 
     // Wait for form to be populated
-    await expect(page.getByLabel('Email')).toHaveValue('client1@gmail.com');
+    await expect(page.getByLabel('E-mail')).toHaveValue('client1@gmail.com');
 
     const newName = `Updated Name ${Date.now()}`;
-    await page.getByLabel('Full Name').fill(newName);
-    await page.getByRole('button', { name: 'Update User' }).click();
+    await page.getByLabel('Imię i nazwisko').fill(newName);
+    await page.getByRole('button', { name: 'Zaktualizuj użytkownika' }).click();
 
     await expect(page).toHaveURL('/admin');
     await expect(page.getByText(newName)).toBeVisible();
@@ -39,10 +39,10 @@ test.describe('Admin Flow', () => {
     // Register a user to delete
     await page.goto('/register');
     const email = `todelete_${Date.now()}@gmail.com`;
-    await page.getByLabel('Email').fill(email);
-    await page.getByLabel('Password').fill('password');
-    await page.getByLabel('Full Name').fill('To Delete');
-    await page.getByRole('button', { name: 'Register' }).click();
+    await page.getByLabel('E-mail').fill(email);
+    await page.getByLabel('Hasło').fill('password');
+    await page.getByLabel('Imię i nazwisko').fill('To Delete');
+    await page.getByRole('button', { name: 'Zarejestruj się' }).click();
 
     // Login as admin
     await page.goto('/login');
@@ -55,7 +55,7 @@ test.describe('Admin Flow', () => {
 
     // Find user row and click Delete
     const userRow = page.getByRole('row', { name: email });
-    await userRow.getByRole('button', { name: 'Delete' }).click();
+    await userRow.getByRole('button', { name: 'Usuń' }).click();
 
     await expect(page.getByText(email)).not.toBeVisible();
   });

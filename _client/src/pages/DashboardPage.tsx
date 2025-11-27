@@ -30,9 +30,9 @@ export const DashboardPage: React.FC = () => {
         <div className="user-info">
           <span className="user-name">Witaj, {user?.name}</span>
           {user?.role === 'admin' && (
-            <button onClick={() => navigate('/admin')} type="button">
+            <a onClick={() => navigate('/admin')} role="button" tabIndex={0}>
               Panel administratora
-            </button>
+            </a>
           )}
           <button onClick={handleLogout} type="button" aria-label="Wyloguj się z konta">
             Wyloguj się
