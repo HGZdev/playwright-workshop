@@ -172,6 +172,7 @@ test.describe('Transaction Flow', () => {
     });
     test('should add money 2 times successfully  - longer action and test timeout', async () => {
       test.setTimeout(30000);
+
       // first add money
 
       await dashboardPage.goToAddMoneyPage();

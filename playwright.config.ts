@@ -13,7 +13,7 @@ export default defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'list',
   /** Timeout for each test */
-  timeout: 20000,
+  timeout: 20000, // default is 30000
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
@@ -38,9 +38,15 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'auth',
+      name: 'userAuth',
       dependencies: ['smoke'],
-      testMatch: 'auth.spec.ts',
+      testMatch: 'userAuth.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'adminAuth',
+      dependencies: ['smoke'],
+      testMatch: 'adminAuth.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
     {
