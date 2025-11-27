@@ -25,7 +25,12 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'setup',
+      testMatch: 'global.setup.ts',
+    },
+    {
       name: 'smoke',
+      dependencies: ['setup'],
       testMatch: 'smoke.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
@@ -37,7 +42,7 @@ export default defineConfig({
     },
     {
       name: 'transactions',
-      dependencies: ['auth'],
+      dependencies: ['smoke'],
       testMatch: 'transactions.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },

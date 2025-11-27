@@ -109,6 +109,23 @@ test.describe('User Registration and Login Flow with Page Object', () => {
       'An account with this email already exists. Please use a different email or try logging in.',
     );
   });
+
+  test('should not see admin link and not be able to access admin page from dashboard - redirect to unauthorized', async ({
+    page,
+  }) => {
+    const user = generateUserInput('Artemida');
+    await loginPage.isLoginPageLoaded();
+    await loginPage.goToRegistrationPage();
+    await registrationPage.register(user);
+    await loginPage.isLoginPageLoaded();
+    await loginPage.login(user);
+    await dashboardPage.isDashboardLoaded();
+
+    await expect(page.getByRole('heading', { name: 'Panel administratora' })).not.toBeVisible();
+    await page.goto('/admin');
+    await page.waitForURL('/unauthorized');
+    await expect(page.getByRole('heading', { name: 'Brak dostępu' })).toBeVisible();
+  });
 });
 
 test.describe('Admin Registration and Login Flow with Page Object', () => {
@@ -160,6 +177,6 @@ test.describe('Admin Registration and Login Flow with Page Object', () => {
     await page.getByLabel('Rola').selectOption('admin');
     await page.getByRole('button', { name: 'Zaktualizuj użytkownika' }).click();
     await adminPage.isAdminPageLoaded();
-    // TODO check if user role is changed
+    // TODO check if user role has changed
   });
 });

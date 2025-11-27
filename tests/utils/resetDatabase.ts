@@ -1,5 +1,5 @@
 export const resetDatabase = async () => {
-  console.log('resetting database...');
+  console.log('Resetting database...');
 
   // Retry logic in case server is not ready yet
   const maxRetries = 5;
