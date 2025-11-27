@@ -1,4 +1,10 @@
-node_modules
-dist
+node_modules/
+dist/
 data/*.db
-test-results
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

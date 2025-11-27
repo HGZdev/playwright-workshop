@@ -8,7 +8,7 @@
     "dev:test": "concurrently \"NODE_ENV=test npm run server\" \"npm run client\"",
     "server": "tsx watch _server/server.ts",
     "server:debug": "NODE_DEBUG=* tsx watch _server/server.ts",
-    "client": "npm run dev --prefix _client",
+    "client": "npm run dev --prefix src",
     "e2e": "playwright test",
     "start": "node dist/_server.js"
   },
