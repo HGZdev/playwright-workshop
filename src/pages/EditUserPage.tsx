@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useUsers, useUpdateUser } from '../hooks/useAdmin';
 import { useUser } from '../hooks/useUser';
 import { SubmitButton } from '../components/SubmitButton';
@@ -47,9 +47,7 @@ export const EditUserPage: React.FC = () => {
       <div className="flex-center">
         <div className="card edit-user-page">
           <h1>Nie znaleziono użytkownika</h1>
-          <button type="button" onClick={() => navigate('/admin')}>
-            Powrót do panelu administratora
-          </button>
+          <a href="/admin">Powrót do panelu administratora</a>
         </div>
       </div>
     );
@@ -120,9 +118,7 @@ export const EditUserPage: React.FC = () => {
           </div>
           <div className="button-group">
             <SubmitButton isLoading={updateLoading}>Zaktualizuj użytkownika</SubmitButton>
-            <button type="button" onClick={() => navigate('/admin')}>
-              Anuluj
-            </button>
+            <Link to="/admin">Anuluj</Link>
           </div>
           {error && (
             <div className="error-text" role="alert" aria-live="polite">

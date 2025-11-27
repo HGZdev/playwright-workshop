@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useTransaction, useAccount } from '../hooks/useAccount';
 import { getRecipientError, getTitleError, getAmountError } from '../utils/validation';
@@ -102,9 +102,7 @@ export const TransactionPage: React.FC = () => {
           </div>
         )}
         <SubmitButton isLoading={loading}>{isAddMode ? 'Doładuj' : 'Wyślij przelew'}</SubmitButton>
-        <button type="button" onClick={() => navigate('/dashboard')}>
-          Anuluj
-        </button>
+        <Link to="/dashboard">Anuluj</Link>
       </form>
     </div>
   );

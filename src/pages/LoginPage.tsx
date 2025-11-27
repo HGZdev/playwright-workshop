@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useUser } from '../hooks/useUser';
 import { getEmailError, getPasswordError } from '../utils/validation';
@@ -74,15 +74,7 @@ export const LoginPage: React.FC = () => {
             </div>
           )}
           <div className="form-footer">
-            <a
-              href="/register"
-              onClick={(e) => {
-                e.preventDefault();
-                navigate('/register');
-              }}
-            >
-              Zarejestruj nowe konto
-            </a>
+            <Link to="/register">Zarejestruj nowe konto</Link>
           </div>
         </form>
       </div>

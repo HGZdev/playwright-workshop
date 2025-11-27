@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
 import { useAccount } from '../hooks/useAccount';
 import { currencyFormatter } from '../utils/heleprs';
@@ -10,9 +10,7 @@ export const DashboardPage: React.FC = () => {
 
   const isLoading = userLoading || accountLoading;
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (error) return <div>Error: {error}</div>;
 
   if (!user) navigate('/login');
 
@@ -30,9 +28,9 @@ export const DashboardPage: React.FC = () => {
         <div className="user-info">
           <span className="user-name">Witaj, {user?.name}</span>
           {user?.role === 'admin' && (
-            <a onClick={() => navigate('/admin')} role="button" tabIndex={0}>
+            <Link to="/admin" role="button" tabIndex={0}>
               Panel administratora
-            </a>
+            </Link>
           )}
           <button onClick={handleLogout} type="button" aria-label="Wyloguj się z konta">
             Wyloguj się
@@ -54,16 +52,12 @@ export const DashboardPage: React.FC = () => {
         </section>
 
         <section className="actions-section">
-          <button onClick={() => navigate('/add-money')} type="button" aria-label="Doładuj konto">
+          <Link to="/add-money" aria-label="Doładuj konto">
             Doładuj konto ⬇
-          </button>
-          <button
-            onClick={() => navigate('/send-money')}
-            type="button"
-            aria-label="Wykonaj przelew"
-          >
+          </Link>
+          <Link to="/send-money" aria-label="Wykonaj przelew">
             Wykonaj przelew ⬆
-          </button>
+          </Link>
         </section>
 
         <section className="card transactions-card">

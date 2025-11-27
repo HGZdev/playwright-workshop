@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useUsers, useDeleteUser } from '../hooks/useAdmin';
 import { useUser } from '../hooks/useUser';
 import { ConfirmModal } from '../components/ConfirmModal';
@@ -40,14 +40,10 @@ export const AdminDashboardPage: React.FC = () => {
       <div className="admin-header">
         <h1>Panel Administratora</h1>
         <div className="admin-header-buttons">
-          <button onClick={() => navigate('/dashboard')} aria-label="Przejdź do panelu głównego">
+          <Link to="/dashboard" aria-label="Przejdź do panelu głównego">
             Panel główny
-          </button>
-          <button
-            onClick={handleLogout}
-            type="button"
-            aria-label="Wyloguj się z panelu administratora"
-          >
+          </Link>
+          <button onClick={handleLogout} type="button" aria-label="Wyloguj się">
             Wyloguj się
           </button>
         </div>
@@ -76,12 +72,12 @@ export const AdminDashboardPage: React.FC = () => {
               <td>{user.password}</td>
               <td>
                 <div className="table-actions">
-                  <button
-                    onClick={() => navigate(`/admin/user/${user.id}`)}
+                  <Link
+                    to={`/admin/user/${user.id}`}
                     aria-label={`Edytuj użytkownika ${user.email}`}
                   >
                     Edytuj
-                  </button>
+                  </Link>
                   <button
                     disabled={sessionUser?.id === user.id}
                     onClick={() => handleDeleteClick(user)}

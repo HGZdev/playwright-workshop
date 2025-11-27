@@ -3,8 +3,7 @@ import path from 'path';
 import { User, Transaction, Account } from './types.js';
 import { INITIAL_DB } from './initalData.js';
 
-const isTestEnv = process.env.NODE_ENV === 'test';
-const DB_FILENAME = isTestEnv ? 'testing.db' : 'production.db';
+const DB_FILENAME = 'database.db';
 const DB_PATH = path.join(process.cwd(), 'data', DB_FILENAME);
 
 export interface DatabaseSchema {
@@ -27,6 +26,7 @@ export class Database {
   }
 
   async save() {
+    await fs.mkdir(path.dirname(DB_PATH), { recursive: true });
     await fs.writeFile(DB_PATH, JSON.stringify(this.data, null, 2));
   }
 

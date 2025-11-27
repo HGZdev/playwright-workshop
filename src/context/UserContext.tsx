@@ -20,7 +20,7 @@ export interface UserContextType {
   error: string | null;
 }
 
-// eslint-disable-next-line
+ 
 export const UserContext = createContext<UserContextType | null>(null);
 
 export interface UserProviderProps {
