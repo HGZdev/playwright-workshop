@@ -32,9 +32,10 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="flex-center">
+    <div className="login-container">
+      <h1 className="login-title">Mini Bank</h1>
       <div className="card login-page">
-        <h1>Mini Bank</h1>
+        <h2>Zaloguj się</h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="login-form"

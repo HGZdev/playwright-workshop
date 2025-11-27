@@ -1,16 +1,17 @@
 import { test, expect } from '@playwright/test';
 import { generateUserInput } from './mocks/users.mock';
-import UserAuthPage from './page-objects-models/UserAuthPage';
 import DashboardPage from './page-objects-models/DashboardPage';
+import RegistrationPage from './page-objects-models/RegistrationPage';
+import LoginPage from './page-objects-models/LoginPage';
+import AdminPage from './page-objects-models/AdminPage';
 
 test.describe('User Registration and Login Flow', () => {
-  const user1 = generateUserInput('Posejdon');
-  const user2 = generateUserInput('Herkules');
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
   });
 
   test('should register a new user successfully', async ({ page }) => {
+    const user1 = generateUserInput('Posejdon');
     await page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
     await page.waitForURL('/register');
 
@@ -30,6 +31,7 @@ test.describe('User Registration and Login Flow', () => {
   });
 
   test('should show error if email already exists', async ({ page }) => {
+    const user2 = generateUserInput('Herkules');
     await page.goto('/');
     await page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
     await page.waitForURL('/register');
@@ -67,60 +69,97 @@ test.describe('User Registration and Login Flow', () => {
 });
 
 test.describe('User Registration and Login Flow with Page Object', () => {
-  let userAuthPage: UserAuthPage;
+  let registrationPage: RegistrationPage;
+  let loginPage: LoginPage;
   let dashboardPage: DashboardPage;
 
-  const user3 = generateUserInput('Zeus');
-  const user4 = generateUserInput('Atena');
-
   test.beforeEach(async ({ page }) => {
-    userAuthPage = new UserAuthPage(page);
+    registrationPage = new RegistrationPage(page);
+    loginPage = new LoginPage(page);
     dashboardPage = new DashboardPage(page);
     await page.goto('/');
   });
 
-  test('should register a new user successfully', async ({ page }) => {
-    await userAuthPage.register(user3);
-    await userAuthPage.login(user3);
+  test('should register a new user successfully', async () => {
+    const user = generateUserInput('Zeus');
+
+    await loginPage.isLoginPageLoaded();
+    await loginPage.goToRegistrationPage();
+    await registrationPage.register(user);
+    await loginPage.isLoginPageLoaded();
+    await loginPage.login(user);
+    await dashboardPage.isDashboardLoaded();
   });
 
   test('should show error if email already exists', async () => {
-    await userAuthPage.register(user4);
-    await userAuthPage.login(user4);
+    const user = generateUserInput('Atena');
 
+    await loginPage.isLoginPageLoaded();
+    await loginPage.goToRegistrationPage();
+    await registrationPage.register(user);
+    await loginPage.isLoginPageLoaded();
+    await loginPage.login(user);
+    await dashboardPage.isDashboardLoaded();
     await dashboardPage.logout();
 
-    await userAuthPage.goToRegistrationPage();
-    await userAuthPage.fillAndSubmitUserRegistrationForm(user4);
-
-    await userAuthPage.hasError(
+    await loginPage.isLoginPageLoaded();
+    await loginPage.goToRegistrationPage();
+    await registrationPage.register(user);
+    await registrationPage.hasError(
       'An account with this email already exists. Please use a different email or try logging in.',
     );
   });
 });
 
 test.describe('Admin Registration and Login Flow with Page Object', () => {
-  let userAuthPage: UserAuthPage;
+  let loginPage: LoginPage;
   let dashboardPage: DashboardPage;
+  let registrationPage: RegistrationPage;
+  let adminPage: AdminPage;
 
   test.beforeEach(async ({ page }) => {
-    userAuthPage = new UserAuthPage(page);
+    loginPage = new LoginPage(page);
     dashboardPage = new DashboardPage(page);
+    registrationPage = new RegistrationPage(page);
+    adminPage = new AdminPage(page);
     await page.goto('/');
   });
 
   test('should login to admin account successfully', async () => {
-    await userAuthPage.goToLoginPage();
-    await userAuthPage.loginAdmin();
+    await loginPage.isLoginPageLoaded();
+    await loginPage.loginAdmin();
     await dashboardPage.isDashboardLoaded();
-
     await dashboardPage.goToAdminPage();
+    await adminPage.isAdminPageLoaded();
   });
 
-  // test('should register a new user successfully', async () => {
-  //   await userAuthPage.register(admin1);
-  //   await userAuthPage.login(admin1);
+  test('should register a new user successfully and change role to admin by other admin', async ({
+    page,
+  }) => {
+    const user = generateUserInput('Posejdon');
 
-  //   // await dashboardPage.to();
-  // });
+    await loginPage.isLoginPageLoaded();
+    await loginPage.goToRegistrationPage();
+    await registrationPage.register(user);
+    await loginPage.isLoginPageLoaded();
+    await loginPage.login(user);
+    await dashboardPage.isDashboardLoaded();
+    await dashboardPage.logout();
+
+    await loginPage.isLoginPageLoaded();
+    await loginPage.loginAdmin();
+    await dashboardPage.isDashboardLoaded();
+    await dashboardPage.goToAdminPage();
+    await adminPage.isAdminPageLoaded();
+
+    await page.getByRole('button', { name: `Edytuj użytkownika ${user.email}` }).click();
+
+    await page.waitForURL(/user\/\d+/);
+    await expect(page.getByRole('heading', { name: 'Edytuj użytkownika' })).toBeVisible();
+
+    await page.getByLabel('Rola').selectOption('admin');
+    await page.getByRole('button', { name: 'Zaktualizuj użytkownika' }).click();
+    await adminPage.isAdminPageLoaded();
+    // TODO check if user role is changed
+  });
 });

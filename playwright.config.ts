@@ -26,7 +26,6 @@ export default defineConfig({
   projects: [
     {
       name: 'smoke',
-      dependencies: ['setup'],
       testMatch: 'smoke.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
@@ -40,12 +39,6 @@ export default defineConfig({
       name: 'transactions',
       dependencies: ['auth'],
       testMatch: 'transactions.spec.ts',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'admin',
-      dependencies: ['auth'],
-      testMatch: 'admin.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
   ],

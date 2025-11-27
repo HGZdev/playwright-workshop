@@ -54,11 +54,7 @@ export const DashboardPage: React.FC = () => {
         </section>
 
         <section className="actions-section">
-          <button
-            onClick={() => navigate('/add-money')}
-            type="button"
-            aria-label="Doładuj saldo konta"
-          >
+          <button onClick={() => navigate('/add-money')} type="button" aria-label="Doładuj konto">
             Doładuj konto ⬇
           </button>
           <button
