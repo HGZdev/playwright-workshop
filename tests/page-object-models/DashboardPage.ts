@@ -10,7 +10,7 @@ class DashboardPage {
   async isDashboardLoaded() {
     console.log('Checking if dashboard is loaded...');
     await expect(this.page).toHaveURL('/dashboard');
-    await expect(this.page.getByRole('heading', { name: 'Dostępne saldo' })).toBeVisible();
+    await expect(this.page.getByRole('heading', { name: 'Dostępne środki' })).toBeVisible();
     await expect(this.page.getByTestId('balance-amount')).toContainText('zł');
   }
 
@@ -27,18 +27,17 @@ class DashboardPage {
 
   async goToAdminPage() {
     console.log('Going to admin page...');
-    // await this.page.getByRole('link', { name: 'Panel administratora' }).click();
-    await this.page.getByRole('button', { name: 'Panel administratora' }).click();
+    await this.page.getByRole('link', { name: 'Panel administratora' }).click();
   }
 
   async goToAddMoneyPage() {
     console.log('Going to add money page...');
-    await this.page.getByRole('button', { name: 'Doładuj konto' }).click();
+    await this.page.getByRole('link', { name: 'Doładuj konto' }).click();
   }
 
   async goToTransferMoneyPage() {
     console.log('Going to transfer money page...');
-    await this.page.getByRole('button', { name: 'Wykonaj przelew' }).click();
+    await this.page.getByRole('link', { name: 'Wykonaj przelew' }).click();
   }
 }
 

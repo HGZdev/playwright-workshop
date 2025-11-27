@@ -40,7 +40,7 @@ export const AdminDashboardPage: React.FC = () => {
       <div className="admin-header">
         <h1>Panel Administratora</h1>
         <div className="admin-header-buttons">
-          <Link to="/dashboard" aria-label="Przejdź do panelu głównego">
+          <Link to="/dashboard" className="btn-secondary" aria-label="Przejdź do panelu głównego">
             Panel główny
           </Link>
           <button onClick={handleLogout} type="button" aria-label="Wyloguj się">
@@ -74,6 +74,7 @@ export const AdminDashboardPage: React.FC = () => {
                 <div className="table-actions">
                   <Link
                     to={`/admin/user/${user.id}`}
+                    className="btn-secondary"
                     aria-label={`Edytuj użytkownika ${user.email}`}
                   >
                     Edytuj

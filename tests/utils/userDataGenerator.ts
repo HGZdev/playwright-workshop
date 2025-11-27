@@ -1,6 +1,6 @@
 import { UserInput } from '../../_server/database/types';
 
-export const generateUserInput = (
+const generateUserInput = (
   name: string = 'Anna',
   role: UserInput['role'] = 'client',
 ): UserInput => {
@@ -13,3 +13,5 @@ export const generateUserInput = (
     role,
   };
 };
+
+export default generateUserInput;

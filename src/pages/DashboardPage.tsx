@@ -28,7 +28,7 @@ export const DashboardPage: React.FC = () => {
         <div className="user-info">
           <span className="user-name">Witaj, {user?.name}</span>
           {user?.role === 'admin' && (
-            <Link to="/admin" role="button" tabIndex={0}>
+            <Link to="/admin" className="btn-secondary" tabIndex={0}>
               Panel administratora
             </Link>
           )}
@@ -40,7 +40,7 @@ export const DashboardPage: React.FC = () => {
 
       <main aria-label="Przegląd konta">
         <section className="card balance-card">
-          <h2>Dostępne saldo</h2>
+          <h2>Dostępne środki</h2>
           <div
             data-testid="balance-amount"
             className="balance-amount"
@@ -52,10 +52,10 @@ export const DashboardPage: React.FC = () => {
         </section>
 
         <section className="actions-section">
-          <Link to="/add-money" aria-label="Doładuj konto">
+          <Link to="/add-money" className="btn-primary" aria-label="Doładuj konto">
             Doładuj konto ⬇
           </Link>
-          <Link to="/send-money" aria-label="Wykonaj przelew">
+          <Link to="/send-money" className="btn-primary" aria-label="Wykonaj przelew">
             Wykonaj przelew ⬆
           </Link>
         </section>

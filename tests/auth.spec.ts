@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { generateUserInput } from './mocks/users.mock';
-import DashboardPage from './page-objects-models/DashboardPage';
-import RegistrationPage from './page-objects-models/RegistrationPage';
-import LoginPage from './page-objects-models/LoginPage';
-import AdminPage from './page-objects-models/AdminPage';
+import generateUserInput from './utils/userDataGenerator';
+import DashboardPage from './page-object-models/DashboardPage';
+import RegistrationPage from './page-object-models/RegistrationPage';
+import LoginPage from './page-object-models/LoginPage';
+import AdminPage from './page-object-models/AdminPage';
 
 test.describe('User Registration and Login Flow', () => {
   test.beforeEach(async ({ page }) => {
@@ -152,7 +152,7 @@ test.describe('Admin Registration and Login Flow with Page Object', () => {
     await dashboardPage.goToAdminPage();
     await adminPage.isAdminPageLoaded();
 
-    await page.getByRole('button', { name: `Edytuj użytkownika ${user.email}` }).click();
+    await page.getByRole('link', { name: `Edytuj użytkownika ${user.email}` }).click();
 
     await page.waitForURL(/user\/\d+/);
     await expect(page.getByRole('heading', { name: 'Edytuj użytkownika' })).toBeVisible();

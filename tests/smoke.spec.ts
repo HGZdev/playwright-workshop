@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('smoke test - app loads', async ({ page }) => {
+  // Wystarczy jeden test z poniższych do wykonania testu "smoke"
   await page.goto('/');
 
   // <title>Mini Bank</title>

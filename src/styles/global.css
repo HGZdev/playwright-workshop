@@ -153,6 +153,7 @@ a:hover {
   text-decoration: underline;
 }
 
+
 /* ===== Form Elements ===== */
 label {
   display: block;
@@ -199,7 +200,12 @@ select {
 }
 
 /* ===== Buttons ===== */
-button {
+/* Primary button/link style */
+.btn-primary,
+button:not([type='button']):not(.btn-secondary):not(.danger) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: var(--spacing-md) var(--spacing-xl);
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
   color: #000;
@@ -209,13 +215,15 @@ button {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   cursor: pointer;
+  text-decoration: none;
   transition: all var(--transition-base);
   box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
 }
 
-button::before {
+.btn-primary::before,
+button:not([type='button']):not(.btn-secondary):not(.danger)::before {
   content: '';
   position: absolute;
   top: 0;
@@ -227,37 +235,75 @@ button::before {
   transition: opacity var(--transition-base);
 }
 
-button:hover::before {
+.btn-primary:hover,
+button:not([type='button']):not(.btn-secondary):not(.danger):hover {
+  color: #000;
+  text-decoration: none;
+}
+
+.btn-primary:hover::before,
+button:not([type='button']):not(.btn-secondary):not(.danger):hover::before {
   opacity: 0.5;
 }
 
-button:active {
+.btn-primary:active,
+button:not([type='button']):not(.btn-secondary):not(.danger):active {
   transform: translateY(0);
 }
 
-button > * {
+.btn-primary > *,
+button:not([type='button']):not(.btn-secondary):not(.danger) > * {
   position: relative;
   z-index: 1;
 }
 
-button[type='button'],
-button.secondary {
+/* Secondary button/link style */
+.btn-secondary,
+button[type='button']:not(.danger) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md) var(--spacing-xl);
   background: transparent;
   border: 2px solid var(--primary);
   color: var(--primary);
-  box-shadow: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
 }
 
-button[type='button']::before,
-button.secondary::before {
+.btn-secondary::before,
+button[type='button']:not(.danger)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: var(--primary);
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
 
-button[type='button']:hover,
-button.secondary:hover {
+.btn-secondary:hover,
+button[type='button']:not(.danger):hover {
+  text-decoration: none;
   border-color: var(--primary-hover);
+  color: var(--primary-hover);
 }
 
+.btn-secondary:hover::before,
+button[type='button']:not(.danger):hover::before {
+  opacity: 0.1;
+}
+
+/* Disabled state */
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -269,14 +315,52 @@ button:disabled:hover {
   box-shadow: var(--shadow-md);
 }
 
+/* Danger button */
 button.danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md) var(--spacing-xl);
   background: linear-gradient(135deg, var(--error) 0%, #a53f4f 100%);
   color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
 }
 
 button.danger::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: linear-gradient(135deg, #e07788 0%, var(--error) 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
 }
+
+button.danger:hover::before {
+  opacity: 0.5;
+}
+
+button.danger:active {
+  transform: translateY(0);
+}
+
+button.danger > * {
+  position: relative;
+  z-index: 1;
+}
+
 
 /* ===== Card Component ===== */
 .card {
@@ -805,10 +889,12 @@ button.danger::before {
   gap: var(--spacing-sm);
 }
 
-.table-actions button {
+.table-actions button,
+.table-actions a {
   padding: var(--spacing-sm) var(--spacing-md);
   font-size: var(--font-size-sm);
 }
+
 
 .role-badge {
   display: inline-block;

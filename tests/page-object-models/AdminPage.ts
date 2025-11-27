@@ -20,7 +20,7 @@ class AdminPage {
 
   async goToDashboard() {
     console.log('Going to dashboard...');
-    await this.page.getByRole('button', { name: 'Panel główny' }).click();
+    await this.page.getByRole('link', { name: 'Panel główny' }).click();
   }
 }
 

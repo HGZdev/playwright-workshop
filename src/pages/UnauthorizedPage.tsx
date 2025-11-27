@@ -12,9 +12,7 @@ export const UnauthorizedPage: React.FC = () => {
         <h1>Brak dostępu</h1>
         <p style={{ marginBottom: '20px', color: '#666' }}>Nie masz uprawnień do tej strony.</p>
         <p style={{ marginBottom: '30px' }}>Ta strona jest dostępna tylko dla administratorów.</p>
-        <Link to="/" aria-label="Powrót strony głównej">
-          Przejdź do panelu
-        </Link>
+        <Link to="/">Powrót do strony głównej</Link>
       </div>
     </div>
   );

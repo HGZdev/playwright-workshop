@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { generateUserInput } from './mocks/users.mock';
+import generateUserInput from './utils/userDataGenerator';
 import { UserInput } from '../_server/database/types';
-import RegistrationPage from './page-objects-models/RegistrationPage';
-import DashboardPage from './page-objects-models/DashboardPage';
-import LoginPage from './page-objects-models/LoginPage';
-import TransactionPage from './page-objects-models/TransactionPage';
+import RegistrationPage from './page-object-models/RegistrationPage';
+import DashboardPage from './page-object-models/DashboardPage';
+import LoginPage from './page-object-models/LoginPage';
+import TransactionPage from './page-object-models/TransactionPage';
 
 test.describe('Transaction Flow', () => {
   let registrationPage: RegistrationPage;
@@ -114,7 +114,7 @@ test.describe('Transaction Flow', () => {
     });
 
     test('should show error when amount is zero or negative', async ({ page }) => {
-      await page.getByRole('button', { name: 'Wykonaj przelew' }).click();
+      await page.getByRole('link', { name: 'Wykonaj przelew' }).click();
       await page.waitForURL('/send-money');
 
       // Enter zero

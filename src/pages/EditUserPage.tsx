@@ -47,7 +47,9 @@ export const EditUserPage: React.FC = () => {
       <div className="flex-center">
         <div className="card edit-user-page">
           <h1>Nie znaleziono użytkownika</h1>
-          <a href="/admin">Powrót do panelu administratora</a>
+          <Link to="/admin" className="btn-secondary">
+            Powrót do panelu administratora
+          </Link>
         </div>
       </div>
     );
@@ -118,7 +120,9 @@ export const EditUserPage: React.FC = () => {
           </div>
           <div className="button-group">
             <SubmitButton isLoading={updateLoading}>Zaktualizuj użytkownika</SubmitButton>
-            <Link to="/admin">Anuluj</Link>
+            <Link className="btn-secondary" to="/admin">
+              Anuluj
+            </Link>
           </div>
           {error && (
             <div className="error-text" role="alert" aria-live="polite">

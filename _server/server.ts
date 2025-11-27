@@ -16,7 +16,7 @@ db.init().then(() => {
   console.log('Database initialized');
 });
 
-app.post('/api/reset', async (req, res) => {
+app.use('/api/reset', async (req, res) => {
   await db.reset();
   res.json({ message: 'Database reset successfully' });
 });

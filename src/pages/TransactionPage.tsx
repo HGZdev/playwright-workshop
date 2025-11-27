@@ -102,7 +102,9 @@ export const TransactionPage: React.FC = () => {
           </div>
         )}
         <SubmitButton isLoading={loading}>{isAddMode ? 'Doładuj' : 'Wyślij przelew'}</SubmitButton>
-        <Link to="/dashboard">Anuluj</Link>
+        <Link className="btn-secondary" to="/dashboard">
+          Anuluj
+        </Link>
       </form>
     </div>
   );
