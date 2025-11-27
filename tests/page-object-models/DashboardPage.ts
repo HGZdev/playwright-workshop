@@ -9,7 +9,7 @@ class DashboardPage {
 
   async isDashboardLoaded() {
     console.log('Checking if dashboard is loaded...');
-    await expect(this.page).toHaveURL('/dashboard');
+    await expect(this.page).toHaveURL('/dashboard', { timeout: 8000 }); // with longer timeout
     await expect(this.page.getByRole('heading', { name: 'Dostępne środki' })).toBeVisible();
     await expect(this.page.getByTestId('balance-amount')).toContainText('zł');
   }

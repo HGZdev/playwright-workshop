@@ -156,21 +156,78 @@ test.describe('Transaction Flow', () => {
     });
   });
 
-  test.describe('Add money', () => {
-    test('should add money successfully', async () => {
+  test.describe('Add money (longlasting operations)', () => {
+    test('should add money successfully - longer action timeout', async () => {
       const balanceBefore = await dashboardPage.getBalance();
 
       await dashboardPage.goToAddMoneyPage();
       await transactionPage.isAddMoneyPageLoaded();
 
       await transactionPage.fillAndSubmitAddMoneyForm({ title: 'Spadek', amount: 1000 });
-      await dashboardPage.isDashboardLoaded();
+      await dashboardPage.isDashboardLoaded(); // with longer timeout
 
       const balanceAfter = await dashboardPage.getBalance();
 
       expect(balanceAfter - balanceBefore).toBe(1000);
     });
+    test('should add money 2 times successfully  - longer action and test timeout', async () => {
+      test.setTimeout(30000);
+      // first add money
 
+      await dashboardPage.goToAddMoneyPage();
+      await transactionPage.isAddMoneyPageLoaded();
+
+      await transactionPage.fillAndSubmitAddMoneyForm({ title: 'Spadek', amount: 1000 });
+      await dashboardPage.isDashboardLoaded(); // with longer timeout
+
+      // second add money
+
+      await dashboardPage.goToAddMoneyPage();
+      await transactionPage.isAddMoneyPageLoaded();
+
+      await transactionPage.fillAndSubmitAddMoneyForm({ title: 'Loteria', amount: 1000 });
+      await dashboardPage.isDashboardLoaded(); // with longer timeout
+    });
+
+    test('should add money 2 times successfully  - mocked API', async ({ page }) => {
+      // Mock ANY POST request to /api/transaction/* (using wildcard for ID)
+      await page.route('**/api/transaction/**', async (route) => {
+        const request = route.request();
+        console.log('Route intercepted:', request.method(), request.url());
+
+        // Only intercept POST requests
+        if (request.method() === 'POST') {
+          console.log('✅ Mocking POST request to:', request.url());
+          await route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify({ success: true }),
+          });
+        } else {
+          console.log('⏭️  Continuing non-POST request');
+          await route.continue();
+        }
+      });
+
+      // first add money
+
+      await dashboardPage.goToAddMoneyPage();
+      await transactionPage.isAddMoneyPageLoaded();
+
+      await transactionPage.fillAndSubmitAddMoneyForm({ title: 'Spadek', amount: 1000 });
+      await dashboardPage.isDashboardLoaded(); // with longer timeout
+
+      // second add money
+
+      await dashboardPage.goToAddMoneyPage();
+      await transactionPage.isAddMoneyPageLoaded();
+
+      await transactionPage.fillAndSubmitAddMoneyForm({ title: 'Loteria', amount: 1000 });
+      await dashboardPage.isDashboardLoaded(); // with longer timeout
+    });
+  });
+
+  test.describe('Add money - validation', () => {
     test('should show error when title is empty on blur', async ({ page }) => {
       await dashboardPage.goToAddMoneyPage();
       await transactionPage.isAddMoneyPageLoaded();

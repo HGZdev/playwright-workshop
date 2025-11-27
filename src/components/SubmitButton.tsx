@@ -6,10 +6,12 @@ interface SubmitButtonProps {
   children: React.ReactNode;
   className?: string;
   variant?: 'primary' | 'secondary' | 'danger';
+  loadingText?: string;
 }
 
 export const SubmitButton: React.FC<SubmitButtonProps> = ({
   isLoading = false,
+  loadingText = 'Przetwarzanie...',
   disabled = false,
   children,
   className = '',
@@ -28,7 +30,7 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
       {isLoading ? (
         <>
           <span className="spinner" aria-hidden="true"></span>
-          <span className="button-text">Przetwarzanie...</span>
+          <span className="button-text">{loadingText}</span>
         </>
       ) : (
         <span className="button-text">{children}</span>

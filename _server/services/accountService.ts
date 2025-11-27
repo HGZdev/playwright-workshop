@@ -47,7 +47,11 @@ export class AccountService {
     type: 'incoming' | 'outgoing';
     accountId: number;
   }) {
-    await randomDelay(800, 1000); // Longer delay for transaction processing
+    if (type === 'incoming') {
+      await randomDelay(6000, 7000); // Longer delay for incoming transaction processing
+    } else {
+      await randomDelay(300, 1000); // Shorter delay for outgoing transaction processing
+    }
 
     if (type === 'outgoing' && amount <= 0) {
       throw new Error('Invalid amount');

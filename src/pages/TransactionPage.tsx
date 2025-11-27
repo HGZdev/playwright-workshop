@@ -35,7 +35,7 @@ export const TransactionPage: React.FC = () => {
     try {
       await transaction({
         accountId: account.id,
-        recipient: isAddMode ? 'myself' : data.recipient,
+        recipient: isAddMode ? 'Ja' : data.recipient,
         title: data.title,
         amount: Number(data.amount),
         type: isTransferMode ? 'outgoing' : 'incoming',
@@ -101,7 +101,12 @@ export const TransactionPage: React.FC = () => {
             {error}
           </div>
         )}
-        <SubmitButton isLoading={loading}>{isAddMode ? 'Doładuj' : 'Wyślij przelew'}</SubmitButton>
+        <SubmitButton
+          isLoading={loading}
+          loadingText={isAddMode ? 'Trwa długie pozystkiwanie środków z innnego konta' : undefined}
+        >
+          {isAddMode ? 'Doładuj' : 'Wyślij przelew'}
+        </SubmitButton>
         <Link className="btn-secondary" to="/dashboard">
           Anuluj
         </Link>
