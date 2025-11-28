@@ -79,7 +79,7 @@ export class AccountService {
     amount: number;
     accountId: number;
   }) {
-    await randomDelay(7000, 10000); // Longer delay for incoming transaction processing
+    await randomDelay(6000, 6000); // Longer delay for incoming transaction processing
 
     if (amount <= 0) {
       throw new Error('Invalid amount');

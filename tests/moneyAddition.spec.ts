@@ -37,14 +37,14 @@ test.describe('Money Addition Flows', () => {
     await transactionPage.isAddMoneyPageLoaded();
 
     await transactionPage.fillAndSubmitAddMoneyForm({
-      title: 'Wydatek',
-      amount: 100,
+      title: 'Spadek',
+      amount: 1000,
     });
     await dashboardPage.isDashboardLoaded();
 
     const balanceAfter = await dashboardPage.getBalance();
 
-    expect(balanceAfter - balanceBefore).toBe(-100);
+    expect(balanceAfter - balanceBefore).toBe(1000);
   });
 
   test('should show error when recipient is empty on blur', async ({ page }) => {
@@ -52,11 +52,11 @@ test.describe('Money Addition Flows', () => {
     await transactionPage.isAddMoneyPageLoaded();
 
     // Focus and blur recipient field without entering anything
-    await page.getByRole('textbox', { name: 'Odbiorca' }).focus();
-    await page.getByRole('textbox', { name: 'Odbiorca' }).blur();
+    await page.getByRole('textbox', { name: 'Tytuł' }).focus();
+    await page.getByRole('textbox', { name: 'Tytuł' }).blur();
 
     // Error should appear
-    await transactionPage.hasError('Odbiorca jest wymagany');
+    await transactionPage.hasError('Tytuł jest wymagany');
   });
 
   test('should hide recipient error when user starts typing', async ({ page }) => {
@@ -64,12 +64,12 @@ test.describe('Money Addition Flows', () => {
     await transactionPage.isAddMoneyPageLoaded();
 
     // Trigger error
-    await page.getByRole('textbox', { name: 'Odbiorca' }).focus();
-    await page.getByRole('textbox', { name: 'Odbiorca' }).blur();
-    await transactionPage.hasError('Odbiorca jest wymagany');
+    await page.getByRole('textbox', { name: 'Tytuł' }).focus();
+    await page.getByRole('textbox', { name: 'Tytuł' }).blur();
+    await transactionPage.hasError('Tytuł jest wymagany');
 
     // Start typing - error should disappear
-    await page.getByRole('textbox', { name: 'Odbiorca' }).fill('Shop');
+    await page.getByRole('textbox', { name: 'Tytuł' }).fill('Shop');
     await transactionPage.hasError('Odbiorca jest wymagany');
   });
 
@@ -145,7 +145,7 @@ test.describe('Money Addition Flows', () => {
     await transactionPage.isAddMoneyPageLoaded();
 
     // Try to submit empty form
-    await page.getByRole('button', { name: 'Wyślij przelew' }).click({ delay: 4000 });
+    await page.getByRole('button', { name: 'Doładuj' }).click({ delay: 4000 });
 
     // All errors should appear
     await transactionPage.hasError('Tytuł jest wymagany');

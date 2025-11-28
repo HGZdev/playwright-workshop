@@ -40,12 +40,12 @@ test.describe('Money Sending Flows', () => {
       await transactionPage.fillAndSubmitSendMoneyForm({
         title: 'Zakupy',
         recipient: 'Jan Kowalski',
-        amount: 1000,
+        amount: 100,
       });
       await dashboardPage.isDashboardLoaded(); // with longer timeout
 
       const balanceAfter = await dashboardPage.getBalance();
-      expect(balanceAfter - balanceBefore).toBe(1000);
+      expect(balanceAfter - balanceBefore).toBe(-100);
     });
     test('should add money 2 times successfully - longer action timeout and test timeout', async () => {
       test.setTimeout(30000);
@@ -76,8 +76,8 @@ test.describe('Money Sending Flows', () => {
     });
 
     test('should add money 2 times successfully - mocked API', async ({ page }) => {
-      // Mock ANY POST request to /api/add-money/* (using wildcard for ID)
-      await page.route('**/api/add-money/**', async (route) => {
+      // Mock ANY POST request to /api/send-money/* (using wildcard for ID)
+      await page.route('**/api/send-money/**', async (route) => {
         await route.fulfill({
           status: 200,
           contentType: 'application/json',
@@ -117,11 +117,11 @@ test.describe('Money Sending Flows', () => {
       await transactionPage.isSendMoneyPageLoaded();
 
       // Focus and blur title field without entering anything
-      await page.getByRole('textbox', { name: 'Tytuł' }).focus();
-      await page.getByRole('textbox', { name: 'Tytuł' }).blur();
+      await page.getByRole('textbox', { name: 'Odbiorca' }).focus();
+      await page.getByRole('textbox', { name: 'Odbiorca' }).blur();
 
       // Error should appear
-      await transactionPage.hasError('Tytuł jest wymagany');
+      await transactionPage.hasError('Odbiorca jest wymagany');
     });
 
     test('should hide title error when user starts typing', async ({ page }) => {
@@ -129,12 +129,12 @@ test.describe('Money Sending Flows', () => {
       await transactionPage.isSendMoneyPageLoaded();
 
       // Trigger error
-      await page.getByRole('textbox', { name: 'Tytuł' }).focus();
-      await page.getByRole('textbox', { name: 'Tytuł' }).blur();
-      await transactionPage.hasError('Tytuł jest wymagany');
+      await page.getByRole('textbox', { name: 'Odbiorca' }).focus();
+      await page.getByRole('textbox', { name: 'Odbiorca' }).blur();
+      await transactionPage.hasError('Odbiorca jest wymagany');
 
       // Start typing - error should disappear
-      await page.getByRole('textbox', { name: 'Tytuł' }).fill('Test');
+      await page.getByRole('textbox', { name: 'Odbiorca' }).fill('Jan Kowalski');
       await transactionPage.hasError('Tytuł jest wymagany');
     });
 

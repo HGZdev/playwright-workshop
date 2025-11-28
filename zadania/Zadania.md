@@ -381,9 +381,8 @@ Napisanie testu doładowania konta bankowego.
 
 1. ✅ Uczestniczki piszą z Recording + Page Object
 2. ✅ Mogą natrafić
-3. ✅ Pokazuję błąd: button submit nie zdążył się załadować
-4. ✅ Pokazuję błąd: flaky test z walidacją kwoty
-5. ✅ Debugujemy razem
+3. ✅ Pokazuję błąd: button submit nie zdążył się załadować => `delay: 4000` na submit button.
+4. ✅ Debugujemy razem
 
 #### Wątki do poruszenia
 

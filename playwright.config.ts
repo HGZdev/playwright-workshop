@@ -50,15 +50,15 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'moneyTransfers',
+      name: 'moneySending',
       dependencies: ['smoke'],
-      testMatch: 'moneyTransfers.spec.ts',
+      testMatch: 'moneySending.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'moneyAdditions',
+      name: 'moneyAddition',
       dependencies: ['smoke'],
-      testMatch: 'moneyAdditions.spec.ts',
+      testMatch: 'moneyAddition.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
   ],
@@ -66,7 +66,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: 'npm run dev:test',
+      command: 'npm run e2e',
       reuseExistingServer: true,
     },
   ],
