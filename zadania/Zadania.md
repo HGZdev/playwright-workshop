@@ -386,20 +386,6 @@ Napisanie testu doładowania konta bankowego.
 
 #### Wątki do poruszenia
 
-**Wątek 1: getByText = prawdopodobnie zła semantyka**
-Gdy Recording generuje dużo `getByText`, to znak że:
-
-- Brakuje odpowiednich `role` w HTML
-- Brakuje `label` dla inputów
-- Brakuje `aria-label` lub `aria-labelledby`
-- Rozwiązanie: Dodaj `data-testid` lub popraw semantykę HTML
-
-**Wątek 2: Wprowadzenie testId jako metodologia**
-
-- Dodajemy `data-testid` do elementów
-- Zalety: Bardzo stabilne, niezależne od zmian w UI
-- Wady: Dodatkowy kod w HTML, mniej "naturalne" niż role locators
-
 **Błąd 1: Button submit nie zdążył się załadować**
 
 - Objaw: Timeout 30000ms exceeded
@@ -414,16 +400,13 @@ Gdy Recording generuje dużo `getByText`, to znak że:
 - Przyczyna: Dashboard ładuje dane asynchronicznie
 - Rozwiązanie: Czekaj na zniknięcie "loading..." - `waitFor({ state: 'hidden' })`
 
-**Czym są Flaky Tests?**
-Flaky test = test który czasami przechodzi, czasami nie (bez zmian w kodzie)
-
 Przyczyny:
 
-1. Race conditions: Nie czekamy na załadowanie danych
-2. Timing issues: Hardcoded delays
-3. Źle wybrane selektory: Element się zmienia
-4. Współdzielony stan: Testy wpływają na siebie nawzajem
-5. Zewnętrzne zależności: API, baza danych
+1. Race conditions => Nie czekamy na załadowanie danych
+2. Timing issues => Hardcoded delays
+3. Źle wybrane selektory => Element się zmienia
+4. Współdzielony stan => Testy wpływają na siebie nawzajem
+5. Zewnętrzne zależności => API, baza danych
 
 Jak naprawić:
 
@@ -442,54 +425,9 @@ Obsługa długich requestów API i różne strategie radzenia sobie z timeoutami
 
 ### Opis
 
-1. Przeanalizuj przygotowany test aplikacji o kredyt
-2. Uruchom test i zaobserwuj timeout
-3. Zastosuj różne rozwiązania problemu timeoutu
-
-### Problem
-
-Test wywala się z powodu długiego API (ponad 30 sekund).
-
-### Rozwiązania
-
-#### Rozwiązanie 1: Globalny timeout
-
-```typescript
-// playwright.config.ts
-timeout: 60000;
-```
-
-#### Rozwiązanie 2: Action timeout dla wszystkich akcji
-
-```typescript
-// playwright.config.ts
-use: {
-  actionTimeout: 45000;
-}
-```
-
-#### Rozwiązanie 3: Timeout dla konkretnej akcji
-
-```typescript
-await button.click({ timeout: 45000 });
-```
-
-#### Rozwiązanie 4: Mockowanie długiego API
-
-```typescript
-await page.route('**/api/credit/**', async (route) => {
-  await route.fulfill({
-    status: 200,
-    body: JSON.stringify({ approved: true }),
-  });
-});
-```
-
-### Debugowanie
-
-- Sprawdź logi w UI Mode
-- Przeanalizuj requesty w zakładce Network
-- Użyj Trace Viewer dla szczegółowej analizy
+1. Przeanalizujmy przygotowany test aplikacji o kredyt
+2. Uruchommy test i zaobserwujmy timeout
+3. Zastosujmy różne rozwiązania problemu timeoutu
 
 ### Konspekt dla instruktora
 
@@ -498,50 +436,31 @@ await page.route('**/api/credit/**', async (route) => {
 1. ✅ Pokazuję przygotowany kod testu
 2. ✅ Uruchamiamy - timeout!
 3. ✅ Debugujemy w UI Mode - widzimy długie API
-4. ✅ Pokazuję 4 sposoby rozwiązania problemu
+4. ✅ Pokazuję 3 sposoby rozwiązania problemu
 5. ✅ Omawiam kiedy który sposób stosować
 
-#### Wątki do poruszenia
+#### Rozwiązanie 1: Globalny Action timeout
 
-**Problem: Długie API**
-Scenariusz: Aplikacja o kredyt wymaga:
+#### Rozwiązanie 2: Action timeout dla konkretnej akcji
 
-1. Weryfikacji tożsamości (API 15s)
-2. Sprawdzenia historii kredytowej (API 20s)
-3. Decyzji kredytowej (API 10s)
+#### Rozwiązanie 3: Globalny timeout
 
-Łącznie: ~45 sekund
-Domyślny timeout Playwright: 30 sekund
-Błąd: Test timeout of 30000ms exceeded
+#### Rozwiązanie 4: Timeout dla konkretnego testu
 
-**Rozwiązanie 1: Globalny timeout**
+#### Rozwiązanie 4: Mockowanie długiego API
 
-- Gdzie: `playwright.config.ts` - `timeout: 60000`
-- Kiedy używać: Wszystkie testy są wolne, aplikacja jest wolna z natury
-- Wady: Wolne testy będą czekać dłużej zanim fail, wpływa na wszystkie testy
+```typescript
+await page.route('**/api/send-money/**', async (route) => {
+  await route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ success: true }),
+  });
+});
+```
 
-**Rozwiązanie 2: Action timeout dla wszystkich akcji**
-
-- Gdzie: `playwright.config.ts` - `use: { actionTimeout: 45000 }`
-- Kiedy używać: Konkretne akcje są wolne
-- Wady: Wpływa na wszystkie akcje we wszystkich testach
-
-**Rozwiązanie 3: Timeout dla konkretnej akcji**
-
-- Gdzie: W teście - `click({ timeout: 45000 })`
-- Kiedy używać: Tylko jedna akcja jest wolna
-- Zalety: Precyzyjne, nie wpływa na inne testy, dokumentuje że ta akcja jest wolna
-
-**Rozwiązanie 4: Mockowanie długiego API (NAJLEPSZE!)**
-
-- Gdzie: W teście - `page.route('**/api/credit/**', ...)`
-- Kiedy używać: API jest wolne i nie musimy go testować, chcemy szybkie testy
 - Zalety: Bardzo szybkie testy, deterministyczne, nie zależymy od zewnętrznych serwisów
 - Wady: Nie testujemy prawdziwego API
-
-**Kiedy mockować a kiedy nie?**
-Mockuj gdy: API jest wolne, niestabilne, testujesz tylko UI, chcesz testować edge cases
-Nie mockuj gdy: Testujesz integrację z API, API jest szybkie i stabilne, testujesz E2E flow
 
 **Debugowanie długich testów:**
 
@@ -575,3 +494,4 @@ Nie mockuj gdy: Testujesz integrację z API, API jest szybkie i stabilne, testuj
 3. Stosuj Page Object Models dla lepszej maintainability
 4. Debuguj z UI Mode i Trace Viewer
 5. Obsługuj długie API przez mockowanie lub timeouty
+6. Staraj się unikać funkcji sztucznie zatrzymujacych testy np. `waitforTimeout` i `delay`
