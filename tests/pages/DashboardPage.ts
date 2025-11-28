@@ -1,10 +1,17 @@
 import { expect, Page } from '@playwright/test';
+import parseBalanceText from '../utils/parseBalanceText';
 
 class DashboardPage {
   private page: Page;
 
   constructor(page: Page) {
     this.page = page;
+  }
+
+  async getBalance(): Promise<number> {
+    console.log('Getting balance...');
+    const text = await this.page.getByTestId('balance-amount').textContent();
+    return parseBalanceText(text || '');
   }
 
   async isDashboardLoaded() {
@@ -17,12 +24,6 @@ class DashboardPage {
   async logout() {
     console.log('Logging out...');
     await this.page.getByRole('button', { name: 'Wyloguj się' }).click();
-  }
-
-  async getBalance(): Promise<number> {
-    console.log('Getting balance...');
-    const text = await this.page.getByTestId('balance-amount').textContent();
-    return parseFloat(text?.replace(/[^\d,-]/g, '').replace(',', '.') || '0');
   }
 
   async goToAdminPage() {
