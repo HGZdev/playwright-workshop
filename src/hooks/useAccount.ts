@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import apiClient from '../api/apiClient';
 import { useUser } from './useUser';
 import { extractErrorMessage } from '../utils/apiErrorHandler';
-import type { Account, TransactionInput } from '../types';
+import type { Account } from '../types';
 
 export const useAccount = () => {
   const { user, loading: userLoading } = useUser();
@@ -37,35 +37,83 @@ export const useAccount = () => {
   return { account, loading: isLoading, error, refetch };
 };
 
-export const useTransaction = () => {
+export const useAddMoney = () => {
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const transaction = async ({ recipient, amount, title, accountId, type }: TransactionInput) => {
+  const addMoney = async ({
+    amount,
+    title,
+    accountId,
+  }: {
+    amount: number;
+    title: string;
+    accountId: number;
+  }) => {
     setLoading(true);
     setError(null);
     try {
       if (!user) {
         return;
       }
-      await apiClient.post(`/api/transaction/${accountId}`, {
-        recipient,
+      await apiClient.post(`/api/add-money/${accountId}`, {
         amount,
         title,
         accountId,
-        type,
       });
       return true;
     } catch (err) {
-      const errorMessage = extractErrorMessage(err, 'Transaction failed');
+      const errorMessage = extractErrorMessage(err, 'Dodawanie środków nie powiodło się');
       setError(errorMessage);
       console.error(err);
-      throw err; // Re-throw to let component handle navigation logic if needed
+      throw err;
     } finally {
       setLoading(false);
     }
   };
 
-  return { transaction, loading, error };
+  return { addMoney, loading, error };
+};
+
+export const useSendMoney = () => {
+  const { user } = useUser();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const sendMoney = async ({
+    recipient,
+    amount,
+    title,
+    accountId,
+  }: {
+    recipient: string;
+    amount: number;
+    title: string;
+    accountId: number;
+  }) => {
+    setLoading(true);
+    setError(null);
+    try {
+      if (!user) {
+        return;
+      }
+      await apiClient.post(`/api/send-money/${accountId}`, {
+        recipient,
+        amount,
+        title,
+        accountId,
+      });
+      return true;
+    } catch (err) {
+      const errorMessage = extractErrorMessage(err, 'Przelew nie powiódł się');
+      setError(errorMessage);
+      console.error(err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { sendMoney, loading, error };
 };

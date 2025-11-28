@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useTransaction, useAccount } from '../hooks/useAccount';
+import { useAddMoney, useSendMoney, useAccount } from '../hooks/useAccount';
 import { getRecipientError, getTitleError, getAmountError } from '../utils/validation';
 import { FormField } from '../components/FormField';
 import { SubmitButton } from '../components/SubmitButton';
@@ -16,10 +16,13 @@ export const TransactionPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { account } = useAccount();
-  const { transaction, error, loading } = useTransaction();
+  const { addMoney, error: addMoneyError, loading: addMoneyLoading } = useAddMoney();
+  const { sendMoney, error: sendMoneyError, loading: sendMoneyLoading } = useSendMoney();
 
   const isAddMode = location.pathname === '/add-money';
-  const isTransferMode = location.pathname === '/send-money';
+
+  const error = isAddMode ? addMoneyError : sendMoneyError;
+  const loading = isAddMode ? addMoneyLoading : sendMoneyLoading;
 
   const {
     register,
@@ -33,16 +36,23 @@ export const TransactionPage: React.FC = () => {
     if (!account) return;
 
     try {
-      await transaction({
-        accountId: account.id,
-        recipient: isAddMode ? 'Ja' : data.recipient,
-        title: data.title,
-        amount: Number(data.amount),
-        type: isTransferMode ? 'outgoing' : 'incoming',
-      });
+      if (isAddMode) {
+        await addMoney({
+          accountId: account.id,
+          title: data.title,
+          amount: Number(data.amount),
+        });
+      } else {
+        await sendMoney({
+          accountId: account.id,
+          recipient: data.recipient,
+          title: data.title,
+          amount: Number(data.amount),
+        });
+      }
       navigate('/dashboard');
     } catch {
-      // Error is handled by useTransaction hook
+      // Error is handled by the hooks
     }
   };
 
@@ -103,7 +113,7 @@ export const TransactionPage: React.FC = () => {
         )}
         <SubmitButton
           isLoading={loading}
-          loadingText={isAddMode ? 'Trwa długie pozystkiwanie środków z innnego konta' : undefined}
+          loadingText={isAddMode ? undefined : 'Trwa długie procesowanie operacji...'}
         >
           {isAddMode ? 'Doładuj' : 'Wyślij przelew'}
         </SubmitButton>

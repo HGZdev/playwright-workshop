@@ -17,8 +17,8 @@ export const USERS: User[] = [
   },
   {
     id: 2,
-    email: 'client1@gmail.com',
-    password: 'client1@gmail.com',
+    email: 'client@gmail.com',
+    password: 'client@gmail.com',
     name: 'Janina Kowalska',
     role: 'client',
     accountId: ACCOUNTS[1].id,

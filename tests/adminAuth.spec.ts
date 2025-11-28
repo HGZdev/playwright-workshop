@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 import generateUserInput from './utils/userDataGenerator';
-import DashboardPage from './page-object-models/DashboardPage';
-import RegistrationPage from './page-object-models/RegistrationPage';
-import LoginPage from './page-object-models/LoginPage';
-import AdminPage from './page-object-models/AdminPage';
+import DashboardPage from './pages/DashboardPage';
+import RegistrationPage from './pages/RegistrationPage';
+import LoginPage from './pages/LoginPage';
+import AdminPage from './pages/AdminPage';
 
 test.describe('Admin Registration and Login Flow with Page Object', () => {
   let loginPage: LoginPage;

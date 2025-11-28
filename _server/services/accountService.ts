@@ -34,30 +34,54 @@ export class AccountService {
     return transactions.filter((transaction) => transaction.accountId === accountId);
   }
 
-  async makeTransaction({
+  async addMoney({
+    title,
+    amount,
+    accountId,
+  }: {
+    title: string;
+    amount: number;
+    accountId: number;
+  }) {
+    await randomDelay(300, 700);
+
+    if (amount <= 0) {
+      throw new Error('Invalid amount');
+    }
+
+    const newTransaction: Transaction = {
+      id: Date.now(),
+      date: new Date().toISOString().split('T')[0],
+      recipient: 'Ja',
+      title,
+      amount: amount,
+      accountId,
+      type: 'incoming',
+    };
+
+    await db.addTransaction(newTransaction);
+    await db.save();
+
+    return {
+      success: true,
+      transaction: newTransaction,
+    };
+  }
+
+  async sendMoney({
     recipient,
     title,
     amount,
-    type,
     accountId,
   }: {
     recipient: string;
     title: string;
     amount: number;
-    type: 'incoming' | 'outgoing';
     accountId: number;
   }) {
-    if (type === 'incoming') {
-      await randomDelay(6000, 7000); // Longer delay for incoming transaction processing
-    } else {
-      await randomDelay(300, 1000); // Shorter delay for outgoing transaction processing
-    }
+    await randomDelay(7000, 10000); // Longer delay for incoming transaction processing
 
-    if (type === 'outgoing' && amount <= 0) {
-      throw new Error('Invalid amount');
-    }
-
-    if (type === 'incoming' && amount <= 0) {
+    if (amount <= 0) {
       throw new Error('Invalid amount');
     }
 
@@ -66,9 +90,9 @@ export class AccountService {
       date: new Date().toISOString().split('T')[0],
       recipient,
       title,
-      amount: type === 'outgoing' ? -amount : amount,
+      amount: -amount,
       accountId,
-      type,
+      type: 'outgoing',
     };
 
     await db.addTransaction(newTransaction);

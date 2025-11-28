@@ -16,17 +16,40 @@ export class AccountController {
     }
   }
 
-  async makeTransaction(req: AuthRequest, res: Response) {
-    const { recipient, title, amount, type } = req.body;
+  async addMoney(req: AuthRequest, res: Response) {
+    const { title, amount } = req.body;
     const { accountId } = req.params;
 
     try {
-      const result = await accountService.makeTransaction({
+      const result = await accountService.addMoney({
+        accountId: Number(accountId),
+        title,
+        amount: Number(amount),
+      });
+      res.json(result);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        if (error.message === 'Invalid amount') {
+          res.status(400).json({ message: ErrorMessages.ACCOUNT.INVALID_AMOUNT });
+        } else {
+          res.status(500).json({ message: ErrorMessages.ACCOUNT.TRANSACTION_FAILED });
+        }
+      } else {
+        res.status(500).json({ message: ErrorMessages.ACCOUNT.TRANSACTION_FAILED });
+      }
+    }
+  }
+
+  async sendMoney(req: AuthRequest, res: Response) {
+    const { recipient, title, amount } = req.body;
+    const { accountId } = req.params;
+
+    try {
+      const result = await accountService.sendMoney({
         accountId: Number(accountId),
         recipient,
         title,
         amount: Number(amount),
-        type,
       });
       res.json(result);
     } catch (error: unknown) {

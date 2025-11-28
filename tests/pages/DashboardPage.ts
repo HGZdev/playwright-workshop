@@ -35,8 +35,8 @@ class DashboardPage {
     await this.page.getByRole('link', { name: 'Doładuj konto' }).click();
   }
 
-  async goToTransferMoneyPage() {
-    console.log('Going to transfer money page...');
+  async goToSendMoneyPage() {
+    console.log('Going to send money page...');
     await this.page.getByRole('link', { name: 'Wykonaj przelew' }).click();
   }
 }

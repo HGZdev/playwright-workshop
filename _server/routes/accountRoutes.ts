@@ -8,6 +8,7 @@ const router = Router();
 router.use(authenticateToken);
 
 router.get('/account/:accountId', (req, res) => accountController.getAccountById(req, res));
-router.post('/transaction/:accountId', (req, res) => accountController.makeTransaction(req, res));
+router.post('/add-money/:accountId', (req, res) => accountController.addMoney(req, res));
+router.post('/send-money/:accountId', (req, res) => accountController.sendMoney(req, res));
 
 export default router;
