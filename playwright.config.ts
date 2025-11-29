@@ -22,7 +22,8 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    /* Clear storage state before each test to prevent stale data */
+    storageState: { cookies: [], origins: [] },
   },
 
   /* Configure projects for major browsers */
@@ -45,13 +46,13 @@ export default defineConfig({
     },
     {
       name: 'moneyAddition',
-      dependencies: ['smoke'],
+      dependencies: ['smoke', 'userAuth'],
       testMatch: 'moneyAddition.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'moneySending',
-      dependencies: ['smoke'],
+      dependencies: ['smoke', 'userAuth', 'moneyAddition'],
       testMatch: 'moneySending.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },

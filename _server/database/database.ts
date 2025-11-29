@@ -75,7 +75,8 @@ export class Database {
   }
 
   async getAccountById(id: Account['id']) {
-    return this.data.accounts.find((account) => account.id === id);
+    const account = this.data.accounts.find((account) => account.id === id);
+    return account;
   }
 
   async getAccounts() {

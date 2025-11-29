@@ -20,9 +20,9 @@ test.describe('Money Addition Flows', () => {
 
   test('should add money successfully', async () => {
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
+      email: `franek@gmail.com`,
+      password: `franek@gmail.com`,
+      name: 'franek',
     };
 
     // zarejestruj klienta

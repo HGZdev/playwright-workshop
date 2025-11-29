@@ -19,10 +19,9 @@ test.describe('Money Sending Flows', () => {
 
   test('should send money successfully', async ({ page }) => {
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
-      role: 'client',
+      email: `grazyna@gmail.com`,
+      password: `grazyna@gmail.com`,
+      name: 'grazyna',
     };
 
     // zarejestruj klienta
@@ -61,10 +60,9 @@ test.describe('Money Sending Flows', () => {
   }) => {
     test.setTimeout(30000);
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
-      role: 'client',
+      email: `halina@gmail.com`,
+      password: `halina@gmail.com`,
+      name: 'halina',
     };
 
     // zarejestruj klienta
@@ -130,10 +128,9 @@ test.describe('Money Sending Flows', () => {
     });
 
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
-      role: 'client',
+      email: `irena@gmail.com`,
+      password: `irena@gmail.com`,
+      name: 'irena',
     };
 
     // zarejestruj klienta

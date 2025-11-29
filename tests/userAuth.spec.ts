@@ -13,9 +13,9 @@ test.describe('User Registration and Login Flow - version 1', () => {
 
   test('should register a new user successfully', async ({ page }) => {
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
+      email: `anna@gmail.com`,
+      password: `anna@gmail.com`,
+      name: 'anna',
     };
 
     await test.step('przejdz do strony z formularzem rejestracyjnym za pomocą linku', async () => {
@@ -73,9 +73,9 @@ test.describe('User Registration and Login Flow - version 2', () => {
 
   test('should register a new user successfully', async ({ page }) => {
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
+      email: `barbara@gmail.com`,
+      password: `barbara@gmail.com`,
+      name: 'barbara',
     };
 
     await page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
@@ -103,9 +103,9 @@ test.describe('User Registration and Login Flow - version 2', () => {
 
   test('should show error if email already exists', async ({ page }) => {
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
+      email: `cecylia@gmail.com`,
+      password: `cecylia@gmail.com`,
+      name: 'cecylia',
     };
 
     await page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
@@ -165,9 +165,9 @@ test.describe('User Registration and Login Flow - version 3', () => {
 
   test('should register a new user successfully', async ({ page }) => {
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
+      email: `daniela@gmail.com`,
+      password: `daniela@gmail.com`,
+      name: 'daniela',
     };
 
     await loginPage.goToRegistrationPage();
@@ -180,9 +180,9 @@ test.describe('User Registration and Login Flow - version 3', () => {
 
   test('should show error if email already exists', async () => {
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
+      email: `ewa@gmail.com`,
+      password: `ewa@gmail.com`,
+      name: 'ewa',
     };
 
     await loginPage.goToRegistrationPage();

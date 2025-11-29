@@ -7,11 +7,10 @@ export class AccountService {
     if (!accountId) throw new Error('accountId is undefined');
     await randomDelay('getAccount', 300, 1000);
     const account = await db.getAccountById(accountId);
-    const transactions = await this.getTransactions(accountId);
-
     if (!account) {
       throw new Error('Account not found');
     }
+    const transactions = await this.getTransactions(accountId);
 
     account.transactions = transactions;
     return account;
