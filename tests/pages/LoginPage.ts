@@ -1,22 +1,22 @@
 import { expect, Page } from '@playwright/test';
 import { UserInput } from '../../_server/database/types';
 
-class UserAuthPage {
+class LoginPage {
   private page: Page;
 
   constructor(page: Page) {
     this.page = page;
   }
 
-  async hasError(text: string) {
-    console.log(`Checking if error "${text}" is visible...`);
-    this.page.getByRole('alert', { name: text });
-  }
-
   async isLoginPageLoaded() {
     console.log('Checking if login page is loaded...');
     await this.page.waitForURL('/login');
     await expect(this.page.getByRole('heading', { name: 'Logowanie do konta' })).toBeVisible();
+  }
+
+  async goToRegistrationPage() {
+    console.log('Going to registration page...');
+    await this.page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
   }
 
   async fillAndSubmitUserLoginForm({ email, password }: Pick<UserInput, 'email' | 'password'>) {
@@ -43,10 +43,10 @@ class UserAuthPage {
     });
   }
 
-  async goToRegistrationPage() {
-    console.log('Going to registration page...');
-    await this.page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
+  async hasError(text: string) {
+    console.log(`Checking if error "${text}" is visible...`);
+    this.page.getByRole('alert', { name: text });
   }
 }
 
-export default UserAuthPage;
+export default LoginPage;

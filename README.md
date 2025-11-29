@@ -124,10 +124,9 @@ playwright-workshop/
 │   ├── utils/                # Narzędzia pomocnicze dla testów
 │   │   ├── resetDatabase.ts # Reset bazy danych
 │   │   └── userDataGenerator.ts # Generowanie danych użytkownika
-│   ├── adminAuth.spec.ts     # Testy autoryzacji adminów
 │   ├── global.setup.ts       # Globalna konfiguracja testów
 │   ├── moneyAdditions.spec.ts # Testy doładowań konta
-│   ├── moneyTransfers.spec.ts # Testy przelewów
+│   ├── moneySending.spec.ts # Testy przelewów
 │   ├── smoke.spec.ts         # Testy smoke
 │   └── userAuth.spec.ts      # Testy autoryzacji użytkowników
 ├── playwright.config.ts       # Konfiguracja Playwright
@@ -205,10 +204,9 @@ playwright-workshop/
 │   ├── utils/                # Narzędzia pomocnicze dla testów
 │   │   ├── resetDatabase.ts # Reset bazy danych
 │   │   └── userDataGenerator.ts # Generowanie danych użytkownika
-│   ├── adminAuth.spec.ts     # Testy autoryzacji adminów
 │   ├── global.setup.ts       # Globalna konfiguracja testów
 │   ├── moneyAdditions.spec.ts # Testy doładowań konta
-│   ├── moneyTransfers.spec.ts # Testy przelewów
+│   ├── moneySending.spec.ts # Testy przelewów
 │   ├── smoke.spec.ts         # Testy smoke
 │   └── userAuth.spec.ts      # Testy autoryzacji użytkowników
 ├── .gitignore                 # Pliki ignorowane przez Git
@@ -234,7 +232,7 @@ Projekt zawiera testy E2E napisane w Playwright:
 
 - **userAuth.spec.ts** - Testy autoryzacji użytkowników
 - **moneyAdditions.spec.ts** - Testy dodawania środków do konta bankowego
-- **moneyTransfers.spec.ts** - Testy przelewów na inne konta bankowe
+- **moneySending.spec.ts** - Testy przelewów na inne konta bankowe
 
 ## 🛠️ Technologie
 
