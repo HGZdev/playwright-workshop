@@ -153,7 +153,6 @@ a:hover {
   text-decoration: underline;
 }
 
-
 /* ===== Form Elements ===== */
 label {
   display: block;
@@ -360,7 +359,6 @@ button.danger > * {
   position: relative;
   z-index: 1;
 }
-
 
 /* ===== Card Component ===== */
 .card {
@@ -762,9 +760,18 @@ button.danger > * {
 .balance-amount {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.balance-amount.amount-incoming {
   color: var(--secondary);
   text-shadow: var(--shadow-glow-secondary);
-  margin-bottom: var(--spacing-md);
+}
+
+.balance-amount.amount-outgoing {
+  color: var(--error);
+  text-shadow: 0 0 15px rgba(207, 102, 121, 0.15);
 }
 
 .actions-section {
@@ -791,10 +798,17 @@ button.danger > * {
   flex: 1;
 }
 
-.transaction-title {
+.transaction-recipient {
   font-weight: var(--font-weight-semibold);
   margin-bottom: var(--spacing-xs);
   color: var(--text-primary);
+  font-size: var(--font-size-lg);
+}
+
+.transaction-title {
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-secondary);
 }
 
 .transaction-date {
@@ -894,7 +908,6 @@ button.danger > * {
   padding: var(--spacing-sm) var(--spacing-md);
   font-size: var(--font-size-sm);
 }
-
 
 .role-badge {
   display: inline-block;

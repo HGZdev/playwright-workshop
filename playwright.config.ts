@@ -50,15 +50,15 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'moneySending',
-      dependencies: ['smoke'],
-      testMatch: 'moneySending.spec.ts',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
       name: 'moneyAddition',
       dependencies: ['smoke'],
       testMatch: 'moneyAddition.spec.ts',
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'moneySending',
+      dependencies: ['smoke'],
+      testMatch: 'moneySending.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
   ],

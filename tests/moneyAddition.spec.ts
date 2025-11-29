@@ -145,7 +145,7 @@ test.describe('Money Addition Flows', () => {
     await transactionPage.isAddMoneyPageLoaded();
 
     // Try to submit empty form
-    await page.getByRole('button', { name: 'Doładuj' }).click({ delay: 4000 });
+    await page.getByRole('button', { name: 'Doładuj' }).click();
 
     // All errors should appear
     await transactionPage.hasError('Tytuł jest wymagany');

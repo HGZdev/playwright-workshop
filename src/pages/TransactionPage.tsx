@@ -15,14 +15,15 @@ interface TransactionFormData {
 export const TransactionPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { account } = useAccount();
+  const { account, loading: accountLoading, error: accountError } = useAccount();
   const { addMoney, error: addMoneyError, loading: addMoneyLoading } = useAddMoney();
   const { sendMoney, error: sendMoneyError, loading: sendMoneyLoading } = useSendMoney();
 
   const isAddMode = location.pathname === '/add-money';
 
-  const error = isAddMode ? addMoneyError : sendMoneyError;
-  const loading = isAddMode ? addMoneyLoading : sendMoneyLoading;
+  const error = accountError || (isAddMode ? addMoneyError : sendMoneyError);
+  const isLoading = accountLoading;
+  const isProcessing = isAddMode ? addMoneyLoading : sendMoneyLoading;
 
   const {
     register,
@@ -59,68 +60,77 @@ export const TransactionPage: React.FC = () => {
   return (
     <div className="container">
       <h2>{isAddMode ? 'Doładuj konto' : 'Wykonaj przelew'}</h2>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="transfer-form"
-        aria-label={isAddMode ? 'Doładuj pieniądze na konto' : 'Przelej pieniądze na inne konto'}
-      >
-        {!isAddMode && (
+
+      {isLoading ? (
+        <p>Trwa ładowanie...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <form
+          onSubmit={handleSubmit(onSubmit, (errors) =>
+            console.error('Form validation failed:', errors),
+          )}
+          className="transfer-form"
+          aria-label={isAddMode ? 'Doładuj pieniądze na konto' : 'Przelej pieniądze na inne konto'}
+        >
+          {!isAddMode && (
+            <FormField
+              id="recipient"
+              label="Odbiorca"
+              type="text"
+              autoComplete="off"
+              register={register}
+              validation={{
+                required: 'Odbiorca jest wymagany',
+                validate: (value) => getRecipientError(value) || undefined,
+              }}
+              error={errors.recipient}
+            />
+          )}
           <FormField
-            id="recipient"
-            label="Odbiorca"
+            id="title"
+            label="Tytuł"
             type="text"
             autoComplete="off"
             register={register}
             validation={{
-              required: 'Odbiorca jest wymagany',
-              validate: (value) => getRecipientError(value) || undefined,
+              required: 'Tytuł jest wymagany',
+              validate: (value) => getTitleError(value) || undefined,
             }}
-            error={errors.recipient}
+            error={errors.title}
           />
-        )}
-        <FormField
-          id="title"
-          label="Tytuł"
-          type="text"
-          autoComplete="off"
-          register={register}
-          validation={{
-            required: 'Tytuł jest wymagany',
-            validate: (value) => getTitleError(value) || undefined,
-          }}
-          error={errors.title}
-        />
-        <FormField
-          id="amount"
-          label="Kwota"
-          type="number"
-          min="0.01"
-          step="0.01"
-          inputMode="decimal"
-          autoComplete="transaction-amount"
-          register={register}
-          validation={{
-            required: 'Kwota jest wymagana',
-            validate: (value) => getAmountError(value) || undefined,
-          }}
-          error={errors.amount}
-        />
+          <FormField
+            id="amount"
+            label="Kwota"
+            type="number"
+            min="0.01"
+            step="0.01"
+            inputMode="decimal"
+            autoComplete="transaction-amount"
+            register={register}
+            validation={{
+              required: 'Kwota jest wymagana',
+              validate: (value) => getAmountError(value) || undefined,
+            }}
+            error={errors.amount}
+          />
 
-        {error && (
-          <div className="error-text" role="alert" aria-live="polite">
-            {error}
-          </div>
-        )}
-        <SubmitButton
-          isLoading={loading}
-          loadingText={isAddMode ? undefined : 'Trwa długie procesowanie operacji...'}
-        >
-          {isAddMode ? 'Doładuj' : 'Wyślij przelew'}
-        </SubmitButton>
-        <Link className="btn-secondary" to="/dashboard">
-          Anuluj
-        </Link>
-      </form>
+          {error && (
+            <div className="error-text" role="alert" aria-live="polite">
+              {error}
+            </div>
+          )}
+          <SubmitButton
+            isLoading={isProcessing}
+            loadingText={isAddMode ? undefined : 'Trwa długie procesowanie operacji...'}
+          >
+            {isAddMode ? 'Doładuj' : 'Wyślij przelew'}
+          </SubmitButton>
+          <Link className="btn-secondary" to="/dashboard">
+            Anuluj
+          </Link>
+        </form>
+      )}
     </div>
   );
 };

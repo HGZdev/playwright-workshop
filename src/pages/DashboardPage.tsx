@@ -20,7 +20,7 @@ export const DashboardPage: React.FC = () => {
   };
 
   const balance = account?.transactions.reduce((acc, t) => acc + t.amount, 0) || 0;
-
+  const formattedBalance = currencyFormatter(balance);
   return (
     <div className="container">
       <header className="dashboard-header">
@@ -43,11 +43,11 @@ export const DashboardPage: React.FC = () => {
           <h2>Dostępne środki</h2>
           <div
             data-testid="balance-amount"
-            className="balance-amount"
+            className={`balance-amount ${isLoading ? '' : balance > 0 ? 'amount-incoming' : 'amount-outgoing'}`}
             role="status"
             aria-live="polite"
           >
-            {isLoading ? 'Ładowanie...' : `${currencyFormatter(balance)}`}
+            {isLoading ? 'Ładowanie...' : `${formattedBalance}`}
           </div>
         </section>
 
@@ -78,12 +78,13 @@ export const DashboardPage: React.FC = () => {
                   aria-label={`Transakcja ${t.type === 'incoming' ? 'przychodząca' : 'wychodząca'}: ${t.title}, ${currencyFormatter(t.amount, true)}, ${t.date}`}
                 >
                   <div className="transaction-details">
-                    <div className="transaction-title">{t.title}</div>
+                    <div className="transaction-recipient">{t.recipient}</div>
+                    {t.title && <div className="transaction-title">{t.title}</div>}
                     <time className="transaction-date" dateTime={t.date}>
                       {t.date}
                     </time>
                   </div>
-                  <div className={t.type === 'incoming' ? 'amount-incoming' : 'amount-outgoing'}>
+                  <div className={t.amount > 0 ? 'amount-incoming' : 'amount-outgoing'}>
                     {currencyFormatter(t.amount, true)}
                   </div>
                 </div>
