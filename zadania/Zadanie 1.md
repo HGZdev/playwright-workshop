@@ -1,12 +1,12 @@
 ## Zadanie 1 - Test logowania użytkownika do konta bankowego
 
-Piszemy testy logowania do konta bankowego klienta.
+Piszemy testy rejestracji i logowania do konta bankowego klienta.
 
 ### Opis
 
-1. Utwórz plik `tests/login.spec.ts`
-2. Napisz test logowania
-3. Napisz test nieprawidłowego wypełnienia formularza logowania
+1. Utwórz plik `tests/userAuth.spec.ts`
+2. Napisz test rejestracji i logowania
+3. Napisz test nieprawidłowego wypełnienia formularza rejestracyjnego
 4. Uruchommy testy na cztery sposoby:
    - Headless: `npx playwright test`
    - Z przeglądarką: `npx playwright test --headed`
@@ -39,7 +39,7 @@ Dane admina:
 - email: admin@gmail.com
 - password: admin@gmail.com
 
-<!-- metody na locatorze -->
+#### Metody na locatorze
 
 - `getByTitle` - metoda znajdująca element poprzez atrybut `title`
 - `getByRole` - metoda znajdująca element poprzez role
@@ -50,13 +50,13 @@ Dane admina:
 - `getByText` - metoda znajdująca element poprzez tekst wewnątrz elementu
 - `getByTestId` - metoda znajdująca element poprzez atrybut `data-testid`
 
-<!-- filtrowanie locatorów -->
+#### Filtrowanie locatorów
 
 - Zawęża wyniki locatora
 - `hasText`: Filtruje po tekście
 - `has`: Filtruje po zawartym locatorze
 
-<!-- akcje na locatorze -->
+#### Akcje na locatorze
 
 - `fill` - wypełnianie pola formularza
 - `filter` - filtrowanie locatorów po tekście lub innych locatorach
