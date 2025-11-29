@@ -19,31 +19,30 @@ test.describe('Money Sending Flows', () => {
 
   test('should send money successfully', async ({ page }) => {
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
-      role: 'client',
+      email: `grazyna@gmail.com`,
+      password: `grazyna@gmail.com`,
+      name: 'grazyna',
     };
 
-    // zarejestruj klienta
+    /* zarejestruj klienta */
 
     await page.goto('/');
     await loginPage.isLoginPageLoaded();
     await loginPage.goToRegistrationPage();
     await registrationPage.register(user);
 
-    // zaloguj się na konto
+    /* zaloguj się na konto */
 
     await loginPage.isLoginPageLoaded();
     await loginPage.login(user);
     await dashboardPage.isDashboardLoaded();
 
-    // otwórz panel wykonywania przelewu na inne konto
+    /* otwórz panel wykonywania przelewu na inne konto */
 
     await dashboardPage.goToSendMoneyPage();
     await transactionPage.isSendMoneyPageLoaded();
 
-    // wypełnij formularz i zatwierdź
+    /* wypełnij formularz i zatwierdź */
 
     await transactionPage.fillAndSubmitSendMoneyForm({
       title: 'Zakupy',
@@ -51,7 +50,7 @@ test.describe('Money Sending Flows', () => {
       amount: 100,
     });
 
-    // sprawdź, czy bilans na koncie jest prawidłowy
+    /* sprawdź, czy bilans na koncie jest prawidłowy */
     await dashboardPage.isDashboardLoaded();
     expect(await dashboardPage.getBalance()).toBe(-100);
   });
@@ -61,33 +60,32 @@ test.describe('Money Sending Flows', () => {
   }) => {
     test.setTimeout(30000);
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
-      role: 'client',
+      email: `halina@gmail.com`,
+      password: `halina@gmail.com`,
+      name: 'halina',
     };
 
-    // zarejestruj klienta
+    /* zarejestruj klienta */
 
     await page.goto('/');
     await loginPage.isLoginPageLoaded();
     await loginPage.goToRegistrationPage();
     await registrationPage.register(user);
 
-    // zaloguj się na konto
+    /* zaloguj się na konto */
 
     await loginPage.isLoginPageLoaded();
     await loginPage.login(user);
     await dashboardPage.isDashboardLoaded();
 
-    // Pierwszy przelew
+    /* Pierwszy przelew */
 
-    // otwórz panel wykonywania przelewu na inne konto
+    /* otwórz panel wykonywania przelewu na inne konto */
 
     await dashboardPage.goToSendMoneyPage();
     await transactionPage.isSendMoneyPageLoaded();
 
-    // wypełnij formularz i zatwierdź
+    /* wypełnij formularz i zatwierdź */
 
     await transactionPage.fillAndSubmitSendMoneyForm({
       title: 'Zakupy',
@@ -95,18 +93,18 @@ test.describe('Money Sending Flows', () => {
       amount: 100,
     });
 
-    // sprawdź, czy bilans na koncie jest prawidłowy
+    /* sprawdź, czy bilans na koncie jest prawidłowy */
     await dashboardPage.isDashboardLoaded();
     expect(await dashboardPage.getBalance()).toBe(-100);
 
-    // Drugi przelew
+    /* Drugi przelew */
 
-    // otwórz panel wykonywania przelewu na inne konto
+    /* otwórz panel wykonywania przelewu na inne konto */
 
     await dashboardPage.goToSendMoneyPage();
     await transactionPage.isSendMoneyPageLoaded();
 
-    // wypełnij formularz i zatwierdź
+    /* wypełnij formularz i zatwierdź */
 
     await transactionPage.fillAndSubmitSendMoneyForm({
       title: 'Zakupy',
@@ -114,7 +112,7 @@ test.describe('Money Sending Flows', () => {
       amount: 100,
     });
 
-    // sprawdź, czy bilans na koncie jest prawidłowy
+    /* sprawdź, czy bilans na koncie jest prawidłowy */
     await dashboardPage.isDashboardLoaded();
     expect(await dashboardPage.getBalance()).toBe(-200);
   });
@@ -130,33 +128,32 @@ test.describe('Money Sending Flows', () => {
     });
 
     const user = {
-      email: `client_${new Date().getTime()}@gmail.com`,
-      password: `client_${new Date().getTime()}@gmail.com`,
-      name: 'client',
-      role: 'client',
+      email: `irena@gmail.com`,
+      password: `irena@gmail.com`,
+      name: 'irena',
     };
 
-    // zarejestruj klienta
+    /* zarejestruj klienta */
 
     await page.goto('/');
     await loginPage.isLoginPageLoaded();
     await loginPage.goToRegistrationPage();
     await registrationPage.register(user);
 
-    // zaloguj się na konto
+    /* zaloguj się na konto */
 
     await loginPage.isLoginPageLoaded();
     await loginPage.login(user);
     await dashboardPage.isDashboardLoaded();
 
-    // Pierwszy przelew
+    /* Pierwszy przelew */
 
-    // otwórz panel wykonywania przelewu na inne konto
+    /* otwórz panel wykonywania przelewu na inne konto */
 
     await dashboardPage.goToSendMoneyPage();
     await transactionPage.isSendMoneyPageLoaded();
 
-    // wypełnij formularz i zatwierdź
+    /* wypełnij formularz i zatwierdź */
 
     await transactionPage.fillAndSubmitSendMoneyForm({
       title: 'Zakupy',
@@ -164,18 +161,18 @@ test.describe('Money Sending Flows', () => {
       amount: 100,
     });
 
-    // sprawdź, czy bilans na koncie jest prawidłowy
+    /* sprawdź, czy bilans na koncie jest prawidłowy */
     await dashboardPage.isDashboardLoaded();
     expect(await dashboardPage.getBalance()).toBe(0);
 
-    // Drugi przelew
+    /* Drugi przelew */
 
-    // otwórz panel wykonywania przelewu na inne konto
+    /* otwórz panel wykonywania przelewu na inne konto */
 
     await dashboardPage.goToSendMoneyPage();
     await transactionPage.isSendMoneyPageLoaded();
 
-    // wypełnij formularz i zatwierdź
+    /* wypełnij formularz i zatwierdź */
 
     await transactionPage.fillAndSubmitSendMoneyForm({
       title: 'Zakupy',
@@ -183,7 +180,7 @@ test.describe('Money Sending Flows', () => {
       amount: 100,
     });
 
-    // sprawdź, czy bilans na koncie jest prawidłowy
+    /* sprawdź, czy bilans na koncie jest prawidłowy */
     await dashboardPage.isDashboardLoaded();
     expect(await dashboardPage.getBalance()).toBe(0);
   });

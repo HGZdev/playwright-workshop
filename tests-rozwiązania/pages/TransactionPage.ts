@@ -29,6 +29,7 @@ class TransactionPage {
     console.log(`Filling and submitting add money form [${title}, ${amount}]...`);
     await this.page.getByRole('textbox', { name: 'Tytuł' }).fill(title);
     await this.page.getByRole('spinbutton', { name: 'Kwota' }).fill(amount.toString());
+
     await this.page.getByRole('button', { name: 'Doładuj' }).click();
   }
 
@@ -41,6 +42,7 @@ class TransactionPage {
     await this.page.getByRole('textbox', { name: 'Tytuł' }).fill(title);
     await this.page.getByRole('spinbutton', { name: 'Kwota' }).fill(amount.toString());
     await this.page.getByRole('textbox', { name: 'Odbiorca' }).fill(recipient);
+
     await this.page.getByRole('button', { name: 'Wyślij przelew' }).click();
   }
 }

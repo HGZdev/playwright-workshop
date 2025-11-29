@@ -27,13 +27,28 @@ test.describe('Money Addition Flows', () => {
 
     /* zarejestruj klienta */
 
+    await loginPage.goToRegistrationPage();
+    await registrationPage.register(user);
+
     /* zaloguj się na konto */
+
+    await loginPage.login(user);
+    await dashboardPage.isDashboardLoaded();
 
     /* otwórz panel doładowywania konta */
 
+    await dashboardPage.goToAddMoneyPage();
+    await transactionPage.isAddMoneyPageLoaded();
+
     /* wypełnij formularz i zatwierdź */
+    await transactionPage.fillAndSubmitAddMoneyForm({
+      title: 'Pensja',
+      amount: 100000,
+    });
 
     /* sprawdź, czy bilans na koncie jest prawidłowy */
+    await dashboardPage.isDashboardLoaded();
+    expect(await dashboardPage.getBalance()).toBe(100000);
   });
 
   test('should show all errors when submitting empty form', async () => {});

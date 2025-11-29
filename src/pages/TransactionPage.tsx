@@ -23,7 +23,7 @@ export const TransactionPage: React.FC = () => {
   const isAddMode = location.pathname === '/add-money';
 
   const error = accountError || (isAddMode ? addMoneyError : sendMoneyError);
-  const isLoading = accountLoading;
+  const isLoading = false;
   const isProcessing = isAddMode ? addMoneyLoading : sendMoneyLoading;
 
   const {
