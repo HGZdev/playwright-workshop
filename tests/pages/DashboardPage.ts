@@ -10,13 +10,13 @@ class DashboardPage {
 
   async getBalance(): Promise<number> {
     console.log('Getting balance...');
-    const text = await this.page.getByTestId('balance-amount').textContent();
+    const text = await this.page.getByTestId('balance-amount').textContent({ timeout: 7000 });
     return parseBalanceText(text || '');
   }
 
   async isDashboardLoaded() {
     console.log('Checking if dashboard is loaded...');
-    await expect(this.page).toHaveURL('/dashboard', { timeout: 8000 }); // with longer timeout
+    await expect(this.page).toHaveURL('/dashboard', { timeout: 9000 });
     await expect(this.page.getByRole('heading', { name: 'Dostępne środki' })).toBeVisible();
     await expect(this.page.getByTestId('balance-amount')).toContainText('zł');
   }

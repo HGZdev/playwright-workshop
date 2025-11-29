@@ -4,7 +4,7 @@ import { randomDelay } from '../utils/delay.js';
 
 export class AccountService {
   async getAccount(accountId: number) {
-    await randomDelay(300, 1000);
+    await randomDelay('getAccount', 300, 1000);
     const account = await db.getAccountById(accountId);
     const transactions = await this.getTransactions(accountId);
 
@@ -17,7 +17,7 @@ export class AccountService {
   }
 
   async createAccount() {
-    await randomDelay(300, 1000);
+    await randomDelay('createAccount');
     const newAccount: Account = {
       id: Date.now(),
       transactions: [],
@@ -29,7 +29,7 @@ export class AccountService {
   }
 
   async getTransactions(accountId: number) {
-    await randomDelay(300, 1000);
+    await randomDelay('getTransactions');
     const transactions = await db.getTransactions();
     return transactions.filter((transaction) => transaction.accountId === accountId);
   }
@@ -43,7 +43,7 @@ export class AccountService {
     amount: number;
     accountId: number;
   }) {
-    await randomDelay(300, 700);
+    await randomDelay('addMoney');
 
     if (amount <= 0) {
       throw new Error('Invalid amount');
@@ -79,7 +79,7 @@ export class AccountService {
     amount: number;
     accountId: number;
   }) {
-    await randomDelay(6000, 6000); // Longer delay for incoming transaction processing
+    await randomDelay('sendMoney', 6000, 7000); // Longer delay for outgoing transaction processing
 
     if (amount <= 0) {
       throw new Error('Invalid amount');

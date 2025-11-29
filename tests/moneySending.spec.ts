@@ -183,7 +183,7 @@ test.describe('Money Sending Flows', () => {
       await dashboardPage.goToSendMoneyPage();
       await transactionPage.isSendMoneyPageLoaded();
 
-      await page.getByRole('button', { name: 'Wyślij przelew' }).click({ delay: 4000 });
+      await page.getByRole('button', { name: 'Wyślij przelew' }).click();
 
       // All errors should appear (no recipient field in add money form)
       await transactionPage.hasError('Odbiorca jest wymagany');

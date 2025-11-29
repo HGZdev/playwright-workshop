@@ -13,8 +13,8 @@ export const delay = <T>(ms: number = 500) => new Promise<T>((resolve) => setTim
  * @param max - maximum delay in milliseconds
  * @returns random delay in milliseconds
  */
-export const randomDelay = <T>(min: number, max: number) => {
+export const randomDelay = <T>(name: string, min: number = 300, max: number = 500) => {
   const delayMs = Math.floor(Math.random() * (max - min + 1) + min);
-
+  console.log(`${name}: ${delayMs} ms delay`);
   return delay<T>(delayMs);
 };

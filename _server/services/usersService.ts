@@ -4,17 +4,17 @@ import { randomDelay } from '../utils/delay.js';
 
 export class UsersService {
   async getAllUsers() {
-    await randomDelay(200, 1000);
+    await randomDelay('getAllUsers');
     return db.getUsers();
   }
 
   async updateUser(id: User['id'], updates: Partial<User>) {
-    await randomDelay(200, 1000);
+    await randomDelay('updateUser');
     return db.updateUser(id, updates);
   }
 
   async deleteUser(id: User['id']) {
-    await randomDelay(200, 1000);
+    await randomDelay('deleteUser');
     return db.deleteUser(id);
   }
 }

@@ -4,7 +4,7 @@ import { Account, User } from '../database/types.js';
 
 export class AuthService {
   async login(email: User['email'], password: User['password']) {
-    await randomDelay(500, 1000); // Simulate network delay
+    await randomDelay('login');
     const user = await db.getUserByEmail(email);
 
     if (!user || user.password !== password) {
@@ -28,7 +28,7 @@ export class AuthService {
   }
 
   async register(email: string, password: string, name: string) {
-    await randomDelay(500, 1000);
+    await randomDelay('register');
     const exists = await this.userExists(email);
     if (exists) {
       throw new Error('Email already exists');
@@ -68,7 +68,7 @@ export class AuthService {
   }
 
   async userExists(email: string) {
-    await randomDelay(500, 1000);
+    await randomDelay('userExists');
     const users = await db.getUsers();
     const user = users.find((u) => u.email === email);
 
