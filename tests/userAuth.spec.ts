@@ -18,49 +18,55 @@ test.describe('User Registration and Login Flow - version 1', () => {
       name: 'client',
     };
 
-    // przejdz do strony z formularzem rejestracyjnym za pomocą linku
+    await test.step('przejdz do strony z formularzem rejestracyjnym za pomocą linku', async () => {
+      // await page.getByText('Zarejestruj nowe konto').click();
+      // await page.locator('a').filter({ hasText: 'Zarejestruj nowe konto' }).click();
+      await page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
+    });
 
-    // await page.getByText('Zarejestruj nowe konto').click();
-    // await page.locator('a').filter({ hasText: 'Zarejestruj nowe konto' }).click();
-    await page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
+    await test.step('upewnij się, że znajdujesz się na stronie z formularzem rejestracyjnym', async () => {
+      await page.waitForURL('/register');
+    });
 
-    // wypełnij pola formularza logowania
-    await page.waitForURL('/register');
+    await test.step('wypełnij pola formularza rejestracyjnego', async () => {
+      // await page.locator('#email').click();
+      await page.getByLabel('E-mail').click();
+      await page.getByLabel('E-mail').fill(user.email);
+      await page.getByLabel('Hasło').click();
+      await page.getByLabel('Hasło').fill(user.password);
+      await page.getByRole('textbox', { name: 'Imię i nazwisko' }).click();
+      await page.getByRole('textbox', { name: 'Imię i nazwisko' }).fill(user.name);
+    });
 
-    // await page.locator('#email').fill('client@gmail.com');
-    await page.getByLabel('E-mail').click();
-    await page.getByLabel('E-mail').fill(user.email);
-    await page.getByLabel('Hasło').click();
-    await page.getByLabel('Hasło').fill(user.password);
-    await page.getByRole('textbox', { name: 'Imię i nazwisko' }).click();
-    await page.getByRole('textbox', { name: 'Imię i nazwisko' }).fill(user.name);
+    await test.step('zatwierdz formularz rejestracyjny', async () => {
+      await page.getByRole('button', { name: 'Zarejestruj się' }).click();
+    });
 
-    // zatwierdz formularz rejestracyjny
+    await test.step('upewnij się, że znajdujesz się na stronie z formularzem logowania', async () => {
+      await page.waitForURL('/login');
+      await expect(page.getByRole('heading', { name: 'Logowanie' })).toBeVisible();
+    });
 
-    await page.getByRole('button', { name: 'Zarejestruj się' }).click();
+    await test.step('zaloguj się za pomocą danych nowo utworzonego klienta', async () => {
+      await page.getByLabel('E-mail').click();
+      await page.getByLabel('E-mail').fill(user.email);
+      await page.getByLabel('Hasło').click();
+      await page.getByLabel('Hasło').fill(user.password);
+    });
 
-    // sprawdz, czy trafilas na wlasciwa strone
+    await test.step('zatwierdz formularz logowania', async () => {
+      await page.getByRole('button', { name: 'Zaloguj się' }).click();
+    });
 
-    await page.waitForURL('/login');
-
-    // zaloguj się za pomocą danych nowo utworzonego klienta
-    await page.getByLabel('E-mail').click();
-    await page.getByLabel('E-mail').fill(user.email);
-    await page.getByLabel('Hasło').click();
-    await page.getByLabel('Hasło').fill(user.password);
-
-    // zatwierdz formularz logowania
-
-    await page.getByRole('button', { name: 'Zaloguj się' }).click();
-
-    // sprawdz, czy trafilas na wlasciwa strone
-    await page.waitForURL('/dashboard');
+    await test.step('upewnij się, że znajdujesz się na stronie z formularzem logowania', async () => {
+      await page.waitForURL('/dashboard');
+      await expect(page.getByRole('heading', { name: 'Mini Bank' })).toBeVisible();
+    });
   });
 });
 
 test.describe('User Registration and Login Flow - version 2', () => {
   test.beforeEach(async ({ page }) => {
-    // nawiguj do strony głównej
     await page.goto('/login');
     await page.waitForURL('/login');
   });
@@ -76,19 +82,19 @@ test.describe('User Registration and Login Flow - version 2', () => {
     await page.waitForURL('/register');
 
     await page.getByRole('textbox', { name: 'E-mail' }).click();
-    await page.getByRole('textbox', { name: 'E-mail' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'E-mail' }).fill(user.email);
     await page.getByRole('textbox', { name: 'Hasło' }).click();
-    await page.getByRole('textbox', { name: 'Hasło' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'Hasło' }).fill(user.password);
     await page.getByRole('textbox', { name: 'Imię i nazwisko' }).click();
-    await page.getByRole('textbox', { name: 'Imię i nazwisko' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'Imię i nazwisko' }).fill(user.name);
 
     await page.getByRole('button', { name: 'Zarejestruj się' }).click();
     await page.waitForURL('/login');
 
     await page.getByRole('textbox', { name: 'E-mail' }).click();
-    await page.getByRole('textbox', { name: 'E-mail' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'E-mail' }).fill(user.email);
     await page.getByRole('textbox', { name: 'Hasło' }).click();
-    await page.getByRole('textbox', { name: 'Hasło' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'Hasło' }).fill(user.password);
     await page.getByRole('button', { name: 'Zaloguj się' }).click();
 
     await page.waitForURL('/dashboard');
@@ -106,19 +112,19 @@ test.describe('User Registration and Login Flow - version 2', () => {
     await page.waitForURL('/register');
 
     await page.getByRole('textbox', { name: 'E-mail' }).click();
-    await page.getByRole('textbox', { name: 'E-mail' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'E-mail' }).fill(user.email);
     await page.getByRole('textbox', { name: 'Hasło' }).click();
-    await page.getByRole('textbox', { name: 'Hasło' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'Hasło' }).fill(user.password);
     await page.getByRole('textbox', { name: 'Imię i nazwisko' }).click();
-    await page.getByRole('textbox', { name: 'Imię i nazwisko' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'Imię i nazwisko' }).fill(user.name);
 
     await page.getByRole('button', { name: 'Zarejestruj się' }).click();
     await page.waitForURL('/login');
 
     await page.getByRole('textbox', { name: 'E-mail' }).click();
-    await page.getByRole('textbox', { name: 'E-mail' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'E-mail' }).fill(user.email);
     await page.getByRole('textbox', { name: 'Hasło' }).click();
-    await page.getByRole('textbox', { name: 'Hasło' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'Hasło' }).fill(user.password);
     await page.getByRole('button', { name: 'Zaloguj się' }).click();
 
     await page.waitForURL('/dashboard');
@@ -131,11 +137,11 @@ test.describe('User Registration and Login Flow - version 2', () => {
 
     await page.waitForURL('/register');
     await page.getByRole('textbox', { name: 'E-mail' }).click();
-    await page.getByRole('textbox', { name: 'E-mail' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'E-mail' }).fill(user.email);
     await page.getByRole('textbox', { name: 'Hasło' }).click();
-    await page.getByRole('textbox', { name: 'Hasło' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'Hasło' }).fill(user.password);
     await page.getByRole('textbox', { name: 'Imię i nazwisko' }).click();
-    await page.getByRole('textbox', { name: 'Imię i nazwisko' }).fill('klient1@gmail.com');
+    await page.getByRole('textbox', { name: 'Imię i nazwisko' }).fill(user.name);
     await page.getByRole('button', { name: 'Zarejestruj się' }).click();
 
     await expect(page.getByText('An account with this email')).toBeVisible();

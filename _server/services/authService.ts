@@ -68,7 +68,6 @@ export class AuthService {
   }
 
   async userExists(email: string) {
-    await randomDelay('userExists');
     const users = await db.getUsers();
     const user = users.find((u) => u.email === email);
 

@@ -83,7 +83,7 @@
 
 ---
 
-## Zadanie 2 - Test logowania użytkownika
+## Zadanie 2 - Test rejestracja i logowania użytkownika
 
 ### Działania
 

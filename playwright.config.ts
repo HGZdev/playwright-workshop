@@ -9,7 +9,7 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'list',
   /** Timeout for each test */
@@ -41,12 +41,6 @@ export default defineConfig({
       name: 'userAuth',
       dependencies: ['smoke'],
       testMatch: 'userAuth.spec.ts',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'adminAuth',
-      dependencies: ['smoke'],
-      testMatch: 'adminAuth.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
     {

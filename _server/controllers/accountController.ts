@@ -6,7 +6,6 @@ import { ErrorMessages } from '../utils/errorMessages.js';
 export class AccountController {
   async getAccountById(req: AuthRequest, res: Response) {
     const { accountId } = req.params;
-
     try {
       const account = await accountService.getAccount(Number(accountId));
       res.json(account);

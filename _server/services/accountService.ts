@@ -1,9 +1,10 @@
 import { db } from '../database/database.js';
-import { Account, Transaction } from '../database/types.js';
+import { Transaction } from '../database/types.js';
 import { randomDelay } from '../utils/delay.js';
 
 export class AccountService {
   async getAccount(accountId: number) {
+    if (!accountId) throw new Error('accountId is undefined');
     await randomDelay('getAccount', 300, 1000);
     const account = await db.getAccountById(accountId);
     const transactions = await this.getTransactions(accountId);
@@ -14,18 +15,6 @@ export class AccountService {
 
     account.transactions = transactions;
     return account;
-  }
-
-  async createAccount() {
-    await randomDelay('createAccount');
-    const newAccount: Account = {
-      id: Date.now(),
-      transactions: [],
-    };
-    await db.addAccount(newAccount);
-
-    await db.save();
-    return newAccount;
   }
 
   async getTransactions(accountId: number) {

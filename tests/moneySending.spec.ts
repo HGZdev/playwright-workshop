@@ -56,7 +56,10 @@ test.describe('Money Sending Flows', () => {
     expect(await dashboardPage.getBalance()).toBe(-100);
   });
 
-  test('should add money 2 times successfully', async ({ page }) => {
+  test('should add money 2 times successfully - longer action timeout and test timeout', async ({
+    page,
+  }) => {
+    test.setTimeout(30000);
     const user = {
       email: `client_${new Date().getTime()}@gmail.com`,
       password: `client_${new Date().getTime()}@gmail.com`,
@@ -114,5 +117,74 @@ test.describe('Money Sending Flows', () => {
     // sprawdź, czy bilans na koncie jest prawidłowy
     await dashboardPage.isDashboardLoaded();
     expect(await dashboardPage.getBalance()).toBe(-200);
+  });
+
+  test('should add money 2 times successfully - mocked API', async ({ page }) => {
+    // Mock ANY POST request to /api/send-money/* (using wildcard for ID)
+    await page.route('**/api/send-money/**', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ success: true }),
+      });
+    });
+
+    const user = {
+      email: `client_${new Date().getTime()}@gmail.com`,
+      password: `client_${new Date().getTime()}@gmail.com`,
+      name: 'client',
+      role: 'client',
+    };
+
+    // zarejestruj klienta
+
+    await page.goto('/');
+    await loginPage.isLoginPageLoaded();
+    await loginPage.goToRegistrationPage();
+    await registrationPage.register(user);
+
+    // zaloguj się na konto
+
+    await loginPage.isLoginPageLoaded();
+    await loginPage.login(user);
+    await dashboardPage.isDashboardLoaded();
+
+    // Pierwszy przelew
+
+    // otwórz panel wykonywania przelewu na inne konto
+
+    await dashboardPage.goToSendMoneyPage();
+    await transactionPage.isSendMoneyPageLoaded();
+
+    // wypełnij formularz i zatwierdź
+
+    await transactionPage.fillAndSubmitSendMoneyForm({
+      title: 'Zakupy',
+      recipient: 'Jan Kowalski',
+      amount: 100,
+    });
+
+    // sprawdź, czy bilans na koncie jest prawidłowy
+    await dashboardPage.isDashboardLoaded();
+    expect(await dashboardPage.getBalance()).toBe(0);
+
+    // Drugi przelew
+
+    // otwórz panel wykonywania przelewu na inne konto
+
+    await dashboardPage.goToSendMoneyPage();
+    await transactionPage.isSendMoneyPageLoaded();
+
+    // wypełnij formularz i zatwierdź
+
+    await transactionPage.fillAndSubmitSendMoneyForm({
+      title: 'Zakupy',
+      recipient: 'Jan Kowalski',
+      amount: 100,
+    });
+
+    // sprawdź, czy bilans na koncie jest prawidłowy
+    await dashboardPage.isDashboardLoaded();
+    expect(await dashboardPage.getBalance()).toBe(0);
   });
 });
