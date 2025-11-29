@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useUsers, useDeleteUser } from '../hooks/useAdmin';
 import { useUser } from '../hooks/useUser';
 import { ConfirmModal } from '../components/ConfirmModal';
+import { LinkButton } from '../components/LinkButton';
+import { Button } from '../components/Button';
 import type { User } from '../types';
 
 export const AdminDashboardPage: React.FC = () => {
@@ -40,12 +42,23 @@ export const AdminDashboardPage: React.FC = () => {
       <div className="admin-header">
         <h1>Panel Administratora</h1>
         <div className="admin-header-buttons">
-          <Link to="/dashboard" className="btn-secondary" aria-label="Przejdź do panelu głównego">
+          <LinkButton
+            to="/dashboard"
+            variant="primary"
+            buttonStyle="outline"
+            aria-label="Przejdź do panelu głównego"
+          >
             Panel główny
-          </Link>
-          <button onClick={handleLogout} type="button" aria-label="Wyloguj się">
+          </LinkButton>
+          <Button
+            onClick={handleLogout}
+            type="button"
+            variant="danger"
+            buttonStyle="outline"
+            aria-label="Wyloguj się"
+          >
             Wyloguj się
-          </button>
+          </Button>
         </div>
       </div>
       <table className="admin-table">
@@ -72,17 +85,19 @@ export const AdminDashboardPage: React.FC = () => {
               <td>{user.password}</td>
               <td>
                 <div className="table-actions">
-                  <Link
+                  <LinkButton
                     to={`/admin/user/${user.id}`}
-                    className="btn-secondary"
+                    variant="secondary"
+                    buttonStyle="outline"
                     aria-label={`Edytuj użytkownika ${user.email}`}
                   >
                     Edytuj
-                  </Link>
-                  <button
+                  </LinkButton>
+                  <Button
                     disabled={sessionUser?.id === user.id}
                     onClick={() => handleDeleteClick(user)}
-                    className="danger"
+                    variant="danger"
+                    buttonStyle="filled"
                     aria-label={
                       sessionUser?.id === user.id
                         ? 'Nie możesz usunąć własnego konta'
@@ -90,7 +105,7 @@ export const AdminDashboardPage: React.FC = () => {
                     }
                   >
                     Usuń
-                  </button>
+                  </Button>
                 </div>
               </td>
             </tr>
@@ -106,7 +121,8 @@ export const AdminDashboardPage: React.FC = () => {
         cancelText="Anuluj"
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
-        confirmButtonClass="danger"
+        confirmButtonVariant="danger"
+        confirmButtonStyle="filled"
       />
     </div>
   );

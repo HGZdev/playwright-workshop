@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Button } from './Button';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -8,7 +9,8 @@ interface ConfirmModalProps {
   cancelText?: string;
   onConfirm: () => void;
   onCancel: () => void;
-  confirmButtonClass?: string;
+  confirmButtonVariant?: 'primary' | 'secondary' | 'danger' | 'neutral';
+  confirmButtonStyle?: 'filled' | 'outline';
 }
 
 export const ConfirmModal: React.FC<ConfirmModalProps> = ({
@@ -19,7 +21,8 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
   cancelText = 'Anuluj',
   onConfirm,
   onCancel,
-  confirmButtonClass = 'danger',
+  confirmButtonVariant = 'danger',
+  confirmButtonStyle = 'filled',
 }) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
@@ -76,18 +79,25 @@ export const ConfirmModal: React.FC<ConfirmModalProps> = ({
         <h2 id="modal-title">{title}</h2>
         <p id="modal-description">{message}</p>
         <div className="modal-actions">
-          <button
+          <Button
             ref={confirmButtonRef}
             type="button"
-            className={confirmButtonClass}
+            variant={confirmButtonVariant}
+            buttonStyle={confirmButtonStyle}
             onClick={onConfirm}
             aria-label={`${confirmText} - ${title}`}
           >
             {confirmText}
-          </button>
-          <button type="button" onClick={onCancel} aria-label={`${cancelText} and close dialog`}>
+          </Button>
+          <Button
+            type="button"
+            variant="neutral"
+            buttonStyle="outline"
+            onClick={onCancel}
+            aria-label={`${cancelText} and close dialog`}
+          >
             {cancelText}
-          </button>
+          </Button>
         </div>
       </div>
     </div>

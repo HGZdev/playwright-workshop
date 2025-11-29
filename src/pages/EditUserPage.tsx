@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useUsers, useUpdateUser } from '../hooks/useAdmin';
 import { useUser } from '../hooks/useUser';
 import { SubmitButton } from '../components/SubmitButton';
+import { LinkButton } from '../components/LinkButton';
 
 export const EditUserPage: React.FC = () => {
   const navigate = useNavigate();
@@ -47,9 +48,9 @@ export const EditUserPage: React.FC = () => {
       <div className="flex-center">
         <div className="card edit-user-page">
           <h1>Nie znaleziono użytkownika</h1>
-          <Link to="/admin" className="btn-secondary">
+          <LinkButton to="/admin" variant="secondary" buttonStyle="outline">
             Powrót do panelu administratora
-          </Link>
+          </LinkButton>
         </div>
       </div>
     );
@@ -119,10 +120,12 @@ export const EditUserPage: React.FC = () => {
             )}
           </div>
           <div className="button-group">
-            <SubmitButton isLoading={updateLoading}>Zaktualizuj użytkownika</SubmitButton>
-            <Link className="btn-secondary" to="/admin">
+            <SubmitButton isLoading={updateLoading} variant="primary" buttonStyle="filled">
+              Zaktualizuj użytkownika
+            </SubmitButton>
+            <LinkButton to="/admin" variant="neutral" buttonStyle="outline">
               Anuluj
-            </Link>
+            </LinkButton>
           </div>
           {error && (
             <div className="error-text" role="alert" aria-live="polite">

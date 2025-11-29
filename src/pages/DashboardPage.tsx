@@ -1,7 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useUser } from '../hooks/useUser';
 import { useAccount } from '../hooks/useAccount';
 import { currencyFormatter } from '../utils/heleprs';
+import { LinkButton } from '../components/LinkButton';
+import { Button } from '../components/Button';
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -28,13 +30,19 @@ export const DashboardPage: React.FC = () => {
         <div className="user-info">
           <span className="user-name">Witaj, {user?.name}</span>
           {user?.role === 'admin' && (
-            <Link to="/admin" className="btn-secondary" tabIndex={0}>
+            <LinkButton to="/admin" variant="primary" buttonStyle="outline" tabIndex={0}>
               Panel administratora
-            </Link>
+            </LinkButton>
           )}
-          <button onClick={handleLogout} type="button" aria-label="Wyloguj się z konta">
+          <Button
+            onClick={handleLogout}
+            type="button"
+            variant="danger"
+            buttonStyle="outline"
+            aria-label="Wyloguj się z konta"
+          >
             Wyloguj się
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -52,12 +60,22 @@ export const DashboardPage: React.FC = () => {
         </section>
 
         <section className="actions-section">
-          <Link to="/add-money" className="btn-primary" aria-label="Doładuj konto">
+          <LinkButton
+            to="/add-money"
+            variant="secondary"
+            buttonStyle="filled"
+            aria-label="Doładuj konto"
+          >
             Doładuj konto ⬇
-          </Link>
-          <Link to="/send-money" className="btn-primary" aria-label="Wykonaj przelew">
+          </LinkButton>
+          <LinkButton
+            to="/send-money"
+            variant="primary"
+            buttonStyle="filled"
+            aria-label="Wykonaj przelew"
+          >
             Wykonaj przelew ⬆
-          </Link>
+          </LinkButton>
         </section>
 
         <section className="card transactions-card">

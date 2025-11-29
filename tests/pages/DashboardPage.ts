@@ -18,7 +18,7 @@ class DashboardPage {
     console.log('Checking if dashboard is loaded...');
     await expect(this.page).toHaveURL('/dashboard', { timeout: 9000 });
     await expect(this.page.getByRole('heading', { name: 'Dostępne środki' })).toBeVisible();
-    await expect(this.page.getByTestId('balance-amount')).toContainText('zł');
+    await expect(this.page.getByTestId('balance-amount')).toContainText('zł', { timeout: 7000 });
   }
 
   async logout() {

@@ -5,6 +5,7 @@ import { useUser } from '../hooks/useUser';
 import { getEmailError, getPasswordError } from '../utils/validation';
 import { FormField } from '../components/FormField';
 import { SubmitButton } from '../components/SubmitButton';
+import { LinkButton } from '../components/LinkButton';
 
 interface RegisterFormData {
   email: string;
@@ -78,14 +79,18 @@ export const RegisterPage: React.FC = () => {
             }}
             error={errors.name}
           />
-          <SubmitButton isLoading={loading}>Zarejestruj się</SubmitButton>
+          <SubmitButton isLoading={loading} variant="secondary">
+            Zarejestruj się
+          </SubmitButton>
           {error && (
             <div className="error-text" role="alert" aria-live="polite">
               {error}
             </div>
           )}
           <div className="form-footer">
-            <Link to="/login">Powrót do logowania</Link>
+            <LinkButton to="/login" variant="primary" buttonStyle="ghost">
+              Powrót do logowania
+            </LinkButton>
           </div>
         </form>
       </div>

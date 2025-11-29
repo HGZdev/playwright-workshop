@@ -1,11 +1,8 @@
 import React from 'react';
+import { Button, ButtonProps } from './Button';
 
-interface SubmitButtonProps {
+interface SubmitButtonProps extends Omit<ButtonProps, 'type'> {
   isLoading?: boolean;
-  disabled?: boolean;
-  children: React.ReactNode;
-  className?: string;
-  variant?: 'primary' | 'secondary' | 'danger';
   loadingText?: string;
 }
 
@@ -14,18 +11,23 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
   loadingText = 'Przetwarzanie...',
   disabled = false,
   children,
-  className = '',
   variant = 'primary',
+  buttonStyle = 'filled',
+  className = '',
+  ...props
 }) => {
   const isDisabled = disabled || isLoading;
 
   return (
-    <button
+    <Button
       type="submit"
       disabled={isDisabled}
-      className={`submit-button ${variant} ${isLoading ? 'loading' : ''} ${className}`}
+      variant={variant}
+      buttonStyle={buttonStyle}
+      className={`submit-button ${isLoading ? 'loading' : ''} ${className}`.trim()}
       aria-busy={isLoading}
       aria-disabled={isDisabled}
+      {...props}
     >
       {isLoading ? (
         <>
@@ -35,6 +37,6 @@ export const SubmitButton: React.FC<SubmitButtonProps> = ({
       ) : (
         <span className="button-text">{children}</span>
       )}
-    </button>
+    </Button>
   );
 };

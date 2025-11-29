@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useUser } from '../hooks/useUser';
 import { getEmailError, getPasswordError } from '../utils/validation';
 import { FormField } from '../components/FormField';
 import { SubmitButton } from '../components/SubmitButton';
+import { LinkButton } from '../components/LinkButton';
 
 interface LoginFormData {
   email: string;
@@ -35,7 +36,7 @@ export const LoginPage: React.FC = () => {
     <div className="login-container">
       <h1 className="login-title">Mini Bank</h1>
       <div className="card login-page">
-        <h2>Zaloguj się</h2>
+        <h2>Logowanie do konta</h2>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="login-form"
@@ -67,14 +68,18 @@ export const LoginPage: React.FC = () => {
             }}
             error={errors.password}
           />
-          <SubmitButton isLoading={loading}>Zaloguj się</SubmitButton>
+          <SubmitButton isLoading={loading} variant="secondary" buttonStyle="outline">
+            Zaloguj się
+          </SubmitButton>
           {error && (
             <div className="error-text" role="alert" aria-live="polite">
               {error}
             </div>
           )}
           <div className="form-footer">
-            <Link to="/register">Zarejestruj nowe konto</Link>
+            <LinkButton to="/register" variant="secondary" buttonStyle="ghost">
+              Zarejestruj nowe konto
+            </LinkButton>
           </div>
         </form>
       </div>

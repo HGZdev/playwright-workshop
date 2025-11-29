@@ -1,10 +1,11 @@
 import React from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useAddMoney, useSendMoney, useAccount } from '../hooks/useAccount';
 import { getRecipientError, getTitleError, getAmountError } from '../utils/validation';
 import { FormField } from '../components/FormField';
 import { SubmitButton } from '../components/SubmitButton';
+import { LinkButton } from '../components/LinkButton';
 
 interface TransactionFormData {
   recipient: string;
@@ -123,12 +124,14 @@ export const TransactionPage: React.FC = () => {
           <SubmitButton
             isLoading={isProcessing}
             loadingText={isAddMode ? undefined : 'Trwa długie procesowanie operacji...'}
+            variant={isAddMode ? 'secondary' : 'primary'}
+            buttonStyle={isAddMode ? 'filled' : 'outline'}
           >
             {isAddMode ? 'Doładuj' : 'Wyślij przelew'}
           </SubmitButton>
-          <Link className="btn-secondary" to="/dashboard">
+          <LinkButton to="/dashboard" variant="neutral" buttonStyle="outline">
             Anuluj
-          </Link>
+          </LinkButton>
         </form>
       )}
     </div>
