@@ -38,7 +38,7 @@ export class AccountService {
     }
 
     const newTransaction: Transaction = {
-      id: Date.now(),
+      id: new Date().getTime(),
       date: new Date().toISOString().split('T')[0],
       recipient: 'Ja',
       title,
@@ -74,7 +74,7 @@ export class AccountService {
     }
 
     const newTransaction: Transaction = {
-      id: Date.now(),
+      id: new Date().getTime(),
       date: new Date().toISOString().split('T')[0],
       recipient,
       title,

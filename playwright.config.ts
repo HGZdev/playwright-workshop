@@ -23,7 +23,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     /* Clear storage state before each test to prevent stale data */
-    storageState: { cookies: [], origins: [] },
+    // storageState: { cookies: [], origins: [] },
   },
 
   /* Configure projects for major browsers */
