@@ -1,0 +1,48 @@
+import LoginPage from './pages/LoginPage';
+import RegistrationPage from './pages/RegistrationPage';
+import DashboardPage from './pages/DashboardPage';
+import userGen from './utils/userGen';
+import test, { expect } from 'playwright/test';
+
+test.describe('User Registration and Login Flow - version 3', () => {
+  let loginPage: LoginPage;
+  let registrationPage: RegistrationPage;
+  let dashboardPage: DashboardPage;
+
+  test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
+    registrationPage = new RegistrationPage(page);
+    dashboardPage = new DashboardPage(page);
+
+    /* nawiguj do strony głównej */
+    await page.goto('/login');
+    await page.waitForURL('/login');
+  });
+
+  test('should register a new user successfully', async ({ page }) => {
+    const user = userGen();
+
+    await loginPage.goToRegistrationPage();
+    await registrationPage.register(user);
+    await loginPage.login(user);
+
+    await page.waitForURL('/dashboard');
+    await expect(page.getByRole('heading', { name: 'Mini Bank' })).toBeVisible();
+  });
+
+  test('should show error if email already exists', async () => {
+    const user = userGen();
+
+    await loginPage.goToRegistrationPage();
+    await registrationPage.register(user);
+    await loginPage.login(user);
+
+    await dashboardPage.isDashboardLoaded();
+    await dashboardPage.logout();
+
+    await loginPage.isLoginPageLoaded();
+    await loginPage.goToRegistrationPage();
+    await registrationPage.register(user);
+    await registrationPage.hasError('An account with this email');
+  });
+});
