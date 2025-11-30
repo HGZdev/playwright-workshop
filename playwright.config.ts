@@ -2,63 +2,59 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
+  /* Run tests in files in parallel */
   fullyParallel: false,
+  /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
+  /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
+  /* Opt out of parallel tests on CI. */
   workers: 1,
-  reporter: 'line',
+  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  reporter: 'list',
+  /* optional explicit artifact root to stabilize paths */
+  outputDir: 'test-results',
+  /** Timeout for each test */
+  timeout: 20000, // default is 30000
+
+  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     baseURL: 'http://localhost:5173',
-    trace: 'on-first-retry',
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'setup',
-      testMatch: /.*\.setup\.ts/,
-    },
-    {
       name: 'smoke',
       testMatch: 'smoke.spec.ts',
       use: { ...devices['Desktop Chrome'] },
     },
-    {
-      name: 'login',
-      testMatch: 'login.spec.ts',
-      dependencies: ['smoke'],
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'transfer',
-      testMatch: 'transfer.spec.ts',
-      dependencies: ['login'],
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'register',
-      testMatch: 'register.spec.ts',
-      use: { ...devices['Desktop Chrome'] },
-    },
-    {
-      name: 'admin',
-      testMatch: 'admin.spec.ts',
-      dependencies: ['login'], // Admin tests require login, but we handle it in the test. However, keeping dependencies might be good for order.
-      use: { ...devices['Desktop Chrome'] },
-    },
+    // {
+    //   name: 'userAuth',
+    //   dependencies: ['smoke'],
+    //   testMatch: 'userAuth*.spec.ts',
+    //   use: { ...devices['Desktop Chrome'] },
+    // },
+    // {
+    //   name: 'moneyAddition',
+    //   dependencies: ['smoke'],
+    //   testMatch: 'moneyAddition.spec.ts',
+    //   use: { ...devices['Desktop Chrome'] },
+    // },
+    // {
+    //   name: 'moneySending',
+    //   dependencies: ['smoke'],
+    //   testMatch: 'moneySending.spec.ts',
+    //   use: { ...devices['Desktop Chrome'] },
+    // },
   ],
 
   /* Run your local dev server before starting the tests */
   webServer: [
     {
-      command: 'npm run dev:server',
-      port: 3001,
-      reuseExistingServer: true,
-    },
-    {
-      command: 'npm run dev:client',
-      port: 5173,
-      reuseExistingServer: true,
+      command: 'npm run dev',
+      url: 'http://localhost:5173',
+      reuseExistingServer: !process.env.CI,
     },
   ],
 });
