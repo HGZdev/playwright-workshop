@@ -11,7 +11,7 @@ test.describe('User Registration and Login Flow - version 2', () => {
     const user = userGen();
 
     await page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
-    await page.waitForURL('/register');
+    await expect(page).toHaveURL('/register');
 
     await page.getByRole('textbox', { name: 'E-mail' }).click();
     await page.getByRole('textbox', { name: 'E-mail' }).fill(user.email);
@@ -21,7 +21,7 @@ test.describe('User Registration and Login Flow - version 2', () => {
     await page.getByRole('textbox', { name: 'Imię i nazwisko' }).fill(user.name);
 
     await page.getByRole('button', { name: 'Zarejestruj się' }).click();
-    await page.waitForURL('/login');
+    await expect(page).toHaveURL('/login');
 
     await page.getByRole('textbox', { name: 'E-mail' }).click();
     await page.getByRole('textbox', { name: 'E-mail' }).fill(user.email);
@@ -29,7 +29,7 @@ test.describe('User Registration and Login Flow - version 2', () => {
     await page.getByRole('textbox', { name: 'Hasło' }).fill(user.password);
     await page.getByRole('button', { name: 'Zaloguj się' }).click();
 
-    await page.waitForURL('/dashboard');
+    await expect(page).toHaveURL('/dashboard');
     await expect(page.getByRole('heading', { name: 'Dostępne środki' })).toBeVisible();
     await expect(page.getByTestId('balance-amount')).toContainText('zł');
   });
@@ -38,7 +38,7 @@ test.describe('User Registration and Login Flow - version 2', () => {
     const user = userGen();
 
     await page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
-    await page.waitForURL('/register');
+    await expect(page).toHaveURL('/register');
 
     await page.getByRole('textbox', { name: 'E-mail' }).click();
     await page.getByRole('textbox', { name: 'E-mail' }).fill(user.email);
@@ -48,7 +48,7 @@ test.describe('User Registration and Login Flow - version 2', () => {
     await page.getByRole('textbox', { name: 'Imię i nazwisko' }).fill(user.name);
 
     await page.getByRole('button', { name: 'Zarejestruj się' }).click();
-    await page.waitForURL('/login');
+    await expect(page).toHaveURL('/login');
 
     await page.getByRole('textbox', { name: 'E-mail' }).click();
     await page.getByRole('textbox', { name: 'E-mail' }).fill(user.email);
@@ -56,16 +56,16 @@ test.describe('User Registration and Login Flow - version 2', () => {
     await page.getByRole('textbox', { name: 'Hasło' }).fill(user.password);
     await page.getByRole('button', { name: 'Zaloguj się' }).click();
 
-    await page.waitForURL('/dashboard');
+    await expect(page).toHaveURL('/dashboard');
     await expect(page.getByRole('heading', { name: 'Dostępne środki' })).toBeVisible();
     await expect(page.getByTestId('balance-amount')).toContainText('zł');
 
     await page.getByRole('button', { name: 'Wyloguj się z konta' }).click();
 
-    await page.waitForURL('/login');
+    await expect(page).toHaveURL('/login');
     await page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
 
-    await page.waitForURL('/register');
+    await expect(page).toHaveURL('/register');
     await page.getByRole('textbox', { name: 'E-mail' }).click();
     await page.getByRole('textbox', { name: 'E-mail' }).fill(user.email);
     await page.getByRole('textbox', { name: 'Hasło' }).click();

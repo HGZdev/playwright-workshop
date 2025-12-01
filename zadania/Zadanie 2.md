@@ -1,4 +1,4 @@
-## Zadanie 2 - Test logowania użytkownika do konta bankowego
+## Zadanie 2 - Test rejestracji i logowania użytkownika na konto bankowe
 
 Piszemy testy rejestracji i logowania do konta bankowego klienta.
 

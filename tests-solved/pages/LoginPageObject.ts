@@ -10,7 +10,7 @@ class LoginPage {
 
   async isLoginPageLoaded() {
     console.log('Checking if login page is loaded...');
-    await this.page.waitForURL('/login');
+    await expect(this.page).toHaveURL('/login');
     await expect(this.page.getByRole('heading', { name: 'Logowanie do konta' })).toBeVisible();
   }
 

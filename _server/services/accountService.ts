@@ -6,7 +6,7 @@ export class AccountService {
   async getAccount(accountId: number) {
     if (!accountId) throw new Error('accountId is undefined');
 
-    await randomDelay('getAccount', 4000, 4000);
+    await randomDelay('getAccount', 1000, 1500);
     const account = await db.getAccountById(accountId);
     if (!account) {
       throw new Error('Account not found');

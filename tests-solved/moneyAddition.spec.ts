@@ -1,8 +1,8 @@
 import test, { expect } from 'playwright/test';
-import LoginPage from './pages/LoginPage';
-import RegistrationPage from './pages/RegistrationPage';
-import DashboardPage from './pages/DashboardPage';
-import TransactionPage from './pages/TransactionPage';
+import LoginPage from './pages/LoginPageObject';
+import RegistrationPage from './pages/RegistrationPageObject';
+import DashboardPage from './pages/DashboardPageObject';
+import TransactionPage from './pages/TransactionPageObject';
 import userGen from './utils/userGen';
 
 test.describe('Money Addition Flows', () => {

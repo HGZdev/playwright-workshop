@@ -4,7 +4,6 @@ test.describe('User Registration and Login Flow - version 1', () => {
   test.beforeEach(async ({ page }) => {
     /* nawiguj do strony głównej */
     await page.goto('/');
-    await page.waitForURL('/login');
     await expect(page).toHaveURL('/login');
   });
 
@@ -18,7 +17,7 @@ test.describe('User Registration and Login Flow - version 1', () => {
     await page.getByRole('link', { name: 'Zarejestruj nowe konto' }).click();
 
     /* upewnij się, że znajdujesz się na stronie z formularzem rejestracyjnym */
-    await page.waitForURL('/register');
+    await expect(page).toHaveURL('/register');
 
     /* wypełnij pola formularza rejestracyjnego */
     await page.getByLabel('E-mail').click();
@@ -32,7 +31,7 @@ test.describe('User Registration and Login Flow - version 1', () => {
     await page.getByRole('button', { name: 'Zarejestruj się' }).click();
 
     /* upewnij się, że znajdujesz się na stronie z formularzem logowania */
-    await page.waitForURL('/login');
+    await expect(page).toHaveURL('/login');
     await expect(page.getByRole('heading', { name: 'Logowanie' })).toBeVisible();
 
     /* zaloguj się za pomocą danych nowo utworzonego klienta */
@@ -47,6 +46,6 @@ test.describe('User Registration and Login Flow - version 1', () => {
     /* upewnij się, że znajdujesz się na stronie z formularzem logowania */
     await expect(page).toHaveURL('/dashboard');
     await expect(page.getByRole('heading', { name: 'Dostępne środki' })).toBeVisible();
-    await expect(page.getByTestId('balance-amount')).toContainText('zł', { timeout: 8000 });
+    await expect(page.getByTestId('balance-amount')).toContainText('zł');
   });
 });

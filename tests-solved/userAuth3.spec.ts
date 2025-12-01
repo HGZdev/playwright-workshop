@@ -1,6 +1,6 @@
-import LoginPage from './pages/LoginPage';
-import RegistrationPage from './pages/RegistrationPage';
-import DashboardPage from './pages/DashboardPage';
+import LoginPage from './pages/LoginPageObject';
+import RegistrationPage from './pages/RegistrationPageObject';
+import DashboardPage from './pages/DashboardPageObject';
 import userGen from './utils/userGen';
 import test, { expect } from 'playwright/test';
 
@@ -16,7 +16,7 @@ test.describe('User Registration and Login Flow - version 3', () => {
 
     /* nawiguj do strony głównej */
     await page.goto('/login');
-    await page.waitForURL('/login');
+    await expect(page).toHaveURL('/login');
   });
 
   test('should register a new user successfully', async ({ page }) => {
@@ -26,7 +26,7 @@ test.describe('User Registration and Login Flow - version 3', () => {
     await registrationPage.register(user);
     await loginPage.login(user);
 
-    await page.waitForURL('/dashboard');
+    await expect(page).toHaveURL('/dashboard');
     await expect(page.getByRole('heading', { name: 'Mini Bank' })).toBeVisible();
   });
 

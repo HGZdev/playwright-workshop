@@ -9,7 +9,7 @@ class AdminPage {
 
   async isAdminPageLoaded() {
     console.log('Checking if admin page is loaded...');
-    await this.page.waitForURL('/admin');
+    await expect(this.page).toHaveURL('/admin');
     await expect(this.page.getByRole('heading', { name: 'Panel administratora' })).toBeVisible();
   }
 

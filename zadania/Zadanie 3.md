@@ -1,4 +1,4 @@
-## Zadanie 3 - Test rejestracji i logowania użytkownika
+## Zadanie 3 - Test rejestracji i logowania użytkownika na konto bankowe - wersja 2 z Record at Cursor
 
 Piszemy testy rejestracji z wykorzystaniem narzędzia Record at Cursor.
 

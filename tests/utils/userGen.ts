@@ -17,6 +17,17 @@ const getRandomName = (): string => {
   return names[Math.floor(Math.random() * names.length)];
 };
 
+/**
+ * Generates a user with random name and email.
+ * @example
+ * const newUser = userGen();
+ * // newUser = {
+ * //   name: 'Anna Kowalska',
+ * //   email: 'anna_kowalska_1234567890@gmail.com',
+ * //   password: 'anna_kowalska_1234567890@gmail.com',
+ * //   role: 'client',
+ * // }
+ */
 const userGen = (role: UserInput['role'] = 'client'): UserInput => {
   const timestamp = new Date().getTime();
   const name = getRandomName();

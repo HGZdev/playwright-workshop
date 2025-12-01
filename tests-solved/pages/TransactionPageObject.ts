@@ -15,13 +15,13 @@ class TransactionPage {
 
   async isAddMoneyPageLoaded() {
     console.log('Checking if add money page is loaded...');
-    await this.page.waitForURL('/add-money');
+    await expect(this.page).toHaveURL('/add-money');
     await expect(this.page.getByRole('heading', { name: 'Doładuj konto' })).toBeVisible();
   }
 
   async isSendMoneyPageLoaded() {
     console.log('Checking if send money page is loaded...');
-    await this.page.waitForURL('/send-money');
+    await expect(this.page).toHaveURL('/send-money');
     await expect(this.page.getByRole('heading', { name: 'Wykonaj przelew' })).toBeVisible();
   }
 

@@ -1,4 +1,4 @@
-## Zadanie 4 - Test rejestracji i logowania użytkownika - wersja z Page Object Models
+## Zadanie 4 - Test rejestracji i logowania użytkownika na konto bankowe - wersja 3 z Page Object Model
 
 Refaktoryzacja testów z wykorzystaniem wzorca Page Object Model.
 

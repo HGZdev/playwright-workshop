@@ -7,6 +7,7 @@ test.describe('User Registration and Login Flow - version 1', () => {
 
   test('should register a new user successfully', async ({ page }) => {
     const user = userGen();
+
     /* przejdz do strony z formularzem rejestracyjnym za pomocą linku */
 
     /* upewnij się, że znajdujesz się na stronie z formularzem rejestracyjnym */

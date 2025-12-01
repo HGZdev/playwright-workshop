@@ -9,8 +9,7 @@ Ten projekt to prosta aplikacja bankowa stworzona specjalnie do nauki testowania
 Przed rozpoczęciem warsztatów upewnij się, że masz zainstalowane:
 
 - **Node.js** (wersja LTS) i **npm**
-- **Visual Studio Code** (lub inny edytor kodu)
-- **Git** (opcjonalnie, do klonowania repozytorium)
+- **Visual Studio Code** https://code.visualstudio.com (lub inny edytor kodu)
 
 ## �🚀 Instalacja
 
@@ -19,8 +18,8 @@ Przed rozpoczęciem warsztatów upewnij się, że masz zainstalowane:
 #### Windows:
 
 1. **Pobierz instalator Node.js:**
-   - Wejdź na stronę: https://nodejs.org/
-   - Kliknij na zielony przycisk **"Download Node.js"** (wersja LTS - Long Term Support)
+   - Wejdź na stronę: https://nodejs.org/en/download/current
+   - Kliknij na zielony przycisk **"Windows Installer (.msi)"** (wersja LTS - Long Term Support)
 
 2. **Zainstaluj Node.js:**
    - Uruchom pobrany plik instalacyjny
@@ -30,21 +29,27 @@ Przed rozpoczęciem warsztatów upewnij się, że masz zainstalowane:
    - Kliknij **"Finish"**
 
 3. **Sprawdź czy instalacja się powiodła:**
-   - Otwórz **Command Prompt** (CMD) lub **PowerShell**:
-     - Naciśnij `Windows + R`
-     - Wpisz `cmd` i naciśnij Enter
-   - W terminalu wpisz i zatwierdź:
-     ```bash
-     node --version
-     ```
-     Powinnaś zobaczyć numer wersji, np. `v20.11.0`
-   - Następnie sprawdź npm:
-     ```bash
-     npm --version
-     ```
-     Powinnaś zobaczyć numer wersji, np. `10.2.4`
+
+- Otwórz **Command Prompt** (CMD) lub **PowerShell**:
+  - Naciśnij `Windows + R`
+  - Wpisz `cmd` i naciśnij Enter
+- W terminalu wpisz i zatwierdź:
+  ```bash
+  node --version
+  ```
+  Powinnaś zobaczyć numer wersji, np. `v20.11.0`
+- Następnie sprawdź npm:
+  ```bash
+  npm --version
+  ```
+  Powinnaś zobaczyć numer wersji, np. `10.2.4`
 
 > 💡 **Jeśli komendy nie działają:** Zamknij i otwórz ponownie terminal (CMD/PowerShell), a następnie spróbuj ponownie.
+> 💡 **Jeśli dostałaś błąd:** ".ps1 cannot be loaded because running scripts is disabled on this system. For more information, see about_Execution_Policies" - wpisz w terminalu:
+
+```bash
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
 
 #### MacOS:
 

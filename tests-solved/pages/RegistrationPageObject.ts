@@ -10,7 +10,7 @@ class RegistrationPage {
 
   async isRegistrationPageLoaded() {
     console.log('Checking if registration page is loaded...');
-    await this.page.waitForURL('/register');
+    await expect(this.page).toHaveURL('/register');
     await expect(this.page.getByRole('heading', { name: 'Rejestracja' })).toBeVisible();
   }
 
